@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import simpledialog
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import threading
@@ -9,7 +10,7 @@ from engine import Scanner
 from database import Database
 
 class CapScanGUI:
-    def __init__(self):
+    def __init__(self, db_password=None):
         # Initialize ttkbootstrap with flatly theme
         self.root = ttk.Window(themename="flatly")
         self.root.title("CapScan - Vulnerability Scanner")
@@ -22,13 +23,14 @@ class CapScanGUI:
         self.is_scanning = False
         
         # Database variables
-        self.db_password = None
+        self.db_password = db_password
         self.scan_id = None
-        self.db_connected = False
+        self.db_connected = bool(db_password)
         
         # Create GUI elements
         self.create_widgets()
         self.setup_layout()
+        self.update_db_status_ui()
         
     def create_widgets(self):
         """Create all GUI widgets"""
@@ -98,21 +100,7 @@ class CapScanGUI:
             variable=self.save_to_db_var
         )
         
-        self.db_password_label = ttk.Label(self.db_options_frame, text="DB Password:")
-        self.db_password_entry = ttk.Entry(
-            self.db_options_frame, 
-            width=20, 
-            font=("Arial", 10),
-            show="*"
-        )
-        
-        self.db_info_btn = ttk.Button(
-            self.db_options_frame, 
-            text="DB Info", 
-            command=self.show_db_info,
-            bootstyle=INFO,
-            width=10
-        )
+        # DB Info button moved to Database Controls in Database tab
         
         # Scan buttons
         self.scan_buttons_frame = ttk.Frame(self.input_frame)
@@ -237,6 +225,13 @@ class CapScanGUI:
             width=15,
             state=DISABLED
         )
+        self.db_info_btn = ttk.Button(
+            self.db_controls_frame, 
+            text="DB Info", 
+            command=self.show_db_info,
+            bootstyle=INFO,
+            width=12
+        )
         
         # Database info display
         self.db_info_frame = ttk.LabelFrame(self.db_frame, text="Database Information", padding="10")
@@ -277,8 +272,7 @@ class CapScanGUI:
         self.vulns_tree.bind("<<TreeviewSelect>>", self.on_vuln_select)
         self.ports_entry.bind("<KeyRelease>", self.on_port_entry_change)
         
-        # Initialize database info display
-        self.db_info_text.insert(1.0, "Database disconnected. Click 'Connect to DB' to connect.")
+        # Initialize database info display handled by update_db_status_ui()
         
     def setup_layout(self):
         """Setup the layout of all widgets"""
@@ -314,9 +308,6 @@ class CapScanGUI:
         # Database options
         self.db_options_frame.grid(row=3, column=0, columnspan=3, sticky=W, pady=5)
         self.save_to_db_check.pack(side=LEFT, padx=(0, 20))
-        self.db_password_label.pack(side=LEFT, padx=(0, 5))
-        self.db_password_entry.pack(side=LEFT, padx=(0, 10))
-        self.db_info_btn.pack(side=LEFT)
         
         # Scan buttons
         self.scan_buttons_frame.grid(row=4, column=0, columnspan=3, pady=10)
@@ -353,7 +344,8 @@ class CapScanGUI:
         self.db_controls_frame.pack(fill=X, pady=(0, 10))
         self.db_status_label.pack(side=LEFT, padx=(0, 10))
         self.db_connect_btn.pack(side=LEFT, padx=(0, 5))
-        self.db_refresh_btn.pack(side=LEFT)
+        self.db_refresh_btn.pack(side=LEFT, padx=(5, 5))
+        self.db_info_btn.pack(side=LEFT)
         
         self.db_info_frame.pack(fill=BOTH, expand=True, pady=(0, 10))
         self.db_info_text.pack(side=LEFT, fill=BOTH, expand=True)
@@ -653,18 +645,9 @@ Additional Information:
         """Save scan results to database"""
         try:
             # Check if connected to database
-            if not self.db_connected:
+            if not self.db_connected or not self.db_password:
                 self.show_error("Please connect to database first")
                 return
-            
-            # Get password from entry or use stored password
-            password = self.db_password_entry.get().strip()
-            if not password and not self.db_password:
-                self.show_error("Please enter database password or connect to database first")
-                return
-            
-            if password:
-                self.db_password = password
             
             # Get scan results
             results = self.scanner.scan_results
@@ -694,14 +677,16 @@ Additional Information:
     def connect_to_db(self):
         """Connect to database and test connection"""
         try:
-            password = self.db_password_entry.get().strip()
-            if not password:
-                self.show_error("Please enter database password")
-                return
+            # If no password stored (shouldn't happen after gated startup), prompt
+            if not self.db_password:
+                pwd = simpledialog.askstring(title="Database Authentication", prompt="Enter database password:", show="*", parent=self.root)
+                if not pwd:
+                    self.show_error("Please enter database password")
+                    return
+                self.db_password = pwd
             
             # Test connection
-            with Database(password=password) as db:
-                self.db_password = password
+            with Database(password=self.db_password) as db:
                 self.db_connected = True
                 self.db_status_label.config(text="Status: Connected")
                 self.db_connect_btn.config(text="Disconnect from DB", bootstyle=DANGER)
@@ -710,6 +695,7 @@ Additional Information:
                 
                 # Refresh database info
                 self.refresh_db_info()
+                self.update_db_status_ui()
                 
         except Exception as e:
             self.show_error(f"Error connecting to database: {str(e)}")
@@ -726,6 +712,7 @@ Additional Information:
         # Clear database info display
         self.db_info_text.delete(1.0, tk.END)
         self.db_info_text.insert(1.0, "Database disconnected. Click 'Connect to DB' to reconnect.")
+        self.update_db_status_ui()
         
         # Clear recent scans
         for item in self.recent_scans_tree.get_children():
@@ -771,6 +758,22 @@ Last Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
             self.db_info_text.delete(1.0, tk.END)
             self.db_info_text.insert(1.0, f"Error accessing database: {str(e)}")
     
+    def update_db_status_ui(self):
+        """Update the Database tab UI to reflect current connection status."""
+        if self.db_connected and self.db_password:
+            self.db_status_label.config(text="Status: Connected")
+            self.db_connect_btn.config(text="Disconnect from DB", bootstyle=DANGER)
+            self.db_refresh_btn.config(state=NORMAL)
+            # Populate info if empty
+            if not self.db_info_text.get("1.0", tk.END).strip() or "disconnected" in self.db_info_text.get("1.0", tk.END).lower():
+                self.refresh_db_info()
+        else:
+            self.db_status_label.config(text="Status: Disconnected")
+            self.db_connect_btn.config(text="Connect to DB", bootstyle=SUCCESS)
+            self.db_refresh_btn.config(state=DISABLED)
+            if not self.db_info_text.get("1.0", tk.END).strip():
+                self.db_info_text.insert(1.0, "Database disconnected. Click 'Connect to DB' to connect.")
+
     def update_recent_scans(self, db):
         """Update recent scans list"""
         try:

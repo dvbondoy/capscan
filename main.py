@@ -36,8 +36,43 @@ def run_gui():
     """Launch the GUI interface"""
     try:
         from gui import CapScanGUI
+        import tkinter as tk
+        from tkinter import simpledialog, messagebox
+        from database import Database
+
+        # Prompt for DB password before launching main window
         print("Launching CapScan GUI...")
-        app = CapScanGUI()
+        password = None
+        while True:
+            # Create a minimal hidden root just for dialogs
+            root = tk.Tk()
+            root.withdraw()
+
+            password = simpledialog.askstring(
+                title="Database Authentication",
+                prompt="Enter database password:",
+                show="*",
+                parent=root
+            )
+
+            if password is None:
+                root.destroy()
+                print("Database password entry cancelled. Exiting.")
+                sys.exit(1)
+
+            try:
+                # Verify password by attempting a connection
+                with Database(password=password) as _db:
+                    pass
+                root.destroy()
+                break
+            except Exception as e:
+                messagebox.showerror("Authentication Failed", f"Invalid password or DB error.\n{e}", parent=root)
+                root.destroy()
+                continue
+
+        # Launch main application with verified password
+        app = CapScanGUI(db_password=password)
         app.run()
     except ImportError as e:
         print(f"Error: Could not import GUI module: {e}")
