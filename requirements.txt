@@ -1,0 +1,19 @@
+# CapScan Vulnerability Scanner Dependencies
+
+# Core scanning engine
+python-nmap>=0.7.1
+
+# GUI framework
+ttkbootstrap>=1.10.1
+
+# Database encryption
+sqlcipher3>=0.5.0
+
+# AI integration for scan interpretation
+tgpt>=2.0.0
+
+# Additional dependencies
+uuid
+json
+datetime
+typing

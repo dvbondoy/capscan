@@ -1,0 +1,13 @@
+{
+  "target": "192.168.1.1",
+  "scan_time": "2025-09-07T17:04:26.488670",
+  "hosts_scanned": 1,
+  "total_vulnerabilities": 0,
+  "severity_breakdown": {
+    "high": 0,
+    "medium": 0,
+    "low": 0,
+    "unknown": 0
+  },
+  "xml_output_path": null
+}

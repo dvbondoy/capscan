@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<vulnerability_scan timestamp="2025-09-07T16:03:05.936979" target="192.168.1.1" scan_args="-sV -sC -vv --script vulners --script-args vulners.maxreports=10 -p 22,80,443,8080">
+  <hosts>
+    <host ip="192.168.1.1" hostname="" state="down">
+      <ports />
+    </host>
+  </hosts>
+  <summary_vulnerabilities />
+</vulnerability_scan>

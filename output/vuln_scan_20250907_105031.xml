@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<vulnerability_scan timestamp="2025-09-07T10:50:31.488750" target="192.168.88.1" scan_args="-sV -sC --script vulners --script-args vulners.maxreports=10 -p 22,80,443">
+  <hosts>
+    <host ip="192.168.88.1" hostname="router.lan" state="up">
+      <ports>
+        <port id="tcp/22" state="open" name="ssh" product="MikroTik RouterOS sshd" version="" extrainfo="protocol 2.0" />
+        <port id="tcp/80" state="open" name="http" product="MikroTik router config httpd" version="" extrainfo="" />
+        <port id="tcp/443" state="closed" name="https" product="" version="" extrainfo="" />
+      </ports>
+    </host>
+  </hosts>
+  <summary_vulnerabilities />
+</vulnerability_scan>
