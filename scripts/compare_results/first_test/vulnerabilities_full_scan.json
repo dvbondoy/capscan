@@ -1,0 +1,3584 @@
+[
+  {
+    "cve_id": "CVE-2011-2523",
+    "score": 2.0,
+    "description": "10.0 https://vulners.com/cve/CVE-2011-2523",
+    "raw_output": "CVE-2011-2523\t10.0\thttps://vulners.com/cve/CVE-2011-2523",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2023-38408",
+    "score": 6.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2023-38408",
+    "raw_output": "CVE-2023-38408\t9.8\thttps://vulners.com/cve/CVE-2023-38408",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2016-1908",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2016-1908",
+    "raw_output": "CVE-2016-1908\t9.8\thttps://vulners.com/cve/CVE-2016-1908",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-5600",
+    "score": 2.0,
+    "description": "8.5 https://vulners.com/cve/CVE-2015-5600",
+    "raw_output": "CVE-2015-5600\t8.5\thttps://vulners.com/cve/CVE-2015-5600",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2020-15778",
+    "score": 3.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2020-15778",
+    "raw_output": "CVE-2020-15778\t7.8\thttps://vulners.com/cve/CVE-2020-15778",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2016-6515",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2016-6515",
+    "raw_output": "CVE-2016-6515\t7.8\thttps://vulners.com/cve/CVE-2016-6515",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-10012",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2016-10012",
+    "raw_output": "CVE-2016-10012\t7.8\thttps://vulners.com/cve/CVE-2016-10012",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-8325",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2015-8325",
+    "raw_output": "CVE-2015-8325\t7.8\thttps://vulners.com/cve/CVE-2015-8325",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-10708",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-10708",
+    "raw_output": "CVE-2016-10708\t7.5\thttps://vulners.com/cve/CVE-2016-10708",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-10009",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-10009",
+    "raw_output": "CVE-2016-10009\t7.5\thttps://vulners.com/cve/CVE-2016-10009",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-1692",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2014-1692",
+    "raw_output": "CVE-2014-1692\t7.5\thttps://vulners.com/cve/CVE-2014-1692",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-4478",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2010-4478",
+    "raw_output": "CVE-2010-4478\t7.5\thttps://vulners.com/cve/CVE-2010-4478",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-10010",
+    "score": 2.0,
+    "description": "7.0 https://vulners.com/cve/CVE-2016-10010",
+    "raw_output": "CVE-2016-10010\t7.0\thttps://vulners.com/cve/CVE-2016-10010",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-6564",
+    "score": 2.0,
+    "description": "6.9 https://vulners.com/cve/CVE-2015-6564",
+    "raw_output": "CVE-2015-6564\t6.9\thttps://vulners.com/cve/CVE-2015-6564",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2019-6110",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2019-6110",
+    "raw_output": "CVE-2019-6110\t6.8\thttps://vulners.com/cve/CVE-2019-6110",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2019-6109",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2019-6109",
+    "raw_output": "CVE-2019-6109\t6.8\thttps://vulners.com/cve/CVE-2019-6109",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2023-51385",
+    "score": 6.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2023-51385",
+    "raw_output": "CVE-2023-51385\t6.5\thttps://vulners.com/cve/CVE-2023-51385",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2008-1657",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2008-1657",
+    "raw_output": "CVE-2008-1657\t6.5\thttps://vulners.com/cve/CVE-2008-1657",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-3115",
+    "score": 2.0,
+    "description": "6.4 https://vulners.com/cve/CVE-2016-3115",
+    "raw_output": "CVE-2016-3115\t6.4\thttps://vulners.com/cve/CVE-2016-3115",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2023-48795",
+    "score": 6.0,
+    "description": "5.9 https://vulners.com/cve/CVE-2023-48795",
+    "raw_output": "CVE-2023-48795\t5.9\thttps://vulners.com/cve/CVE-2023-48795",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2019-6111",
+    "score": 2.0,
+    "description": "5.9 https://vulners.com/cve/CVE-2019-6111",
+    "raw_output": "CVE-2019-6111\t5.9\thttps://vulners.com/cve/CVE-2019-6111",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-6210",
+    "score": 2.0,
+    "description": "5.9 https://vulners.com/cve/CVE-2016-6210",
+    "raw_output": "CVE-2016-6210\t5.9\thttps://vulners.com/cve/CVE-2016-6210",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-2653",
+    "score": 2.0,
+    "description": "5.8 https://vulners.com/cve/CVE-2014-2653",
+    "raw_output": "CVE-2014-2653\t5.8\thttps://vulners.com/cve/CVE-2014-2653",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-2532",
+    "score": 2.0,
+    "description": "5.8 https://vulners.com/cve/CVE-2014-2532",
+    "raw_output": "CVE-2014-2532\t5.8\thttps://vulners.com/cve/CVE-2014-2532",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-10011",
+    "score": 2.0,
+    "description": "5.5 https://vulners.com/cve/CVE-2016-10011",
+    "raw_output": "CVE-2016-10011\t5.5\thttps://vulners.com/cve/CVE-2016-10011",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2018-20685",
+    "score": 2.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2018-20685",
+    "raw_output": "CVE-2018-20685\t5.3\thttps://vulners.com/cve/CVE-2018-20685",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2018-15473",
+    "score": 2.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2018-15473",
+    "raw_output": "CVE-2018-15473\t5.3\thttps://vulners.com/cve/CVE-2018-15473",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-15906",
+    "score": 2.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2017-15906",
+    "raw_output": "CVE-2017-15906\t5.3\thttps://vulners.com/cve/CVE-2017-15906",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-20012",
+    "score": 2.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2016-20012",
+    "raw_output": "CVE-2016-20012\t5.3\thttps://vulners.com/cve/CVE-2016-20012",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-5107",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2010-5107",
+    "raw_output": "CVE-2010-5107\t5.0\thttps://vulners.com/cve/CVE-2010-5107",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-5352",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2015-5352",
+    "raw_output": "CVE-2015-5352\t4.3\thttps://vulners.com/cve/CVE-2015-5352",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-4755",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2010-4755",
+    "raw_output": "CVE-2010-4755\t4.0\thttps://vulners.com/cve/CVE-2010-4755",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2021-36368",
+    "score": 4.0,
+    "description": "3.7 https://vulners.com/cve/CVE-2021-36368",
+    "raw_output": "CVE-2021-36368\t3.7\thttps://vulners.com/cve/CVE-2021-36368",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2012-0814",
+    "score": 2.0,
+    "description": "3.5 https://vulners.com/cve/CVE-2012-0814",
+    "raw_output": "CVE-2012-0814\t3.5\thttps://vulners.com/cve/CVE-2012-0814",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-5000",
+    "score": 2.0,
+    "description": "3.5 https://vulners.com/cve/CVE-2011-5000",
+    "raw_output": "CVE-2011-5000\t3.5\thttps://vulners.com/cve/CVE-2011-5000",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-4327",
+    "score": 2.0,
+    "description": "2.1 https://vulners.com/cve/CVE-2011-4327",
+    "raw_output": "CVE-2011-4327\t2.1\thttps://vulners.com/cve/CVE-2011-4327",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-6563",
+    "score": 2.0,
+    "description": "1.9 https://vulners.com/cve/CVE-2015-6563",
+    "raw_output": "CVE-2015-6563\t1.9\thttps://vulners.com/cve/CVE-2015-6563",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-3259",
+    "score": 2.0,
+    "description": "1.2 https://vulners.com/cve/CVE-2008-3259",
+    "raw_output": "CVE-2008-3259\t1.2\thttps://vulners.com/cve/CVE-2008-3259",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-0122",
+    "score": 2.0,
+    "description": "10.0 https://vulners.com/cve/CVE-2008-0122",
+    "raw_output": "CVE-2008-0122\t10.0\thttps://vulners.com/cve/CVE-2008-0122",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2021-25216",
+    "score": 4.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2021-25216",
+    "raw_output": "CVE-2021-25216\t9.8\thttps://vulners.com/cve/CVE-2021-25216",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2020-8616",
+    "score": 3.0,
+    "description": "8.6 https://vulners.com/cve/CVE-2020-8616",
+    "raw_output": "CVE-2020-8616\t8.6\thttps://vulners.com/cve/CVE-2020-8616",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2016-1286",
+    "score": 2.0,
+    "description": "8.6 https://vulners.com/cve/CVE-2016-1286",
+    "raw_output": "CVE-2016-1286\t8.6\thttps://vulners.com/cve/CVE-2016-1286",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-1667",
+    "score": 2.0,
+    "description": "8.5 https://vulners.com/cve/CVE-2012-1667",
+    "raw_output": "CVE-2012-1667\t8.5\thttps://vulners.com/cve/CVE-2012-1667",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-3141",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2017-3141",
+    "raw_output": "CVE-2017-3141\t7.8\thttps://vulners.com/cve/CVE-2017-3141",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-2776",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2016-2776",
+    "raw_output": "CVE-2016-2776\t7.8\thttps://vulners.com/cve/CVE-2016-2776",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-5722",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2015-5722",
+    "raw_output": "CVE-2015-5722\t7.8\thttps://vulners.com/cve/CVE-2015-5722",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-5477",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2015-5477",
+    "raw_output": "CVE-2015-5477\t7.8\thttps://vulners.com/cve/CVE-2015-5477",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-8500",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2014-8500",
+    "raw_output": "CVE-2014-8500\t7.8\thttps://vulners.com/cve/CVE-2014-8500",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-5166",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2012-5166",
+    "raw_output": "CVE-2012-5166\t7.8\thttps://vulners.com/cve/CVE-2012-5166",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-4244",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2012-4244",
+    "raw_output": "CVE-2012-4244\t7.8\thttps://vulners.com/cve/CVE-2012-4244",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-3817",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2012-3817",
+    "raw_output": "CVE-2012-3817\t7.8\thttps://vulners.com/cve/CVE-2012-3817",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-4163",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2008-4163",
+    "raw_output": "CVE-2008-4163\t7.8\thttps://vulners.com/cve/CVE-2008-4163",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-0382",
+    "score": 2.0,
+    "description": "7.6 https://vulners.com/cve/CVE-2010-0382",
+    "raw_output": "CVE-2010-0382\t7.6\thttps://vulners.com/cve/CVE-2010-0382",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2023-50387",
+    "score": 6.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2023-50387",
+    "raw_output": "CVE-2023-50387\t7.5\thttps://vulners.com/cve/CVE-2023-50387",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2023-4408",
+    "score": 6.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2023-4408",
+    "raw_output": "CVE-2023-4408\t7.5\thttps://vulners.com/cve/CVE-2023-4408",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2023-3341",
+    "score": 6.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2023-3341",
+    "raw_output": "CVE-2023-3341\t7.5\thttps://vulners.com/cve/CVE-2023-3341",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2021-25215",
+    "score": 4.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2021-25215",
+    "raw_output": "CVE-2021-25215\t7.5\thttps://vulners.com/cve/CVE-2021-25215",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2020-8617",
+    "score": 3.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2020-8617",
+    "raw_output": "CVE-2020-8617\t7.5\thttps://vulners.com/cve/CVE-2020-8617",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2017-3145",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2017-3145",
+    "raw_output": "CVE-2017-3145\t7.5\thttps://vulners.com/cve/CVE-2017-3145",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-3143",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2017-3143",
+    "raw_output": "CVE-2017-3143\t7.5\thttps://vulners.com/cve/CVE-2017-3143",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-9444",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-9444",
+    "raw_output": "CVE-2016-9444\t7.5\thttps://vulners.com/cve/CVE-2016-9444",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-9131",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-9131",
+    "raw_output": "CVE-2016-9131\t7.5\thttps://vulners.com/cve/CVE-2016-9131",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-8864",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-8864",
+    "raw_output": "CVE-2016-8864\t7.5\thttps://vulners.com/cve/CVE-2016-8864",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-2848",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-2848",
+    "raw_output": "CVE-2016-2848\t7.5\thttps://vulners.com/cve/CVE-2016-2848",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-0265",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2009-0265",
+    "raw_output": "CVE-2009-0265\t7.5\thttps://vulners.com/cve/CVE-2009-0265",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-8461",
+    "score": 2.0,
+    "description": "7.1 https://vulners.com/cve/CVE-2015-8461",
+    "raw_output": "CVE-2015-8461\t7.1\thttps://vulners.com/cve/CVE-2015-8461",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-5986",
+    "score": 2.0,
+    "description": "7.1 https://vulners.com/cve/CVE-2015-5986",
+    "raw_output": "CVE-2015-5986\t7.1\thttps://vulners.com/cve/CVE-2015-5986",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-8705",
+    "score": 2.0,
+    "description": "7.0 https://vulners.com/cve/CVE-2015-8705",
+    "raw_output": "CVE-2015-8705\t7.0\thttps://vulners.com/cve/CVE-2015-8705",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-1285",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2016-1285",
+    "raw_output": "CVE-2016-1285\t6.8\thttps://vulners.com/cve/CVE-2016-1285",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-8704",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2015-8704",
+    "raw_output": "CVE-2015-8704\t6.8\thttps://vulners.com/cve/CVE-2015-8704",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-0025",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2009-0025",
+    "raw_output": "CVE-2009-0025\t6.8\thttps://vulners.com/cve/CVE-2009-0025",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2020-8622",
+    "score": 3.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2020-8622",
+    "raw_output": "CVE-2020-8622\t6.5\thttps://vulners.com/cve/CVE-2020-8622",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2018-5741",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2018-5741",
+    "raw_output": "CVE-2018-5741\t6.5\thttps://vulners.com/cve/CVE-2018-5741",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-6170",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2016-6170",
+    "raw_output": "CVE-2016-6170\t6.5\thttps://vulners.com/cve/CVE-2016-6170",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-3614",
+    "score": 2.0,
+    "description": "6.4 https://vulners.com/cve/CVE-2010-3614",
+    "raw_output": "CVE-2010-3614\t6.4\thttps://vulners.com/cve/CVE-2010-3614",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-2775",
+    "score": 2.0,
+    "description": "5.9 https://vulners.com/cve/CVE-2016-2775",
+    "raw_output": "CVE-2016-2775\t5.9\thttps://vulners.com/cve/CVE-2016-2775",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2022-2795",
+    "score": 5.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2022-2795",
+    "raw_output": "CVE-2022-2795\t5.3\thttps://vulners.com/cve/CVE-2022-2795",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2021-25219",
+    "score": 4.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2021-25219",
+    "raw_output": "CVE-2021-25219\t5.3\thttps://vulners.com/cve/CVE-2021-25219",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2017-3142",
+    "score": 2.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2017-3142",
+    "raw_output": "CVE-2017-3142\t5.3\thttps://vulners.com/cve/CVE-2017-3142",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-8000",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2015-8000",
+    "raw_output": "CVE-2015-8000\t5.0\thttps://vulners.com/cve/CVE-2015-8000",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-1033",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2012-1033",
+    "raw_output": "CVE-2012-1033\t5.0\thttps://vulners.com/cve/CVE-2012-1033",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-4313",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2011-4313",
+    "raw_output": "CVE-2011-4313\t5.0\thttps://vulners.com/cve/CVE-2011-4313",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-1910",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2011-1910",
+    "raw_output": "CVE-2011-1910\t5.0\thttps://vulners.com/cve/CVE-2011-1910",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-3762",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2010-3762",
+    "raw_output": "CVE-2010-3762\t4.3\thttps://vulners.com/cve/CVE-2010-3762",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-0097",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2010-0097",
+    "raw_output": "CVE-2010-0097\t4.3\thttps://vulners.com/cve/CVE-2010-0097",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-0696",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2009-0696",
+    "raw_output": "CVE-2009-0696\t4.3\thttps://vulners.com/cve/CVE-2009-0696",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-0290",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2010-0290",
+    "raw_output": "CVE-2010-0290\t4.0\thttps://vulners.com/cve/CVE-2010-0290",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-4022",
+    "score": 2.0,
+    "description": "2.6 https://vulners.com/cve/CVE-2009-4022",
+    "raw_output": "CVE-2009-4022\t2.6\thttps://vulners.com/cve/CVE-2009-4022",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-0425",
+    "score": 2.0,
+    "description": "10.0 https://vulners.com/cve/CVE-2010-0425",
+    "raw_output": "CVE-2010-0425\t10.0\thttps://vulners.com/cve/CVE-2010-0425",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2024-38476",
+    "score": 7.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2024-38476",
+    "raw_output": "CVE-2024-38476\t9.8\thttps://vulners.com/cve/CVE-2024-38476",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 7.0
+  },
+  {
+    "cve_id": "CVE-2022-31813",
+    "score": 5.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2022-31813",
+    "raw_output": "CVE-2022-31813\t9.8\thttps://vulners.com/cve/CVE-2022-31813",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2022-22720",
+    "score": 5.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2022-22720",
+    "raw_output": "CVE-2022-22720\t9.8\thttps://vulners.com/cve/CVE-2022-22720",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2021-44790",
+    "score": 4.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2021-44790",
+    "raw_output": "CVE-2021-44790\t9.8\thttps://vulners.com/cve/CVE-2021-44790",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-42013",
+    "score": 4.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2021-42013",
+    "raw_output": "CVE-2021-42013\t9.8\thttps://vulners.com/cve/CVE-2021-42013",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-39275",
+    "score": 4.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2021-39275",
+    "raw_output": "CVE-2021-39275\t9.8\thttps://vulners.com/cve/CVE-2021-39275",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-26691",
+    "score": 4.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2021-26691",
+    "raw_output": "CVE-2021-26691\t9.8\thttps://vulners.com/cve/CVE-2021-26691",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2018-1312",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2018-1312",
+    "raw_output": "CVE-2018-1312\t9.8\thttps://vulners.com/cve/CVE-2018-1312",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-7679",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2017-7679",
+    "raw_output": "CVE-2017-7679\t9.8\thttps://vulners.com/cve/CVE-2017-7679",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-3169",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2017-3169",
+    "raw_output": "CVE-2017-3169\t9.8\thttps://vulners.com/cve/CVE-2017-3169",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-3167",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2017-3167",
+    "raw_output": "CVE-2017-3167\t9.8\thttps://vulners.com/cve/CVE-2017-3167",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2024-40898",
+    "score": 7.0,
+    "description": "9.1 https://vulners.com/cve/CVE-2024-40898",
+    "raw_output": "CVE-2024-40898\t9.1\thttps://vulners.com/cve/CVE-2024-40898",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 7.0
+  },
+  {
+    "cve_id": "CVE-2022-28615",
+    "score": 5.0,
+    "description": "9.1 https://vulners.com/cve/CVE-2022-28615",
+    "raw_output": "CVE-2022-28615\t9.1\thttps://vulners.com/cve/CVE-2022-28615",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2022-22721",
+    "score": 5.0,
+    "description": "9.1 https://vulners.com/cve/CVE-2022-22721",
+    "raw_output": "CVE-2022-22721\t9.1\thttps://vulners.com/cve/CVE-2022-22721",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2017-9788",
+    "score": 2.0,
+    "description": "9.1 https://vulners.com/cve/CVE-2017-9788",
+    "raw_output": "CVE-2017-9788\t9.1\thttps://vulners.com/cve/CVE-2017-9788",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2021-40438",
+    "score": 4.0,
+    "description": "9.0 https://vulners.com/cve/CVE-2021-40438",
+    "raw_output": "CVE-2021-40438\t9.0\thttps://vulners.com/cve/CVE-2021-40438",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2016-5387",
+    "score": 2.0,
+    "description": "8.1 https://vulners.com/cve/CVE-2016-5387",
+    "raw_output": "CVE-2016-5387\t8.1\thttps://vulners.com/cve/CVE-2016-5387",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-3192",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2011-3192",
+    "raw_output": "CVE-2011-3192\t7.8\thttps://vulners.com/cve/CVE-2011-3192",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2023-31122",
+    "score": 6.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2023-31122",
+    "raw_output": "CVE-2023-31122\t7.5\thttps://vulners.com/cve/CVE-2023-31122",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2022-30556",
+    "score": 5.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2022-30556",
+    "raw_output": "CVE-2022-30556\t7.5\thttps://vulners.com/cve/CVE-2022-30556",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2022-30522",
+    "score": 5.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2022-30522",
+    "raw_output": "CVE-2022-30522\t7.5\thttps://vulners.com/cve/CVE-2022-30522",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2022-29404",
+    "score": 5.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2022-29404",
+    "raw_output": "CVE-2022-29404\t7.5\thttps://vulners.com/cve/CVE-2022-29404",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2022-22719",
+    "score": 5.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2022-22719",
+    "raw_output": "CVE-2022-22719\t7.5\thttps://vulners.com/cve/CVE-2022-22719",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2021-41773",
+    "score": 4.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2021-41773",
+    "raw_output": "CVE-2021-41773\t7.5\thttps://vulners.com/cve/CVE-2021-41773",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-41524",
+    "score": 4.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2021-41524",
+    "raw_output": "CVE-2021-41524\t7.5\thttps://vulners.com/cve/CVE-2021-41524",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-34798",
+    "score": 4.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2021-34798",
+    "raw_output": "CVE-2021-34798\t7.5\thttps://vulners.com/cve/CVE-2021-34798",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-31618",
+    "score": 4.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2021-31618",
+    "raw_output": "CVE-2021-31618\t7.5\thttps://vulners.com/cve/CVE-2021-31618",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-26690",
+    "score": 4.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2021-26690",
+    "raw_output": "CVE-2021-26690\t7.5\thttps://vulners.com/cve/CVE-2021-26690",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2020-13950",
+    "score": 3.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2020-13950",
+    "raw_output": "CVE-2020-13950\t7.5\thttps://vulners.com/cve/CVE-2020-13950",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2019-0215",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2019-0215",
+    "raw_output": "CVE-2019-0215\t7.5\thttps://vulners.com/cve/CVE-2019-0215",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2019-0190",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2019-0190",
+    "raw_output": "CVE-2019-0190\t7.5\thttps://vulners.com/cve/CVE-2019-0190",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2018-8011",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2018-8011",
+    "raw_output": "CVE-2018-8011\t7.5\thttps://vulners.com/cve/CVE-2018-8011",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2018-1333",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2018-1333",
+    "raw_output": "CVE-2018-1333\t7.5\thttps://vulners.com/cve/CVE-2018-1333",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2018-1303",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2018-1303",
+    "raw_output": "CVE-2018-1303\t7.5\thttps://vulners.com/cve/CVE-2018-1303",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-9798",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2017-9798",
+    "raw_output": "CVE-2017-9798\t7.5\thttps://vulners.com/cve/CVE-2017-9798",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-9789",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2017-9789",
+    "raw_output": "CVE-2017-9789\t7.5\thttps://vulners.com/cve/CVE-2017-9789",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-7668",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2017-7668",
+    "raw_output": "CVE-2017-7668\t7.5\thttps://vulners.com/cve/CVE-2017-7668",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-7659",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2017-7659",
+    "raw_output": "CVE-2017-7659\t7.5\thttps://vulners.com/cve/CVE-2017-7659",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-15710",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2017-15710",
+    "raw_output": "CVE-2017-15710\t7.5\thttps://vulners.com/cve/CVE-2017-15710",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-8743",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-8743",
+    "raw_output": "CVE-2016-8743\t7.5\thttps://vulners.com/cve/CVE-2016-8743",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-2699",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2009-2699",
+    "raw_output": "CVE-2009-2699\t7.5\thttps://vulners.com/cve/CVE-2009-2699",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-1955",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2009-1955",
+    "raw_output": "CVE-2009-1955\t7.5\thttps://vulners.com/cve/CVE-2009-1955",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2006-20001",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2006-20001",
+    "raw_output": "CVE-2006-20001\t7.5\thttps://vulners.com/cve/CVE-2006-20001",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2025-49812",
+    "score": 7.0,
+    "description": "7.4 https://vulners.com/cve/CVE-2025-49812",
+    "raw_output": "CVE-2025-49812\t7.4\thttps://vulners.com/cve/CVE-2025-49812",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 7.0
+  },
+  {
+    "cve_id": "CVE-2023-38709",
+    "score": 6.0,
+    "description": "7.3 https://vulners.com/cve/CVE-2023-38709",
+    "raw_output": "CVE-2023-38709\t7.3\thttps://vulners.com/cve/CVE-2023-38709",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2020-35452",
+    "score": 3.0,
+    "description": "7.3 https://vulners.com/cve/CVE-2020-35452",
+    "raw_output": "CVE-2020-35452\t7.3\thttps://vulners.com/cve/CVE-2020-35452",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2009-1891",
+    "score": 2.0,
+    "description": "7.1 https://vulners.com/cve/CVE-2009-1891",
+    "raw_output": "CVE-2009-1891\t7.1\thttps://vulners.com/cve/CVE-2009-1891",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-1890",
+    "score": 2.0,
+    "description": "7.1 https://vulners.com/cve/CVE-2009-1890",
+    "raw_output": "CVE-2009-1890\t7.1\thttps://vulners.com/cve/CVE-2009-1890",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-0883",
+    "score": 2.0,
+    "description": "6.9 https://vulners.com/cve/CVE-2012-0883",
+    "raw_output": "CVE-2012-0883\t6.9\thttps://vulners.com/cve/CVE-2012-0883",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-0226",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2014-0226",
+    "raw_output": "CVE-2014-0226\t6.8\thttps://vulners.com/cve/CVE-2014-0226",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-1956",
+    "score": 2.0,
+    "description": "6.4 https://vulners.com/cve/CVE-2009-1956",
+    "raw_output": "CVE-2009-1956\t6.4\thttps://vulners.com/cve/CVE-2009-1956",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2025-54090",
+    "score": 7.0,
+    "description": "6.3 https://vulners.com/cve/CVE-2025-54090",
+    "raw_output": "CVE-2025-54090\t6.3\thttps://vulners.com/cve/CVE-2025-54090",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 7.0
+  },
+  {
+    "cve_id": "CVE-2024-39884",
+    "score": 7.0,
+    "description": "6.2 https://vulners.com/cve/CVE-2024-39884",
+    "raw_output": "CVE-2024-39884\t6.2\thttps://vulners.com/cve/CVE-2024-39884",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 7.0
+  },
+  {
+    "cve_id": "CVE-2016-4975",
+    "score": 2.0,
+    "description": "6.1 https://vulners.com/cve/CVE-2016-4975",
+    "raw_output": "CVE-2016-4975\t6.1\thttps://vulners.com/cve/CVE-2016-4975",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2018-1302",
+    "score": 2.0,
+    "description": "5.9 https://vulners.com/cve/CVE-2018-1302",
+    "raw_output": "CVE-2018-1302\t5.9\thttps://vulners.com/cve/CVE-2018-1302",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2018-1301",
+    "score": 2.0,
+    "description": "5.9 https://vulners.com/cve/CVE-2018-1301",
+    "raw_output": "CVE-2018-1301\t5.9\thttps://vulners.com/cve/CVE-2018-1301",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-3555",
+    "score": 2.0,
+    "description": "5.8 https://vulners.com/cve/CVE-2009-3555",
+    "raw_output": "CVE-2009-3555\t5.8\thttps://vulners.com/cve/CVE-2009-3555",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2020-13938",
+    "score": 3.0,
+    "description": "5.5 https://vulners.com/cve/CVE-2020-13938",
+    "raw_output": "CVE-2020-13938\t5.5\thttps://vulners.com/cve/CVE-2020-13938",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2022-37436",
+    "score": 5.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2022-37436",
+    "raw_output": "CVE-2022-37436\t5.3\thttps://vulners.com/cve/CVE-2022-37436",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2022-28614",
+    "score": 5.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2022-28614",
+    "raw_output": "CVE-2022-28614\t5.3\thttps://vulners.com/cve/CVE-2022-28614",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2022-28330",
+    "score": 5.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2022-28330",
+    "raw_output": "CVE-2022-28330\t5.3\thttps://vulners.com/cve/CVE-2022-28330",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2021-30641",
+    "score": 4.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2021-30641",
+    "raw_output": "CVE-2021-30641\t5.3\thttps://vulners.com/cve/CVE-2021-30641",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2019-17567",
+    "score": 2.0,
+    "description": "5.3 https://vulners.com/cve/CVE-2019-17567",
+    "raw_output": "CVE-2019-17567\t5.3\thttps://vulners.com/cve/CVE-2019-17567",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2013-1862",
+    "score": 2.0,
+    "description": "5.1 https://vulners.com/cve/CVE-2013-1862",
+    "raw_output": "CVE-2013-1862\t5.1\thttps://vulners.com/cve/CVE-2013-1862",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-3183",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2015-3183",
+    "raw_output": "CVE-2015-3183\t5.0\thttps://vulners.com/cve/CVE-2015-3183",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-0228",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2015-0228",
+    "raw_output": "CVE-2015-0228\t5.0\thttps://vulners.com/cve/CVE-2015-0228",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-0231",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2014-0231",
+    "raw_output": "CVE-2014-0231\t5.0\thttps://vulners.com/cve/CVE-2014-0231",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-0098",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2014-0098",
+    "raw_output": "CVE-2014-0098\t5.0\thttps://vulners.com/cve/CVE-2014-0098",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2013-6438",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2013-6438",
+    "raw_output": "CVE-2013-6438\t5.0\thttps://vulners.com/cve/CVE-2013-6438",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2013-5704",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2013-5704",
+    "raw_output": "CVE-2013-5704\t5.0\thttps://vulners.com/cve/CVE-2013-5704",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-3368",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2011-3368",
+    "raw_output": "CVE-2011-3368\t5.0\thttps://vulners.com/cve/CVE-2011-3368",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-1623",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2010-1623",
+    "raw_output": "CVE-2010-1623\t5.0\thttps://vulners.com/cve/CVE-2010-1623",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-1452",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2010-1452",
+    "raw_output": "CVE-2010-1452\t5.0\thttps://vulners.com/cve/CVE-2010-1452",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-0408",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2010-0408",
+    "raw_output": "CVE-2010-0408\t5.0\thttps://vulners.com/cve/CVE-2010-0408",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-3720",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2009-3720",
+    "raw_output": "CVE-2009-3720\t5.0\thttps://vulners.com/cve/CVE-2009-3720",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-3560",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2009-3560",
+    "raw_output": "CVE-2009-3560\t5.0\thttps://vulners.com/cve/CVE-2009-3560",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-3095",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2009-3095",
+    "raw_output": "CVE-2009-3095\t5.0\thttps://vulners.com/cve/CVE-2009-3095",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-2364",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2008-2364",
+    "raw_output": "CVE-2008-2364\t5.0\thttps://vulners.com/cve/CVE-2008-2364",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2007-6750",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2007-6750",
+    "raw_output": "CVE-2007-6750\t5.0\thttps://vulners.com/cve/CVE-2007-6750",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-1195",
+    "score": 2.0,
+    "description": "4.9 https://vulners.com/cve/CVE-2009-1195",
+    "raw_output": "CVE-2009-1195\t4.9\thttps://vulners.com/cve/CVE-2009-1195",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-0031",
+    "score": 2.0,
+    "description": "4.6 https://vulners.com/cve/CVE-2012-0031",
+    "raw_output": "CVE-2012-0031\t4.6\thttps://vulners.com/cve/CVE-2012-0031",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-3607",
+    "score": 2.0,
+    "description": "4.4 https://vulners.com/cve/CVE-2011-3607",
+    "raw_output": "CVE-2011-3607\t4.4\thttps://vulners.com/cve/CVE-2011-3607",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-8612",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2016-8612",
+    "raw_output": "CVE-2016-8612\t4.3\thttps://vulners.com/cve/CVE-2016-8612",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-0118",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2014-0118",
+    "raw_output": "CVE-2014-0118\t4.3\thttps://vulners.com/cve/CVE-2014-0118",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2013-1896",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2013-1896",
+    "raw_output": "CVE-2013-1896\t4.3\thttps://vulners.com/cve/CVE-2013-1896",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-4558",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2012-4558",
+    "raw_output": "CVE-2012-4558\t4.3\thttps://vulners.com/cve/CVE-2012-4558",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-3499",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2012-3499",
+    "raw_output": "CVE-2012-3499\t4.3\thttps://vulners.com/cve/CVE-2012-3499",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-0053",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2012-0053",
+    "raw_output": "CVE-2012-0053\t4.3\thttps://vulners.com/cve/CVE-2012-0053",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-4317",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2011-4317",
+    "raw_output": "CVE-2011-4317\t4.3\thttps://vulners.com/cve/CVE-2011-4317",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-3639",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2011-3639",
+    "raw_output": "CVE-2011-3639\t4.3\thttps://vulners.com/cve/CVE-2011-3639",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-0419",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2011-0419",
+    "raw_output": "CVE-2011-0419\t4.3\thttps://vulners.com/cve/CVE-2011-0419",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-0434",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2010-0434",
+    "raw_output": "CVE-2010-0434\t4.3\thttps://vulners.com/cve/CVE-2010-0434",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-0023",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2009-0023",
+    "raw_output": "CVE-2009-0023\t4.3\thttps://vulners.com/cve/CVE-2009-0023",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-2939",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2008-2939",
+    "raw_output": "CVE-2008-2939\t4.3\thttps://vulners.com/cve/CVE-2008-2939",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-0455",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2008-0455",
+    "raw_output": "CVE-2008-0455\t4.3\thttps://vulners.com/cve/CVE-2008-0455",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2007-6420",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2007-6420",
+    "raw_output": "CVE-2007-6420\t4.3\thttps://vulners.com/cve/CVE-2007-6420",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-2687",
+    "score": 2.0,
+    "description": "2.6 https://vulners.com/cve/CVE-2012-2687",
+    "raw_output": "CVE-2012-2687\t2.6\thttps://vulners.com/cve/CVE-2012-2687",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-3094",
+    "score": 2.0,
+    "description": "2.6 https://vulners.com/cve/CVE-2009-3094",
+    "raw_output": "CVE-2009-3094\t2.6\thttps://vulners.com/cve/CVE-2009-3094",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-0456",
+    "score": 2.0,
+    "description": "2.6 https://vulners.com/cve/CVE-2008-0456",
+    "raw_output": "CVE-2008-0456\t2.6\thttps://vulners.com/cve/CVE-2008-0456",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-4415",
+    "score": 2.0,
+    "description": "1.2 https://vulners.com/cve/CVE-2011-4415",
+    "raw_output": "CVE-2011-4415\t1.2\thttps://vulners.com/cve/CVE-2011-4415",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2019-12815",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2019-12815",
+    "raw_output": "CVE-2019-12815\t9.8\thttps://vulners.com/cve/CVE-2019-12815",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-4130",
+    "score": 2.0,
+    "description": "9.0 https://vulners.com/cve/CVE-2011-4130",
+    "raw_output": "CVE-2011-4130\t9.0\thttps://vulners.com/cve/CVE-2011-4130",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2024-48651",
+    "score": 7.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2024-48651",
+    "raw_output": "CVE-2024-48651\t7.5\thttps://vulners.com/cve/CVE-2024-48651",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 7.0
+  },
+  {
+    "cve_id": "CVE-2023-51713",
+    "score": 6.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2023-51713",
+    "raw_output": "CVE-2023-51713\t7.5\thttps://vulners.com/cve/CVE-2023-51713",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2021-46854",
+    "score": 4.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2021-46854",
+    "raw_output": "CVE-2021-46854\t7.5\thttps://vulners.com/cve/CVE-2021-46854",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2020-9272",
+    "score": 3.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2020-9272",
+    "raw_output": "CVE-2020-9272\t7.5\thttps://vulners.com/cve/CVE-2020-9272",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2019-19272",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2019-19272",
+    "raw_output": "CVE-2019-19272\t7.5\thttps://vulners.com/cve/CVE-2019-19272",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2019-19271",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2019-19271",
+    "raw_output": "CVE-2019-19271\t7.5\thttps://vulners.com/cve/CVE-2019-19271",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2019-19270",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2019-19270",
+    "raw_output": "CVE-2019-19270\t7.5\thttps://vulners.com/cve/CVE-2019-19270",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2019-18217",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2019-18217",
+    "raw_output": "CVE-2019-18217\t7.5\thttps://vulners.com/cve/CVE-2019-18217",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-3125",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-3125",
+    "raw_output": "CVE-2016-3125\t7.5\thttps://vulners.com/cve/CVE-2016-3125",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-3867",
+    "score": 2.0,
+    "description": "7.1 https://vulners.com/cve/CVE-2010-3867",
+    "raw_output": "CVE-2010-3867\t7.1\thttps://vulners.com/cve/CVE-2010-3867",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-4652",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2010-4652",
+    "raw_output": "CVE-2010-4652\t6.8\thttps://vulners.com/cve/CVE-2010-4652",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-0543",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2009-0543",
+    "raw_output": "CVE-2009-0543\t6.8\thttps://vulners.com/cve/CVE-2009-0543",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2023-48795",
+    "score": 6.0,
+    "description": "5.9 https://vulners.com/cve/CVE-2023-48795",
+    "raw_output": "CVE-2023-48795\t5.9\thttps://vulners.com/cve/CVE-2023-48795",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2009-3639",
+    "score": 2.0,
+    "description": "5.8 https://vulners.com/cve/CVE-2009-3639",
+    "raw_output": "CVE-2009-3639\t5.8\thttps://vulners.com/cve/CVE-2009-3639",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-7418",
+    "score": 2.0,
+    "description": "5.5 https://vulners.com/cve/CVE-2017-7418",
+    "raw_output": "CVE-2017-7418\t5.5\thttps://vulners.com/cve/CVE-2017-7418",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2011-1137",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2011-1137",
+    "raw_output": "CVE-2011-1137\t5.0\thttps://vulners.com/cve/CVE-2011-1137",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2019-19269",
+    "score": 2.0,
+    "description": "4.9 https://vulners.com/cve/CVE-2019-19269",
+    "raw_output": "CVE-2019-19269\t4.9\thttps://vulners.com/cve/CVE-2019-19269",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-7265",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2008-7265",
+    "raw_output": "CVE-2008-7265\t4.0\thttps://vulners.com/cve/CVE-2008-7265",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-6095",
+    "score": 2.0,
+    "description": "1.2 https://vulners.com/cve/CVE-2012-6095",
+    "raw_output": "CVE-2012-6095\t1.2\thttps://vulners.com/cve/CVE-2012-6095",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2017-15945",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2017-15945",
+    "raw_output": "CVE-2017-15945\t7.8\thttps://vulners.com/cve/CVE-2017-15945",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-4028",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2009-4028",
+    "raw_output": "CVE-2009-4028\t6.8\thttps://vulners.com/cve/CVE-2009-4028",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-1621",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2010-1621",
+    "raw_output": "CVE-2010-1621\t5.0\thttps://vulners.com/cve/CVE-2010-1621",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-2575",
+    "score": 2.0,
+    "description": "4.9 https://vulners.com/cve/CVE-2015-2575",
+    "raw_output": "CVE-2015-2575\t4.9\thttps://vulners.com/cve/CVE-2015-2575",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2008-2079",
+    "score": 2.0,
+    "description": "4.6 https://vulners.com/cve/CVE-2008-2079",
+    "raw_output": "CVE-2008-2079\t4.6\thttps://vulners.com/cve/CVE-2008-2079",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-3682",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2010-3682",
+    "raw_output": "CVE-2010-3682\t4.0\thttps://vulners.com/cve/CVE-2010-3682",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-3677",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2010-3677",
+    "raw_output": "CVE-2010-3677\t4.0\thttps://vulners.com/cve/CVE-2010-3677",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-0819",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2009-0819",
+    "raw_output": "CVE-2009-0819\t4.0\thttps://vulners.com/cve/CVE-2009-0819",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2007-5925",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2007-5925",
+    "raw_output": "CVE-2007-5925\t4.0\thttps://vulners.com/cve/CVE-2007-5925",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-1626",
+    "score": 2.0,
+    "description": "3.6 https://vulners.com/cve/CVE-2010-1626",
+    "raw_output": "CVE-2010-1626\t3.6\thttps://vulners.com/cve/CVE-2010-1626",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2013-1903",
+    "score": 2.0,
+    "description": "10.0 https://vulners.com/cve/CVE-2013-1903",
+    "raw_output": "CVE-2013-1903\t10.0\thttps://vulners.com/cve/CVE-2013-1903",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2013-1902",
+    "score": 2.0,
+    "description": "10.0 https://vulners.com/cve/CVE-2013-1902",
+    "raw_output": "CVE-2013-1902\t10.0\thttps://vulners.com/cve/CVE-2013-1902",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10211",
+    "raw_output": "POSTGRESQL:CVE-2019-10211\t9.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10211",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2018-16850",
+    "raw_output": "POSTGRESQL:CVE-2018-16850\t9.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2018-16850",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-7546",
+    "raw_output": "POSTGRESQL:CVE-2017-7546\t9.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-7546",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-3166",
+    "raw_output": "POSTGRESQL:CVE-2015-3166\t9.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-3166",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-0244",
+    "raw_output": "POSTGRESQL:CVE-2015-0244\t9.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-0244",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2019-10211",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2019-10211",
+    "raw_output": "CVE-2019-10211\t9.8\thttps://vulners.com/cve/CVE-2019-10211",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-3166",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2015-3166",
+    "raw_output": "CVE-2015-3166\t9.8\thttps://vulners.com/cve/CVE-2015-3166",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-0244",
+    "score": 2.0,
+    "description": "9.8 https://vulners.com/cve/CVE-2015-0244",
+    "raw_output": "CVE-2015-0244\t9.8\thttps://vulners.com/cve/CVE-2015-0244",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2016-7048",
+    "raw_output": "POSTGRESQL:CVE-2016-7048\t9.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2016-7048",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2016-7048",
+    "score": 2.0,
+    "description": "9.3 https://vulners.com/cve/CVE-2016-7048",
+    "raw_output": "CVE-2016-7048\t9.3\thttps://vulners.com/cve/CVE-2016-7048",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2018-1115",
+    "raw_output": "POSTGRESQL:CVE-2018-1115\t9.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2018-1115",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2016-3065",
+    "raw_output": "POSTGRESQL:CVE-2016-3065\t9.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2016-3065",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2018-1115",
+    "score": 2.0,
+    "description": "9.1 https://vulners.com/cve/CVE-2018-1115",
+    "raw_output": "CVE-2018-1115\t9.1\thttps://vulners.com/cve/CVE-2018-1115",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "9.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10164",
+    "raw_output": "POSTGRESQL:CVE-2019-10164\t9.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10164",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2019-10164",
+    "score": 2.0,
+    "description": "9.0 https://vulners.com/cve/CVE-2019-10164",
+    "raw_output": "CVE-2019-10164\t9.0\thttps://vulners.com/cve/CVE-2019-10164",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2025-8715",
+    "raw_output": "POSTGRESQL:CVE-2025-8715\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2025-8715",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2025-8714",
+    "raw_output": "POSTGRESQL:CVE-2025-8714\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2025-8714",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2024-7348",
+    "raw_output": "POSTGRESQL:CVE-2024-7348\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2024-7348",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2024-10979",
+    "raw_output": "POSTGRESQL:CVE-2024-10979\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2024-10979",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2023-5869",
+    "raw_output": "POSTGRESQL:CVE-2023-5869\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2023-5869",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2023-39417",
+    "raw_output": "POSTGRESQL:CVE-2023-39417\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2023-39417",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2022-1552",
+    "raw_output": "POSTGRESQL:CVE-2022-1552\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2022-1552",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2021-32027",
+    "raw_output": "POSTGRESQL:CVE-2021-32027\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2021-32027",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2020-25695",
+    "raw_output": "POSTGRESQL:CVE-2020-25695\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2020-25695",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2020-14349",
+    "raw_output": "POSTGRESQL:CVE-2020-14349\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2020-14349",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10208",
+    "raw_output": "POSTGRESQL:CVE-2019-10208\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10208",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10127",
+    "raw_output": "POSTGRESQL:CVE-2019-10127\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10127",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2018-1058",
+    "raw_output": "POSTGRESQL:CVE-2018-1058\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2018-1058",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-7547",
+    "raw_output": "POSTGRESQL:CVE-2017-7547\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-7547",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-0243",
+    "raw_output": "POSTGRESQL:CVE-2015-0243\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-0243",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-0242",
+    "raw_output": "POSTGRESQL:CVE-2015-0242\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-0242",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-0241",
+    "raw_output": "POSTGRESQL:CVE-2015-0241\t8.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-0241",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2022-1552",
+    "score": 5.0,
+    "description": "8.8 https://vulners.com/cve/CVE-2022-1552",
+    "raw_output": "CVE-2022-1552\t8.8\thttps://vulners.com/cve/CVE-2022-1552",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2021-32027",
+    "score": 4.0,
+    "description": "8.8 https://vulners.com/cve/CVE-2021-32027",
+    "raw_output": "CVE-2021-32027\t8.8\thttps://vulners.com/cve/CVE-2021-32027",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2020-25695",
+    "score": 3.0,
+    "description": "8.8 https://vulners.com/cve/CVE-2020-25695",
+    "raw_output": "CVE-2020-25695\t8.8\thttps://vulners.com/cve/CVE-2020-25695",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2019-10127",
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/cve/CVE-2019-10127",
+    "raw_output": "CVE-2019-10127\t8.8\thttps://vulners.com/cve/CVE-2019-10127",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-0243",
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/cve/CVE-2015-0243",
+    "raw_output": "CVE-2015-0243\t8.8\thttps://vulners.com/cve/CVE-2015-0243",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-0242",
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/cve/CVE-2015-0242",
+    "raw_output": "CVE-2015-0242\t8.8\thttps://vulners.com/cve/CVE-2015-0242",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-0241",
+    "score": 2.0,
+    "description": "8.8 https://vulners.com/cve/CVE-2015-0241",
+    "raw_output": "CVE-2015-0241\t8.8\thttps://vulners.com/cve/CVE-2015-0241",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2018-10915",
+    "raw_output": "POSTGRESQL:CVE-2018-10915\t8.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2018-10915",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2013-1900",
+    "raw_output": "POSTGRESQL:CVE-2013-1900\t8.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2013-1900",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2010-1169",
+    "raw_output": "POSTGRESQL:CVE-2010-1169\t8.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2010-1169",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2010-1447",
+    "score": 2.0,
+    "description": "8.5 https://vulners.com/cve/CVE-2010-1447",
+    "raw_output": "CVE-2010-1447\t8.5\thttps://vulners.com/cve/CVE-2010-1447",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-1169",
+    "score": 2.0,
+    "description": "8.5 https://vulners.com/cve/CVE-2010-1169",
+    "raw_output": "CVE-2010-1169\t8.5\thttps://vulners.com/cve/CVE-2010-1169",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2016-5423",
+    "raw_output": "POSTGRESQL:CVE-2016-5423\t8.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2016-5423",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2016-5423",
+    "score": 2.0,
+    "description": "8.3 https://vulners.com/cve/CVE-2016-5423",
+    "raw_output": "CVE-2016-5423\t8.3\thttps://vulners.com/cve/CVE-2016-5423",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2025-1094",
+    "raw_output": "POSTGRESQL:CVE-2025-1094\t8.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2025-1094",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "8.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2021-23222",
+    "raw_output": "POSTGRESQL:CVE-2021-23222\t8.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2021-23222",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "8.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2021-23214",
+    "raw_output": "POSTGRESQL:CVE-2021-23214\t8.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2021-23214",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2020-25694",
+    "raw_output": "POSTGRESQL:CVE-2020-25694\t8.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2020-25694",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2018-10925",
+    "raw_output": "POSTGRESQL:CVE-2018-10925\t8.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2018-10925",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "8.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-15098",
+    "raw_output": "POSTGRESQL:CVE-2017-15098\t8.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-15098",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2021-23214",
+    "score": 4.0,
+    "description": "8.1 https://vulners.com/cve/CVE-2021-23214",
+    "raw_output": "CVE-2021-23214\t8.1\thttps://vulners.com/cve/CVE-2021-23214",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2020-25694",
+    "score": 3.0,
+    "description": "8.1 https://vulners.com/cve/CVE-2020-25694",
+    "raw_output": "CVE-2020-25694\t8.1\thttps://vulners.com/cve/CVE-2020-25694",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "8.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2024-0985",
+    "raw_output": "POSTGRESQL:CVE-2024-0985\t8.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2024-0985",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "8.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2022-2625",
+    "raw_output": "POSTGRESQL:CVE-2022-2625\t8.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2022-2625",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2022-2625",
+    "score": 5.0,
+    "description": "8.0 https://vulners.com/cve/CVE-2022-2625",
+    "raw_output": "CVE-2022-2625\t8.0\thttps://vulners.com/cve/CVE-2022-2625",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-3466",
+    "raw_output": "POSTGRESQL:CVE-2019-3466\t7.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-3466",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10128",
+    "raw_output": "POSTGRESQL:CVE-2019-10128\t7.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10128",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2019-10128",
+    "score": 2.0,
+    "description": "7.8 https://vulners.com/cve/CVE-2019-10128",
+    "raw_output": "CVE-2019-10128\t7.8\thttps://vulners.com/cve/CVE-2019-10128",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.6 https://vulners.com/postgresql/POSTGRESQL:CVE-2020-25696",
+    "raw_output": "POSTGRESQL:CVE-2020-25696\t7.6\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2020-25696",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2020-25696",
+    "score": 3.0,
+    "description": "7.6 https://vulners.com/cve/CVE-2020-25696",
+    "raw_output": "CVE-2020-25696\t7.6\thttps://vulners.com/cve/CVE-2020-25696",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2025-8713",
+    "raw_output": "POSTGRESQL:CVE-2025-8713\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2025-8713",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2024-10976",
+    "raw_output": "POSTGRESQL:CVE-2024-10976\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2024-10976",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2023-2455",
+    "raw_output": "POSTGRESQL:CVE-2023-2455\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2023-2455",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-7548",
+    "raw_output": "POSTGRESQL:CVE-2017-7548\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-7548",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-7486",
+    "raw_output": "POSTGRESQL:CVE-2017-7486\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-7486",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-7484",
+    "raw_output": "POSTGRESQL:CVE-2017-7484\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-7484",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2016-2193",
+    "raw_output": "POSTGRESQL:CVE-2016-2193\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2016-2193",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2016-0773",
+    "raw_output": "POSTGRESQL:CVE-2016-0773\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2016-0773",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-3167",
+    "raw_output": "POSTGRESQL:CVE-2015-3167\t7.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-3167",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2017-7484",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2017-7484",
+    "raw_output": "CVE-2017-7484\t7.5\thttps://vulners.com/cve/CVE-2017-7484",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-0773",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-0773",
+    "raw_output": "CVE-2016-0773\t7.5\thttps://vulners.com/cve/CVE-2016-0773",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2016-0768",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2016-0768",
+    "raw_output": "CVE-2016-0768\t7.5\thttps://vulners.com/cve/CVE-2016-0768",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2015-3167",
+    "score": 2.0,
+    "description": "7.5 https://vulners.com/cve/CVE-2015-3167",
+    "raw_output": "CVE-2015-3167\t7.5\thttps://vulners.com/cve/CVE-2015-3167",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2020-14350",
+    "raw_output": "POSTGRESQL:CVE-2020-14350\t7.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2020-14350",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2020-10733",
+    "raw_output": "POSTGRESQL:CVE-2020-10733\t7.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2020-10733",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2020-14350",
+    "score": 3.0,
+    "description": "7.3 https://vulners.com/cve/CVE-2020-14350",
+    "raw_output": "CVE-2020-14350\t7.3\thttps://vulners.com/cve/CVE-2020-14350",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2020-10733",
+    "score": 3.0,
+    "description": "7.3 https://vulners.com/cve/CVE-2020-10733",
+    "raw_output": "CVE-2020-10733\t7.3\thttps://vulners.com/cve/CVE-2020-10733",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2017-14798",
+    "score": 2.0,
+    "description": "7.3 https://vulners.com/cve/CVE-2017-14798",
+    "raw_output": "CVE-2017-14798\t7.3\thttps://vulners.com/cve/CVE-2017-14798",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "7.2 https://vulners.com/postgresql/POSTGRESQL:CVE-2023-2454",
+    "raw_output": "POSTGRESQL:CVE-2023-2454\t7.2\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2023-2454",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.2 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-12172",
+    "raw_output": "POSTGRESQL:CVE-2017-12172\t7.2\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-12172",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2023-2454",
+    "score": 6.0,
+    "description": "7.2 https://vulners.com/cve/CVE-2023-2454",
+    "raw_output": "CVE-2023-2454\t7.2\thttps://vulners.com/cve/CVE-2023-2454",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.1 https://vulners.com/postgresql/POSTGRESQL:CVE-2016-5424",
+    "raw_output": "POSTGRESQL:CVE-2016-5424\t7.1\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2016-5424",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2020-14349",
+    "score": 3.0,
+    "description": "7.1 https://vulners.com/cve/CVE-2020-14349",
+    "raw_output": "CVE-2020-14349\t7.1\thttps://vulners.com/cve/CVE-2020-14349",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2016-5424",
+    "score": 2.0,
+    "description": "7.1 https://vulners.com/cve/CVE-2016-5424",
+    "raw_output": "CVE-2016-5424\t7.1\thttps://vulners.com/cve/CVE-2016-5424",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10210",
+    "raw_output": "POSTGRESQL:CVE-2019-10210\t7.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10210",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "7.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2018-1053",
+    "raw_output": "POSTGRESQL:CVE-2018-1053\t7.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2018-1053",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2019-10210",
+    "score": 2.0,
+    "description": "7.0 https://vulners.com/cve/CVE-2019-10210",
+    "raw_output": "CVE-2019-10210\t7.0\thttps://vulners.com/cve/CVE-2019-10210",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2013-0255",
+    "raw_output": "POSTGRESQL:CVE-2013-0255\t6.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2013-0255",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2012-0868",
+    "raw_output": "POSTGRESQL:CVE-2012-0868\t6.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2012-0868",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2009-3231",
+    "raw_output": "POSTGRESQL:CVE-2009-3231\t6.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2009-3231",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2013-0255",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2013-0255",
+    "raw_output": "CVE-2013-0255\t6.8\thttps://vulners.com/cve/CVE-2013-0255",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-0868",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2012-0868",
+    "raw_output": "CVE-2012-0868\t6.8\thttps://vulners.com/cve/CVE-2012-0868",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-3231",
+    "score": 2.0,
+    "description": "6.8 https://vulners.com/cve/CVE-2009-3231",
+    "raw_output": "CVE-2009-3231\t6.8\thttps://vulners.com/cve/CVE-2009-3231",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2021-3677",
+    "raw_output": "POSTGRESQL:CVE-2021-3677\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2021-3677",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2021-32029",
+    "raw_output": "POSTGRESQL:CVE-2021-32029\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2021-32029",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2021-32028",
+    "raw_output": "POSTGRESQL:CVE-2021-32028\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2021-32028",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2020-1720",
+    "raw_output": "POSTGRESQL:CVE-2020-1720\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2020-1720",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10129",
+    "raw_output": "POSTGRESQL:CVE-2019-10129\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10129",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2018-1052",
+    "raw_output": "POSTGRESQL:CVE-2018-1052\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2018-1052",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-15099",
+    "raw_output": "POSTGRESQL:CVE-2017-15099\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-15099",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-0065",
+    "raw_output": "POSTGRESQL:CVE-2014-0065\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-0065",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-0064",
+    "raw_output": "POSTGRESQL:CVE-2014-0064\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-0064",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-0063",
+    "raw_output": "POSTGRESQL:CVE-2014-0063\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-0063",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-0061",
+    "raw_output": "POSTGRESQL:CVE-2014-0061\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-0061",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2013-1899",
+    "raw_output": "POSTGRESQL:CVE-2013-1899\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2013-1899",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2012-3489",
+    "raw_output": "POSTGRESQL:CVE-2012-3489\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2012-3489",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2012-0866",
+    "raw_output": "POSTGRESQL:CVE-2012-0866\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2012-0866",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2010-4015",
+    "raw_output": "POSTGRESQL:CVE-2010-4015\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2010-4015",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2009-4136",
+    "raw_output": "POSTGRESQL:CVE-2009-4136\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2009-4136",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2009-3230",
+    "raw_output": "POSTGRESQL:CVE-2009-3230\t6.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2009-3230",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2021-3677",
+    "score": 4.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2021-3677",
+    "raw_output": "CVE-2021-3677\t6.5\thttps://vulners.com/cve/CVE-2021-3677",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-32029",
+    "score": 4.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2021-32029",
+    "raw_output": "CVE-2021-32029\t6.5\thttps://vulners.com/cve/CVE-2021-32029",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-32028",
+    "score": 4.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2021-32028",
+    "raw_output": "CVE-2021-32028\t6.5\thttps://vulners.com/cve/CVE-2021-32028",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2014-0065",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2014-0065",
+    "raw_output": "CVE-2014-0065\t6.5\thttps://vulners.com/cve/CVE-2014-0065",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-0064",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2014-0064",
+    "raw_output": "CVE-2014-0064\t6.5\thttps://vulners.com/cve/CVE-2014-0064",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-0063",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2014-0063",
+    "raw_output": "CVE-2014-0063\t6.5\thttps://vulners.com/cve/CVE-2014-0063",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-0061",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2014-0061",
+    "raw_output": "CVE-2014-0061\t6.5\thttps://vulners.com/cve/CVE-2014-0061",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-3489",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2012-3489",
+    "raw_output": "CVE-2012-3489\t6.5\thttps://vulners.com/cve/CVE-2012-3489",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-0866",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2012-0866",
+    "raw_output": "CVE-2012-0866\t6.5\thttps://vulners.com/cve/CVE-2012-0866",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-4015",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2010-4015",
+    "raw_output": "CVE-2010-4015\t6.5\thttps://vulners.com/cve/CVE-2010-4015",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-0442",
+    "score": 2.0,
+    "description": "6.5 https://vulners.com/cve/CVE-2010-0442",
+    "raw_output": "CVE-2010-0442\t6.5\thttps://vulners.com/cve/CVE-2010-0442",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.4 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-5289",
+    "raw_output": "POSTGRESQL:CVE-2015-5289\t6.4\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-5289",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.4 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-5288",
+    "raw_output": "POSTGRESQL:CVE-2015-5288\t6.4\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-5288",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2015-5288",
+    "score": 2.0,
+    "description": "6.4 https://vulners.com/cve/CVE-2015-5288",
+    "raw_output": "CVE-2015-5288\t6.4\thttps://vulners.com/cve/CVE-2015-5288",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2010-3433",
+    "raw_output": "POSTGRESQL:CVE-2010-3433\t6.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2010-3433",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "6.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2010-1170",
+    "raw_output": "POSTGRESQL:CVE-2010-1170\t6.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2010-1170",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2010-3433",
+    "score": 2.0,
+    "description": "6.0 https://vulners.com/cve/CVE-2010-3433",
+    "raw_output": "CVE-2010-3433\t6.0\thttps://vulners.com/cve/CVE-2010-3433",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2010-1170",
+    "score": 2.0,
+    "description": "6.0 https://vulners.com/cve/CVE-2010-1170",
+    "raw_output": "CVE-2010-1170\t6.0\thttps://vulners.com/cve/CVE-2010-1170",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "5.9 https://vulners.com/postgresql/POSTGRESQL:CVE-2025-4207",
+    "raw_output": "POSTGRESQL:CVE-2025-4207\t5.9\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2025-4207",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "5.9 https://vulners.com/postgresql/POSTGRESQL:CVE-2017-7485",
+    "raw_output": "POSTGRESQL:CVE-2017-7485\t5.9\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2017-7485",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2021-23222",
+    "score": 4.0,
+    "description": "5.9 https://vulners.com/cve/CVE-2021-23222",
+    "raw_output": "CVE-2021-23222\t5.9\thttps://vulners.com/cve/CVE-2021-23222",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "5.8 https://vulners.com/postgresql/POSTGRESQL:CVE-2009-4034",
+    "raw_output": "POSTGRESQL:CVE-2009-4034\t5.8\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2009-4034",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "5.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2010-1975",
+    "raw_output": "POSTGRESQL:CVE-2010-1975\t5.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2010-1975",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2010-1975",
+    "score": 2.0,
+    "description": "5.5 https://vulners.com/cve/CVE-2010-1975",
+    "raw_output": "CVE-2010-1975\t5.5\thttps://vulners.com/cve/CVE-2010-1975",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2023-2455",
+    "score": 6.0,
+    "description": "5.4 https://vulners.com/cve/CVE-2023-2455",
+    "raw_output": "CVE-2023-2455\t5.4\thttps://vulners.com/cve/CVE-2023-2455",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": "CVE-2011-2483",
+    "score": 2.0,
+    "description": "5.0 https://vulners.com/cve/CVE-2011-2483",
+    "raw_output": "CVE-2011-2483\t5.0\thttps://vulners.com/cve/CVE-2011-2483",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.9 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-0062",
+    "raw_output": "POSTGRESQL:CVE-2014-0062\t4.9\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-0062",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.9 https://vulners.com/postgresql/POSTGRESQL:CVE-2012-3488",
+    "raw_output": "POSTGRESQL:CVE-2012-3488\t4.9\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2012-3488",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2014-0062",
+    "score": 2.0,
+    "description": "4.9 https://vulners.com/cve/CVE-2014-0062",
+    "raw_output": "CVE-2014-0062\t4.9\thttps://vulners.com/cve/CVE-2014-0062",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-3488",
+    "score": 2.0,
+    "description": "4.9 https://vulners.com/cve/CVE-2012-3488",
+    "raw_output": "CVE-2012-3488\t4.9\thttps://vulners.com/cve/CVE-2012-3488",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.6 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-0067",
+    "raw_output": "POSTGRESQL:CVE-2014-0067\t4.6\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-0067",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2014-0067",
+    "score": 2.0,
+    "description": "4.6 https://vulners.com/cve/CVE-2014-0067",
+    "raw_output": "CVE-2014-0067\t4.6\thttps://vulners.com/cve/CVE-2014-0067",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "4.4 https://vulners.com/postgresql/POSTGRESQL:CVE-2023-5870",
+    "raw_output": "POSTGRESQL:CVE-2023-5870\t4.4\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2023-5870",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2024-4317",
+    "raw_output": "POSTGRESQL:CVE-2024-4317\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2024-4317",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2023-5868",
+    "raw_output": "POSTGRESQL:CVE-2023-5868\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2023-5868",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2023-39418",
+    "raw_output": "POSTGRESQL:CVE-2023-39418\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2023-39418",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2021-3393",
+    "raw_output": "POSTGRESQL:CVE-2021-3393\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2021-3393",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2021-20229",
+    "raw_output": "POSTGRESQL:CVE-2021-20229\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2021-20229",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10130",
+    "raw_output": "POSTGRESQL:CVE-2019-10130\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10130",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2015-3165",
+    "raw_output": "POSTGRESQL:CVE-2015-3165\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2015-3165",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-8161",
+    "raw_output": "POSTGRESQL:CVE-2014-8161\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-8161",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2012-2143",
+    "raw_output": "POSTGRESQL:CVE-2012-2143\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2012-2143",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/postgresql/POSTGRESQL:CVE-2012-0867",
+    "raw_output": "POSTGRESQL:CVE-2012-0867\t4.3\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2012-0867",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2021-3393",
+    "score": 4.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2021-3393",
+    "raw_output": "CVE-2021-3393\t4.3\thttps://vulners.com/cve/CVE-2021-3393",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2021-20229",
+    "score": 4.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2021-20229",
+    "raw_output": "CVE-2021-20229\t4.3\thttps://vulners.com/cve/CVE-2021-20229",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 3.0
+  },
+  {
+    "cve_id": "CVE-2015-3165",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2015-3165",
+    "raw_output": "CVE-2015-3165\t4.3\thttps://vulners.com/cve/CVE-2015-3165",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-8161",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2014-8161",
+    "raw_output": "CVE-2014-8161\t4.3\thttps://vulners.com/cve/CVE-2014-8161",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-2143",
+    "score": 2.0,
+    "description": "4.3 https://vulners.com/cve/CVE-2012-2143",
+    "raw_output": "CVE-2012-2143\t4.3\thttps://vulners.com/cve/CVE-2012-2143",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "4.2 https://vulners.com/postgresql/POSTGRESQL:CVE-2024-10978",
+    "raw_output": "POSTGRESQL:CVE-2024-10978\t4.2\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2024-10978",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-0066",
+    "raw_output": "POSTGRESQL:CVE-2014-0066\t4.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-0066",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2014-0060",
+    "raw_output": "POSTGRESQL:CVE-2014-0060\t4.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2014-0060",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2013-1901",
+    "raw_output": "POSTGRESQL:CVE-2013-1901\t4.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2013-1901",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2012-2655",
+    "raw_output": "POSTGRESQL:CVE-2012-2655\t4.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2012-2655",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2009-3229",
+    "raw_output": "POSTGRESQL:CVE-2009-3229\t4.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2009-3229",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/postgresql/POSTGRESQL:CVE-2009-0922",
+    "raw_output": "POSTGRESQL:CVE-2009-0922\t4.0\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2009-0922",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2014-0066",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2014-0066",
+    "raw_output": "CVE-2014-0066\t4.0\thttps://vulners.com/cve/CVE-2014-0066",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2014-0060",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2014-0060",
+    "raw_output": "CVE-2014-0060\t4.0\thttps://vulners.com/cve/CVE-2014-0060",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2012-2655",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2012-2655",
+    "raw_output": "CVE-2012-2655\t4.0\thttps://vulners.com/cve/CVE-2012-2655",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": "CVE-2009-3229",
+    "score": 2.0,
+    "description": "4.0 https://vulners.com/cve/CVE-2009-3229",
+    "raw_output": "CVE-2009-3229\t4.0\thttps://vulners.com/cve/CVE-2009-3229",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  },
+  {
+    "cve_id": null,
+    "score": 6.0,
+    "description": "3.7 https://vulners.com/postgresql/POSTGRESQL:CVE-2024-10977",
+    "raw_output": "POSTGRESQL:CVE-2024-10977\t3.7\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2024-10977",
+    "score_source": "keyword_analysis",
+    "keyword_score": 6.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": null,
+    "score": 4.0,
+    "description": "3.7 https://vulners.com/postgresql/POSTGRESQL:CVE-2022-41862",
+    "raw_output": "POSTGRESQL:CVE-2022-41862\t3.7\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2022-41862",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2022-41862",
+    "score": 5.0,
+    "description": "3.7 https://vulners.com/cve/CVE-2022-41862",
+    "raw_output": "CVE-2022-41862\t3.7\thttps://vulners.com/cve/CVE-2022-41862",
+    "score_source": "keyword_analysis",
+    "keyword_score": 4.0,
+    "year_score": 5.0
+  },
+  {
+    "cve_id": null,
+    "score": 2.0,
+    "description": "3.5 https://vulners.com/postgresql/POSTGRESQL:CVE-2019-10209",
+    "raw_output": "POSTGRESQL:CVE-2019-10209\t3.5\thttps://vulners.com/postgresql/POSTGRESQL:CVE-2019-10209",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.0
+  },
+  {
+    "cve_id": "CVE-2010-0733",
+    "score": 2.0,
+    "description": "3.5 https://vulners.com/cve/CVE-2010-0733",
+    "raw_output": "CVE-2010-0733\t3.5\thttps://vulners.com/cve/CVE-2010-0733",
+    "score_source": "keyword_analysis",
+    "keyword_score": 2.0,
+    "year_score": 1.5
+  }
+]

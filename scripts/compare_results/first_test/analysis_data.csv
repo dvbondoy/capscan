@@ -1,0 +1,387 @@
+CVE_ID,In_Nexpose,In_Full_Scan,In_Quick_Scan,Status,Score
+CVE-1999-0497,True,False,False,Missed by both scans,0
+CVE-1999-0519,True,False,False,Missed by both scans,0
+CVE-1999-0520,True,False,False,Missed by both scans,0
+CVE-1999-0524,True,False,False,Missed by both scans,0
+CVE-1999-0651,True,False,False,Missed by both scans,0
+CVE-1999-0678,True,False,False,Missed by both scans,0
+CVE-2000-1200,True,False,False,Missed by both scans,0
+CVE-2002-1809,True,False,False,Missed by both scans,0
+CVE-2004-0230,True,False,False,Missed by both scans,0
+CVE-2004-2320,True,False,False,Missed by both scans,0
+CVE-2004-2763,True,False,False,Missed by both scans,0
+CVE-2005-3398,True,False,False,Missed by both scans,0
+CVE-2006-20001,False,True,True,False positive (both scans),2.0
+CVE-2006-3403,True,False,False,Missed by both scans,0
+CVE-2006-4683,True,False,False,Missed by both scans,0
+CVE-2007-0452,True,False,False,Missed by both scans,0
+CVE-2007-0454,True,False,False,Missed by both scans,0
+CVE-2007-2446,True,False,False,Missed by both scans,0
+CVE-2007-2447,True,False,False,Missed by both scans,0
+CVE-2007-3008,True,False,False,Missed by both scans,0
+CVE-2007-4572,True,False,False,Missed by both scans,0
+CVE-2007-4783,True,False,False,Missed by both scans,0
+CVE-2007-4840,True,False,False,Missed by both scans,0
+CVE-2007-4850,True,False,False,Missed by both scans,0
+CVE-2007-4887,True,False,False,Missed by both scans,0
+CVE-2007-5398,True,False,False,Missed by both scans,0
+CVE-2007-5898,True,False,False,Missed by both scans,0
+CVE-2007-5899,True,False,False,Missed by both scans,0
+CVE-2007-5900,True,False,False,Missed by both scans,0
+CVE-2007-5925,True,True,False,Found by Nexpose + Full,2.0
+CVE-2007-6015,True,False,False,Missed by both scans,0
+CVE-2007-6420,True,True,True,Found by all,2.0
+CVE-2007-6750,False,True,True,False positive (both scans),2.0
+CVE-2008-0122,True,True,False,Found by Nexpose + Full,2.0
+CVE-2008-0166,True,False,False,Missed by both scans,0
+CVE-2008-0226,True,False,False,Missed by both scans,0
+CVE-2008-0227,True,False,False,Missed by both scans,0
+CVE-2008-0455,False,True,True,False positive (both scans),2.0
+CVE-2008-0456,False,True,True,False positive (both scans),2.0
+CVE-2008-0599,True,False,False,Missed by both scans,0
+CVE-2008-1105,True,False,False,Missed by both scans,0
+CVE-2008-1447,True,False,False,Missed by both scans,0
+CVE-2008-1657,False,True,True,False positive (both scans),2.0
+CVE-2008-2050,True,False,False,Missed by both scans,0
+CVE-2008-2051,True,False,False,Missed by both scans,0
+CVE-2008-2079,True,True,False,Found by Nexpose + Full,2.0
+CVE-2008-2107,True,False,False,Missed by both scans,0
+CVE-2008-2108,True,False,False,Missed by both scans,0
+CVE-2008-2364,True,True,True,Found by all,2.0
+CVE-2008-2371,True,False,False,Missed by both scans,0
+CVE-2008-2665,True,False,False,Missed by both scans,0
+CVE-2008-2666,True,False,False,Missed by both scans,0
+CVE-2008-2829,True,False,False,Missed by both scans,0
+CVE-2008-2939,True,True,True,Found by all,2.0
+CVE-2008-3259,True,True,True,Found by all,2.0
+CVE-2008-3658,True,False,False,Missed by both scans,0
+CVE-2008-3659,True,False,False,Missed by both scans,0
+CVE-2008-3660,True,False,False,Missed by both scans,0
+CVE-2008-3963,True,False,False,Missed by both scans,0
+CVE-2008-4097,True,False,False,Missed by both scans,0
+CVE-2008-4098,True,False,False,Missed by both scans,0
+CVE-2008-4163,False,True,False,False positive (full scan),2.0
+CVE-2008-4456,True,False,False,Missed by both scans,0
+CVE-2008-5077,True,False,False,Missed by both scans,0
+CVE-2008-5498,True,False,False,Missed by both scans,0
+CVE-2008-5557,True,False,False,Missed by both scans,0
+CVE-2008-5624,True,False,False,Missed by both scans,0
+CVE-2008-5625,True,False,False,Missed by both scans,0
+CVE-2008-5658,True,False,False,Missed by both scans,0
+CVE-2008-5844,True,False,False,Missed by both scans,0
+CVE-2008-7253,True,False,False,Missed by both scans,0
+CVE-2008-7265,False,True,False,False positive (full scan),2.0
+CVE-2009-0023,True,True,True,Found by all,2.0
+CVE-2009-0025,True,True,False,Found by Nexpose + Full,2.0
+CVE-2009-0265,False,True,False,False positive (full scan),2.0
+CVE-2009-0543,False,True,False,False positive (full scan),2.0
+CVE-2009-0696,True,True,False,Found by Nexpose + Full,2.0
+CVE-2009-0819,False,True,False,False positive (full scan),2.0
+CVE-2009-1195,True,True,True,Found by all,2.0
+CVE-2009-1271,True,False,False,Missed by both scans,0
+CVE-2009-1272,True,False,False,Missed by both scans,0
+CVE-2009-1890,True,True,True,Found by all,2.0
+CVE-2009-1891,True,True,True,Found by all,2.0
+CVE-2009-1955,True,True,True,Found by all,2.0
+CVE-2009-1956,True,True,True,Found by all,2.0
+CVE-2009-2412,True,False,False,Missed by both scans,0
+CVE-2009-2446,True,False,False,Missed by both scans,0
+CVE-2009-2687,True,False,False,Missed by both scans,0
+CVE-2009-2699,False,True,True,False positive (both scans),2.0
+CVE-2009-2823,True,False,False,Missed by both scans,0
+CVE-2009-3094,True,True,True,Found by all,2.0
+CVE-2009-3095,True,True,True,Found by all,2.0
+CVE-2009-3229,False,True,False,False positive (full scan),2.0
+CVE-2009-3231,False,True,False,False positive (full scan),2.0
+CVE-2009-3291,True,False,False,Missed by both scans,0
+CVE-2009-3292,True,False,False,Missed by both scans,0
+CVE-2009-3293,True,False,False,Missed by both scans,0
+CVE-2009-3555,False,True,True,False positive (both scans),2.0
+CVE-2009-3557,True,False,False,Missed by both scans,0
+CVE-2009-3558,True,False,False,Missed by both scans,0
+CVE-2009-3559,True,False,False,Missed by both scans,0
+CVE-2009-3560,True,True,True,Found by all,2.0
+CVE-2009-3639,False,True,False,False positive (full scan),2.0
+CVE-2009-3720,True,True,True,Found by all,2.0
+CVE-2009-3843,True,False,False,Missed by both scans,0
+CVE-2009-4017,True,False,False,Missed by both scans,0
+CVE-2009-4022,True,True,False,Found by Nexpose + Full,2.0
+CVE-2009-4028,True,True,False,Found by Nexpose + Full,2.0
+CVE-2009-4142,True,False,False,Missed by both scans,0
+CVE-2009-4143,True,False,False,Missed by both scans,0
+CVE-2009-4484,True,False,False,Missed by both scans,0
+CVE-2010-0097,True,True,False,Found by Nexpose + Full,2.0
+CVE-2010-0290,False,True,False,False positive (full scan),2.0
+CVE-2010-0382,False,True,False,False positive (full scan),2.0
+CVE-2010-0386,True,False,False,Missed by both scans,0
+CVE-2010-0397,True,False,False,Missed by both scans,0
+CVE-2010-0408,True,True,True,Found by all,2.0
+CVE-2010-0425,False,True,True,False positive (both scans),2.0
+CVE-2010-0434,True,True,True,Found by all,2.0
+CVE-2010-0442,False,True,False,False positive (full scan),2.0
+CVE-2010-0557,True,False,False,Missed by both scans,0
+CVE-2010-0733,False,True,False,False positive (full scan),2.0
+CVE-2010-1128,True,False,False,Missed by both scans,0
+CVE-2010-1129,True,False,False,Missed by both scans,0
+CVE-2010-1130,True,False,False,Missed by both scans,0
+CVE-2010-1169,False,True,False,False positive (full scan),2.0
+CVE-2010-1170,False,True,False,False positive (full scan),2.0
+CVE-2010-1447,False,True,False,False positive (full scan),2.0
+CVE-2010-1452,True,True,True,Found by all,2.0
+CVE-2010-1621,False,True,False,False positive (full scan),2.0
+CVE-2010-1623,True,True,True,Found by all,2.0
+CVE-2010-1626,False,True,False,False positive (full scan),2.0
+CVE-2010-1848,True,False,False,Missed by both scans,0
+CVE-2010-1849,True,False,False,Missed by both scans,0
+CVE-2010-1850,True,False,False,Missed by both scans,0
+CVE-2010-1975,False,True,False,False positive (full scan),2.0
+CVE-2010-2225,True,False,False,Missed by both scans,0
+CVE-2010-2484,True,False,False,Missed by both scans,0
+CVE-2010-2531,True,False,False,Missed by both scans,0
+CVE-2010-3433,False,True,False,False positive (full scan),2.0
+CVE-2010-3436,True,False,False,Missed by both scans,0
+CVE-2010-3613,True,False,False,Missed by both scans,0
+CVE-2010-3614,True,True,False,Found by Nexpose + Full,2.0
+CVE-2010-3677,False,True,False,False positive (full scan),2.0
+CVE-2010-3682,False,True,False,False positive (full scan),2.0
+CVE-2010-3709,True,False,False,Missed by both scans,0
+CVE-2010-3762,False,True,False,False positive (full scan),2.0
+CVE-2010-3867,False,True,False,False positive (full scan),2.0
+CVE-2010-4015,False,True,False,False positive (full scan),2.0
+CVE-2010-4150,True,False,False,Missed by both scans,0
+CVE-2010-4478,False,True,True,False positive (both scans),2.0
+CVE-2010-4645,True,False,False,Missed by both scans,0
+CVE-2010-4652,False,True,False,False positive (full scan),2.0
+CVE-2010-4755,False,True,True,False positive (both scans),2.0
+CVE-2010-5107,False,True,True,False positive (both scans),2.0
+CVE-2011-0419,True,True,True,Found by all,2.0
+CVE-2011-1137,False,True,False,False positive (full scan),2.0
+CVE-2011-1910,False,True,False,False positive (full scan),2.0
+CVE-2011-2483,False,True,False,False positive (full scan),2.0
+CVE-2011-2523,False,True,False,False positive (full scan),2.0
+CVE-2011-3192,False,True,True,False positive (both scans),2.0
+CVE-2011-3368,True,True,True,Found by all,2.0
+CVE-2011-3389,True,False,False,Missed by both scans,0
+CVE-2011-3607,True,True,True,Found by all,2.0
+CVE-2011-3639,False,True,True,False positive (both scans),2.0
+CVE-2011-4130,False,True,False,False positive (full scan),2.0
+CVE-2011-4153,True,False,False,Missed by both scans,0
+CVE-2011-4313,True,True,False,Found by Nexpose + Full,2.0
+CVE-2011-4317,True,True,True,Found by all,2.0
+CVE-2011-4327,False,True,True,False positive (both scans),2.0
+CVE-2011-4415,False,True,True,False positive (both scans),2.0
+CVE-2011-5000,False,True,True,False positive (both scans),2.0
+CVE-2012-0031,True,True,True,Found by all,2.0
+CVE-2012-0053,True,True,True,Found by all,2.0
+CVE-2012-0814,False,True,True,False positive (both scans),2.0
+CVE-2012-0866,False,True,False,False positive (full scan),2.0
+CVE-2012-0868,False,True,False,False positive (full scan),2.0
+CVE-2012-0883,False,True,True,False positive (both scans),2.0
+CVE-2012-1033,True,True,False,Found by Nexpose + Full,2.0
+CVE-2012-1667,True,True,False,Found by Nexpose + Full,2.0
+CVE-2012-1823,True,False,False,Missed by both scans,0
+CVE-2012-2143,True,True,False,Found by Nexpose + Full,2.0
+CVE-2012-2311,True,False,False,Missed by both scans,0
+CVE-2012-2329,True,False,False,Missed by both scans,0
+CVE-2012-2386,True,False,False,Missed by both scans,0
+CVE-2012-2655,False,True,False,False positive (full scan),2.0
+CVE-2012-2687,False,True,True,False positive (both scans),2.0
+CVE-2012-3488,False,True,False,False positive (full scan),2.0
+CVE-2012-3489,False,True,False,False positive (full scan),2.0
+CVE-2012-3499,False,True,True,False positive (both scans),2.0
+CVE-2012-3817,False,True,False,False positive (full scan),2.0
+CVE-2012-4244,False,True,False,False positive (full scan),2.0
+CVE-2012-4558,False,True,True,False positive (both scans),2.0
+CVE-2012-5166,False,True,False,False positive (full scan),2.0
+CVE-2012-6095,False,True,False,False positive (full scan),2.0
+CVE-2013-0255,False,True,False,False positive (full scan),2.0
+CVE-2013-1862,False,True,True,False positive (both scans),2.0
+CVE-2013-1896,False,True,True,False positive (both scans),2.0
+CVE-2013-1902,False,True,False,False positive (full scan),2.0
+CVE-2013-1903,False,True,False,False positive (full scan),2.0
+CVE-2013-5704,False,True,True,False positive (both scans),2.0
+CVE-2013-6438,False,True,True,False positive (both scans),2.0
+CVE-2014-0060,False,True,False,False positive (full scan),2.0
+CVE-2014-0061,False,True,False,False positive (full scan),2.0
+CVE-2014-0062,False,True,False,False positive (full scan),2.0
+CVE-2014-0063,False,True,False,False positive (full scan),2.0
+CVE-2014-0064,False,True,False,False positive (full scan),2.0
+CVE-2014-0065,False,True,False,False positive (full scan),2.0
+CVE-2014-0066,False,True,False,False positive (full scan),2.0
+CVE-2014-0067,False,True,False,False positive (full scan),2.0
+CVE-2014-0098,False,True,True,False positive (both scans),2.0
+CVE-2014-0118,False,True,True,False positive (both scans),2.0
+CVE-2014-0226,False,True,True,False positive (both scans),2.0
+CVE-2014-0231,False,True,True,False positive (both scans),2.0
+CVE-2014-1692,False,True,True,False positive (both scans),2.0
+CVE-2014-2532,False,True,True,False positive (both scans),2.0
+CVE-2014-2653,False,True,True,False positive (both scans),2.0
+CVE-2014-8161,False,True,False,False positive (full scan),2.0
+CVE-2014-8500,False,True,False,False positive (full scan),2.0
+CVE-2015-0228,False,True,True,False positive (both scans),2.0
+CVE-2015-0241,False,True,False,False positive (full scan),2.0
+CVE-2015-0242,False,True,False,False positive (full scan),2.0
+CVE-2015-0243,False,True,False,False positive (full scan),2.0
+CVE-2015-0244,False,True,False,False positive (full scan),2.0
+CVE-2015-2575,False,True,False,False positive (full scan),2.0
+CVE-2015-3165,False,True,False,False positive (full scan),2.0
+CVE-2015-3166,False,True,False,False positive (full scan),2.0
+CVE-2015-3167,False,True,False,False positive (full scan),2.0
+CVE-2015-3183,False,True,True,False positive (both scans),2.0
+CVE-2015-5288,False,True,False,False positive (full scan),2.0
+CVE-2015-5352,False,True,True,False positive (both scans),2.0
+CVE-2015-5477,False,True,False,False positive (full scan),2.0
+CVE-2015-5600,False,True,True,False positive (both scans),2.0
+CVE-2015-5722,False,True,False,False positive (full scan),2.0
+CVE-2015-5986,False,True,False,False positive (full scan),2.0
+CVE-2015-6563,False,True,True,False positive (both scans),2.0
+CVE-2015-6564,False,True,True,False positive (both scans),2.0
+CVE-2015-8000,False,True,False,False positive (full scan),2.0
+CVE-2015-8325,False,True,True,False positive (both scans),2.0
+CVE-2015-8461,False,True,False,False positive (full scan),2.0
+CVE-2015-8704,False,True,False,False positive (full scan),2.0
+CVE-2015-8705,False,True,False,False positive (full scan),2.0
+CVE-2016-0768,False,True,False,False positive (full scan),2.0
+CVE-2016-0773,False,True,False,False positive (full scan),2.0
+CVE-2016-10009,False,True,True,False positive (both scans),2.0
+CVE-2016-10010,False,True,True,False positive (both scans),2.0
+CVE-2016-10011,False,True,True,False positive (both scans),2.0
+CVE-2016-10012,False,True,True,False positive (both scans),2.0
+CVE-2016-10708,False,True,True,False positive (both scans),2.0
+CVE-2016-1285,False,True,False,False positive (full scan),2.0
+CVE-2016-1286,False,True,False,False positive (full scan),2.0
+CVE-2016-1908,False,True,True,False positive (both scans),2.0
+CVE-2016-20012,False,True,True,False positive (both scans),2.0
+CVE-2016-2775,False,True,False,False positive (full scan),2.0
+CVE-2016-2776,False,True,False,False positive (full scan),2.0
+CVE-2016-2848,False,True,False,False positive (full scan),2.0
+CVE-2016-3115,False,True,True,False positive (both scans),2.0
+CVE-2016-3125,False,True,False,False positive (full scan),2.0
+CVE-2016-4975,False,True,True,False positive (both scans),2.0
+CVE-2016-5387,False,True,True,False positive (both scans),2.0
+CVE-2016-5423,False,True,False,False positive (full scan),2.0
+CVE-2016-5424,False,True,False,False positive (full scan),2.0
+CVE-2016-6170,False,True,False,False positive (full scan),2.0
+CVE-2016-6210,False,True,True,False positive (both scans),2.0
+CVE-2016-6515,False,True,True,False positive (both scans),2.0
+CVE-2016-7048,False,True,False,False positive (full scan),2.0
+CVE-2016-8612,False,True,True,False positive (both scans),2.0
+CVE-2016-8743,False,True,True,False positive (both scans),2.0
+CVE-2016-8864,False,True,False,False positive (full scan),2.0
+CVE-2016-9131,False,True,False,False positive (full scan),2.0
+CVE-2016-9444,False,True,False,False positive (full scan),2.0
+CVE-2017-14798,False,True,False,False positive (full scan),2.0
+CVE-2017-15710,False,True,True,False positive (both scans),2.0
+CVE-2017-15906,False,True,True,False positive (both scans),2.0
+CVE-2017-15945,False,True,False,False positive (full scan),2.0
+CVE-2017-3141,False,True,False,False positive (full scan),2.0
+CVE-2017-3142,False,True,False,False positive (full scan),2.0
+CVE-2017-3143,False,True,False,False positive (full scan),2.0
+CVE-2017-3145,False,True,False,False positive (full scan),2.0
+CVE-2017-3167,False,True,True,False positive (both scans),2.0
+CVE-2017-3169,False,True,True,False positive (both scans),2.0
+CVE-2017-7418,False,True,False,False positive (full scan),2.0
+CVE-2017-7484,False,True,False,False positive (full scan),2.0
+CVE-2017-7659,False,True,True,False positive (both scans),2.0
+CVE-2017-7668,False,True,True,False positive (both scans),2.0
+CVE-2017-7679,False,True,True,False positive (both scans),2.0
+CVE-2017-9788,False,True,True,False positive (both scans),2.0
+CVE-2017-9789,False,True,True,False positive (both scans),2.0
+CVE-2017-9798,False,True,True,False positive (both scans),2.0
+CVE-2018-1115,False,True,False,False positive (full scan),2.0
+CVE-2018-1301,False,True,True,False positive (both scans),2.0
+CVE-2018-1302,False,True,True,False positive (both scans),2.0
+CVE-2018-1303,False,True,True,False positive (both scans),2.0
+CVE-2018-1312,False,True,True,False positive (both scans),2.0
+CVE-2018-1333,False,True,True,False positive (both scans),2.0
+CVE-2018-15473,False,True,True,False positive (both scans),2.0
+CVE-2018-20685,False,True,True,False positive (both scans),2.0
+CVE-2018-5741,False,True,False,False positive (full scan),2.0
+CVE-2018-8011,False,True,True,False positive (both scans),2.0
+CVE-2019-0190,False,True,True,False positive (both scans),2.0
+CVE-2019-0215,False,True,True,False positive (both scans),2.0
+CVE-2019-10127,False,True,False,False positive (full scan),2.0
+CVE-2019-10128,False,True,False,False positive (full scan),2.0
+CVE-2019-10164,False,True,False,False positive (full scan),2.0
+CVE-2019-10210,False,True,False,False positive (full scan),2.0
+CVE-2019-10211,False,True,False,False positive (full scan),2.0
+CVE-2019-12815,False,True,False,False positive (full scan),2.0
+CVE-2019-17567,False,True,True,False positive (both scans),2.0
+CVE-2019-18217,False,True,False,False positive (full scan),2.0
+CVE-2019-19269,False,True,False,False positive (full scan),2.0
+CVE-2019-19270,False,True,False,False positive (full scan),2.0
+CVE-2019-19271,False,True,False,False positive (full scan),2.0
+CVE-2019-19272,False,True,False,False positive (full scan),2.0
+CVE-2019-6109,False,True,True,False positive (both scans),2.0
+CVE-2019-6110,False,True,True,False positive (both scans),2.0
+CVE-2019-6111,False,True,True,False positive (both scans),2.0
+CVE-2020-10733,False,True,False,False positive (full scan),3.0
+CVE-2020-13938,False,True,True,False positive (both scans),3.0
+CVE-2020-13950,False,True,True,False positive (both scans),3.0
+CVE-2020-14349,False,True,False,False positive (full scan),3.0
+CVE-2020-14350,False,True,False,False positive (full scan),3.0
+CVE-2020-15778,False,True,True,False positive (both scans),3.0
+CVE-2020-25694,False,True,False,False positive (full scan),3.0
+CVE-2020-25695,False,True,False,False positive (full scan),3.0
+CVE-2020-25696,False,True,False,False positive (full scan),3.0
+CVE-2020-35452,False,True,True,False positive (both scans),3.0
+CVE-2020-8616,False,True,False,False positive (full scan),3.0
+CVE-2020-8617,False,True,False,False positive (full scan),3.0
+CVE-2020-8622,False,True,False,False positive (full scan),3.0
+CVE-2020-9272,False,True,False,False positive (full scan),3.0
+CVE-2021-20229,False,True,False,False positive (full scan),4.0
+CVE-2021-23214,False,True,False,False positive (full scan),4.0
+CVE-2021-23222,False,True,False,False positive (full scan),4.0
+CVE-2021-25215,False,True,False,False positive (full scan),4.0
+CVE-2021-25216,False,True,False,False positive (full scan),4.0
+CVE-2021-25219,False,True,False,False positive (full scan),4.0
+CVE-2021-26690,False,True,True,False positive (both scans),4.0
+CVE-2021-26691,False,True,True,False positive (both scans),4.0
+CVE-2021-30641,False,True,True,False positive (both scans),4.0
+CVE-2021-31618,False,True,True,False positive (both scans),4.0
+CVE-2021-32027,False,True,False,False positive (full scan),4.0
+CVE-2021-32028,False,True,False,False positive (full scan),4.0
+CVE-2021-32029,False,True,False,False positive (full scan),4.0
+CVE-2021-3393,False,True,False,False positive (full scan),4.0
+CVE-2021-34798,False,True,True,False positive (both scans),4.0
+CVE-2021-36368,False,True,True,False positive (both scans),4.0
+CVE-2021-3677,False,True,False,False positive (full scan),4.0
+CVE-2021-39275,False,True,True,False positive (both scans),4.0
+CVE-2021-40438,False,True,True,False positive (both scans),4.0
+CVE-2021-41524,False,True,True,False positive (both scans),4.0
+CVE-2021-41773,False,True,True,False positive (both scans),4.0
+CVE-2021-42013,False,True,True,False positive (both scans),4.0
+CVE-2021-44790,False,True,True,False positive (both scans),4.0
+CVE-2021-46854,False,True,False,False positive (full scan),4.0
+CVE-2022-1552,False,True,False,False positive (full scan),5.0
+CVE-2022-22719,False,True,True,False positive (both scans),5.0
+CVE-2022-22720,False,True,True,False positive (both scans),5.0
+CVE-2022-22721,False,True,True,False positive (both scans),5.0
+CVE-2022-2625,False,True,False,False positive (full scan),5.0
+CVE-2022-2795,False,True,False,False positive (full scan),5.0
+CVE-2022-28330,False,True,True,False positive (both scans),5.0
+CVE-2022-28614,False,True,True,False positive (both scans),5.0
+CVE-2022-28615,False,True,True,False positive (both scans),5.0
+CVE-2022-29404,False,True,True,False positive (both scans),5.0
+CVE-2022-30522,False,True,True,False positive (both scans),5.0
+CVE-2022-30556,False,True,True,False positive (both scans),5.0
+CVE-2022-31813,False,True,True,False positive (both scans),5.0
+CVE-2022-37436,False,True,True,False positive (both scans),5.0
+CVE-2022-41862,False,True,False,False positive (full scan),5.0
+CVE-2023-2454,False,True,False,False positive (full scan),6.0
+CVE-2023-2455,False,True,False,False positive (full scan),6.0
+CVE-2023-31122,False,True,True,False positive (both scans),6.0
+CVE-2023-3341,False,True,False,False positive (full scan),6.0
+CVE-2023-38408,False,True,True,False positive (both scans),6.0
+CVE-2023-38709,False,True,True,False positive (both scans),6.0
+CVE-2023-4408,False,True,False,False positive (full scan),6.0
+CVE-2023-48795,False,True,True,False positive (both scans),6.0
+CVE-2023-50387,False,True,False,False positive (full scan),6.0
+CVE-2023-51385,False,True,True,False positive (both scans),6.0
+CVE-2023-51713,False,True,False,False positive (full scan),6.0
+CVE-2024-38476,False,True,True,False positive (both scans),7.0
+CVE-2024-39884,False,True,True,False positive (both scans),7.0
+CVE-2024-40898,False,True,True,False positive (both scans),7.0
+CVE-2024-48651,False,True,False,False positive (full scan),7.0
+CVE-2025-49812,False,True,True,False positive (both scans),7.0
+CVE-2025-54090,False,True,True,False positive (both scans),7.0
