@@ -36,8 +36,13 @@ class Scanner:
             print(f"Starting vulnerability scan for target: {target}")
             
             # Perform nmap scan with vulners NSE script
-            scan_args = f"-sV -sC -vv --script vulners {vulners_args} -p {ports}"
-            
+            scan_args = f"-sV -sC --script vulners {vulners_args} -p {ports}"
+
+            # scan_args = f"-sV -sC -vv -Pn --script vulners, vulscan,http-vuln-*, ssl-*, smb-vuln-*, ssh-vuln-*, {vulners_args} -p {ports}"
+
+            # Experimental arguments:
+            # Arguments: -sV -sC -vv -Pn --script vulners ,vulscan ,http-vuln-* ,ssl-* ,smb-vuln-* ,ssh-vuln-* --script-args vulners.maxresults=10000,vulners.mincvss=0.0,vulscan.database=exploitdb --script-timeout=600s --max-retries 2 --min-rate=500 -T2 -n --version-intensity=9 --version-all -p-
+
             print(f"Running nmap with arguments: {scan_args}")
             self.nm.scan(target, arguments=scan_args)
             

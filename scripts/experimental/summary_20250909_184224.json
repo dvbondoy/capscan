@@ -1,0 +1,13 @@
+{
+  "target": "192.168.88.250",
+  "scan_time": "2025-09-09T18:42:24.531050",
+  "hosts_scanned": 0,
+  "total_vulnerabilities": 0,
+  "severity_breakdown": {
+    "high": 0,
+    "medium": 0,
+    "low": 0,
+    "unknown": 0
+  },
+  "xml_output_path": "scripts/vuln_scan_20250909_184224.xml"
+}
