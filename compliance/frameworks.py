@@ -17,6 +17,7 @@ class ComplianceStandard(Enum):
     ISO27001 = "ISO27001"
     HIPAA = "HIPAA"
     SOX = "SOX"
+    PH_DPA = "PH_DPA"
 
 
 class ComplianceFramework:
@@ -44,6 +45,8 @@ class ComplianceFramework:
             return self._get_hipaa_requirements()
         elif self.standard == ComplianceStandard.SOX:
             return self._get_sox_requirements()
+        elif self.standard == ComplianceStandard.PH_DPA:
+            return self._get_ph_dpa_requirements()
         else:
             return {}
     
@@ -594,6 +597,119 @@ class ComplianceFramework:
                     "operations"
                 ],
                 "severity_weight": 0.9
+            }
+        }
+
+    def _get_ph_dpa_requirements(self) -> Dict[str, Any]:
+        """Philippines Data Privacy Act (RA 10173) requirements and NPC IRR mapping.
+
+        The mapping aligns common technical vulnerability types to DPA principles and obligations,
+        with emphasis on Section 20 (Security of Personal Information) and breach management.
+        """
+        return {
+            "SEC20_Security_Measures": {
+                "title": "Section 20: Security of Personal Information",
+                "description": "Implement organizational, physical, and technical measures to protect personal data.",
+                "vulnerability_types": [
+                    "security_misconfiguration",
+                    "default_credentials",
+                    "weak_encryption",
+                    "insecure_transmission",
+                    "weak_crypto_algorithms",
+                    "access_control",
+                    "broken_authentication",
+                    "authentication_bypass",
+                    "session_hijacking",
+                    "logging_monitoring",
+                    "vulnerability_management",
+                    "outdated_software",
+                    "unpatched_systems",
+                    "rce",
+                    "ssrf",
+                    "xxe",
+                    "buffer_overflow"
+                ],
+                "severity_weight": 1.0
+            },
+            "SEC20_Data_At_Rest": {
+                "title": "Section 20: Protection of Data at Rest",
+                "description": "Protect stored personal data via encryption and access restrictions.",
+                "vulnerability_types": [
+                    "weak_encryption",
+                    "data_exposure",
+                    "information_disclosure",
+                    "data_classification",
+                    "asset_management"
+                ],
+                "severity_weight": 0.9
+            },
+            "SEC20_Data_In_Transit": {
+                "title": "Section 20: Protection of Data in Transit",
+                "description": "Encrypt personal data in transit and use secure protocols.",
+                "vulnerability_types": [
+                    "insecure_transmission",
+                    "weak_crypto_algorithms",
+                    "secure_communications"
+                ],
+                "severity_weight": 0.9
+            },
+            "IRR_Safeguards_Technical": {
+                "title": "IRR: Technical Security Measures",
+                "description": "Implement technical measures such as access control, encryption, and secure configurations.",
+                "vulnerability_types": [
+                    "access_control",
+                    "privilege_escalation",
+                    "idor",
+                    "xss",
+                    "sql_injection",
+                    "command_injection",
+                    "code_injection",
+                    "path_traversal"
+                ],
+                "severity_weight": 0.8
+            },
+            "IRR_Safeguards_Organizational": {
+                "title": "IRR: Organizational Security Measures",
+                "description": "Policies, procedures, and accountability for personal data protection.",
+                "vulnerability_types": [
+                    "security_policies",
+                    "incident_management",
+                    "logging_monitoring",
+                    "change_management"
+                ],
+                "severity_weight": 0.6
+            },
+            "NPC_Breach_Notification": {
+                "title": "NPC: Personal Data Breach Management",
+                "description": "Timely detection, assessment, and notification of personal data breaches.",
+                "vulnerability_types": [
+                    "data_exposure",
+                    "information_disclosure",
+                    "logging_monitoring"
+                ],
+                "severity_weight": 0.7
+            },
+            "Principles_Security": {
+                "title": "DPA Principle: Security",
+                "description": "Ensure appropriate security protections for personal data.",
+                "vulnerability_types": [
+                    "security_misconfiguration",
+                    "default_credentials",
+                    "weak_encryption",
+                    "insecure_transmission",
+                    "outdated_software"
+                ],
+                "severity_weight": 0.8
+            },
+            "Principles_Transparency_Legitimate_Purpose_Proportionality": {
+                "title": "DPA Principles: Transparency, Legitimate Purpose, Proportionality",
+                "description": "Limit collection and exposure of personal data to legitimate, proportionate purposes with transparency.",
+                "vulnerability_types": [
+                    "information_disclosure",
+                    "data_exposure",
+                    "open_redirect"
+                ],
+                "severity_weight": 0.5
             }
         }
     

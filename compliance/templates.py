@@ -28,7 +28,8 @@ class ComplianceTemplates:
             'NIST': ComplianceTemplates._get_nist_template(),
             'ISO27001': ComplianceTemplates._get_iso27001_template(),
             'HIPAA': ComplianceTemplates._get_hipaa_template(),
-            'SOX': ComplianceTemplates._get_sox_template()
+            'SOX': ComplianceTemplates._get_sox_template(),
+            'PH_DPA': ComplianceTemplates._get_ph_dpa_template()
         }
         return templates.get(standard, ComplianceTemplates._get_generic_template())
     
@@ -449,6 +450,56 @@ Provide a comprehensive compliance analysis including:
 5. Prioritized recommendations
 
 Format as JSON with detailed analysis.
+"""
+    
+    @staticmethod
+    def _get_ph_dpa_template() -> str:
+        """Philippines Data Privacy Act (RA 10173) compliance analysis template."""
+        return """
+You are a Data Privacy Act of the Philippines (RA 10173) compliance expert. Analyze the following vulnerability scan results strictly under RA 10173, its IRR, and NPC circulars/advisories. Do not reference other frameworks.
+
+SCAN DATA:
+Target: {{ target }}
+Scan Time: {{ scan_time }}
+Total Vulnerabilities: {{ total_vulnerabilities }}
+Hosts Scanned: {{ hosts_scanned }}
+
+VULNERABILITIES:
+{% for vuln in vulnerabilities %}
+- CVE: {{ vuln.cve_id }}
+- Score: {{ vuln.score }}
+- Description: {{ vuln.description }}
+- Severity: {{ vuln.severity }}
+- Host: {{ vuln.host_ip }}:{{ vuln.port }}
+{% endfor %}
+
+OPEN PORTS:
+{% for port in open_ports %}
+- {{ port.host }}:{{ port.port }} ({{ port.service }}) - {{ port.product }} {{ port.version }}
+{% endfor %}
+
+Map technical findings to DPA obligations including Section 20 (Security of Personal Information), IRR Technical/Organizational Measures, NPC Breach Management/Notification, and core principles (Security, Transparency, Legitimate Purpose, Proportionality).
+
+Provide JSON ONLY:
+{
+  "compliance_score": 0-100,
+  "compliance_status": "compliant|partially_compliant|non_compliant",
+  "dpa_violations": [
+    {
+      "reference": "SEC20_Security_Measures|SEC20_Data_At_Rest|SEC20_Data_In_Transit|IRR_Safeguards_Technical|IRR_Safeguards_Organizational|NPC_Breach_Notification|Principles_Security|Principles_Transparency_Legitimate_Purpose_Proportionality",
+      "title": "string",
+      "vulnerabilities": ["CVE-XXXX-XXXX"],
+      "severity": "critical|high|medium|low",
+      "description": "short reason of how this violates DPA"
+    }
+  ],
+  "critical_gaps": [
+    {"gap": "string", "impact": "string", "affected_systems": ["host:port"]}
+  ],
+  "recommendations": [
+    {"priority": "critical|high|medium|low", "action": "specific action", "timeline": "immediate|1-7 days|1-4 weeks|1-3 months", "effort": "low|medium|high"}
+  ]
+}
 """
     
     @staticmethod

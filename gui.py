@@ -26,15 +26,10 @@ class CapScanGUI:
         self.scan_thread = None
         self.is_scanning = False
         
-        # Initialize AI services (use mock backend for no API key required)
-        self.ai_service = AIService(backend="mock")
+        # Initialize AI services using tgpt CLI backend
+        self.ai_service = AIService(backend="tgpt")
         self.compliance_analyzers = {
-            'OWASP': ComplianceAnalyzer(ComplianceStandard.OWASP),
-            'PCI_DSS': ComplianceAnalyzer(ComplianceStandard.PCI_DSS),
-            'NIST': ComplianceAnalyzer(ComplianceStandard.NIST),
-            'ISO27001': ComplianceAnalyzer(ComplianceStandard.ISO27001),
-            'HIPAA': ComplianceAnalyzer(ComplianceStandard.HIPAA),
-            'SOX': ComplianceAnalyzer(ComplianceStandard.SOX)
+            'PH_DPA': ComplianceAnalyzer(ComplianceStandard.PH_DPA)
         }
         self.mitigation_engine = MitigationEngine()
         
@@ -383,11 +378,11 @@ class CapScanGUI:
         self.compliance_controls_frame = ttk.LabelFrame(self.compliance_frame, text="Compliance Analysis Controls", padding="10")
         
         self.compliance_standard_label = ttk.Label(self.compliance_controls_frame, text="Standard:")
-        self.compliance_standard_var = tk.StringVar(value="OWASP")
+        self.compliance_standard_var = tk.StringVar(value="PH_DPA")
         self.compliance_standard_combo = ttk.Combobox(
             self.compliance_controls_frame,
             textvariable=self.compliance_standard_var,
-            values=["OWASP", "PCI_DSS", "NIST", "ISO27001", "HIPAA", "SOX"],
+            values=["PH_DPA"],
             state="readonly",
             width=15
         )

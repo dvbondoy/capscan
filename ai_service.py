@@ -69,12 +69,12 @@ class AIService:
             self.ai_available = True
             if self.backend == "auto":
                 # Prefer local models over API-based ones
-                if "ollama" in available_backends:
+                if "tgpt" in available_backends:
+                    self.active_backend = "tgpt"
+                elif "ollama" in available_backends:
                     self.active_backend = "ollama"
                 elif "huggingface" in available_backends:
                     self.active_backend = "huggingface"
-                elif "tgpt" in available_backends:
-                    self.active_backend = "tgpt"
                 else:
                     self.active_backend = "mock"
             else:
@@ -86,11 +86,10 @@ class AIService:
     def _check_tgpt_availability(self) -> bool:
         """Check if tgpt is available and properly configured."""
         try:
-            # Try to run tgpt without arguments to check if it's available
-            result = subprocess.run(['tgpt'], 
+            tgpt_bin = os.environ.get('TGPT_BIN', '/usr/local/bin/tgpt')
+            result = subprocess.run([tgpt_bin, '--help'], 
                                   capture_output=True, text=True, timeout=10)
-            # tgpt is available if it returns usage information (even with non-zero exit code)
-            return 'usage:' in result.stdout.lower() and 'tgpt' in result.stdout.lower()
+            return result.returncode == 0 or 'usage' in (result.stdout.lower() + result.stderr.lower())
         except (subprocess.TimeoutExpired, FileNotFoundError):
             return False
 
@@ -126,7 +125,11 @@ class AIService:
             return None
         
         if self.active_backend == "tgpt":
-            return self._call_tgpt(prompt, max_tokens)
+            response = self._call_tgpt(prompt, max_tokens)
+            if response is None:
+                logger.warning("tgpt failed at runtime; falling back to mock response")
+                return self._call_mock(prompt)
+            return response
         elif self.active_backend == "ollama":
             return self._call_ollama(prompt, max_tokens)
         elif self.active_backend == "huggingface":
@@ -140,15 +143,38 @@ class AIService:
     def _call_tgpt(self, prompt: str, max_tokens: int = 2000) -> Optional[str]:
         """Call tgpt with the given prompt."""
         try:
-            # Call tgpt with text query subcommand
-            cmd = ['tgpt', 'tx', prompt]
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
-            
-            if result.returncode == 0:
-                return result.stdout.strip()
-            else:
-                logger.error(f"tgpt error: {result.stderr}")
-                return None
+            tgpt_bin = os.environ.get('TGPT_BIN', '/usr/local/bin/tgpt')
+            # Normalize prompt
+            prompt = "" if prompt is None else str(prompt)
+            # Try multiple invocation styles for compatibility
+            candidate_cmds = [
+                # Preferred: plain invocation matches `tgpt "your prompt"`
+                [tgpt_bin, prompt],
+                # Fallbacks for older/newer builds
+                [tgpt_bin, '-q', prompt],
+                [tgpt_bin, 'tx', prompt]
+            ]
+            last_err = None
+            for cmd in candidate_cmds:
+                try:
+                    result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+                    stdout = (result.stdout or '').strip()
+                    stderr = (result.stderr or '').strip()
+                    if result.returncode == 0 and stdout:
+                        return stdout
+                    # Some tgpt builds print to stdout but return non-zero; accept non-empty stdout
+                    if stdout and 'error' not in stdout.lower():
+                        return stdout
+                    last_err = stderr or stdout or f"Non-zero exit: {result.returncode}"
+                except subprocess.TimeoutExpired:
+                    last_err = "Timeout"
+                    continue
+                except Exception as inner_e:
+                    last_err = f"{type(inner_e).__name__}: {inner_e}"
+                    logger.exception(f"tgpt command failed: {' '.join(cmd)}")
+                    continue
+            logger.error(f"tgpt invocation failed: {last_err}")
+            return None
         except Exception as e:
             logger.error(f"Error calling tgpt: {e}")
             return None
@@ -244,6 +270,24 @@ class AIService:
         
         else:
             return f"Mock AI Response: I've analyzed your request about '{prompt[:50]}...' and provided recommendations based on security best practices."
+
+    def _extract_json(self, text: str) -> Optional[dict]:
+        """Try to extract a JSON object from possibly noisy text."""
+        if not text:
+            return None
+        try:
+            return json.loads(text)
+        except Exception:
+            pass
+        start = text.find('{')
+        end = text.rfind('}')
+        if start != -1 and end != -1 and end > start:
+            snippet = text[start:end+1]
+            try:
+                return json.loads(snippet)
+            except Exception:
+                return None
+        return None
     
     def analyze_vulnerabilities(self, scan_results: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -262,6 +306,8 @@ class AIService:
         vuln_data = self._prepare_vulnerability_data(scan_results)
         
         prompt = f"""
+You are an assistant for cybersecurity analysis. Follow instructions exactly. Do not ask clarifying questions. If information is missing, state reasonable assumptions and proceed. Respond ONLY in the requested JSON format with no extra commentary.
+
 Analyze the following vulnerability scan results and provide a comprehensive risk assessment:
 
 SCAN SUMMARY:
@@ -305,8 +351,11 @@ Please provide analysis in the following JSON format:
             return {'error': 'Failed to get AI analysis'}
         
         try:
-            # Try to parse JSON response
-            analysis = json.loads(response)
+            # Try to parse JSON response (allow noisy wrappers)
+            parsed = self._extract_json(response)
+            if parsed is None:
+                raise json.JSONDecodeError("No JSON found", response, 0)
+            analysis = parsed
             analysis['analysis_time'] = datetime.now().isoformat()
             analysis['model_used'] = self.model
             analysis['backend'] = self.active_backend
@@ -340,6 +389,8 @@ Please provide analysis in the following JSON format:
         compliance_data = self._prepare_compliance_data(scan_results, standard)
         
         prompt = f"""
+You are an assistant for compliance analysis. Follow instructions exactly. Do not ask clarifying questions. If information is missing, state reasonable assumptions and proceed. Respond ONLY in the requested JSON format with no extra commentary.
+
 Analyze the following vulnerability scan results for compliance with {standard} standards:
 
 SCAN DATA:
@@ -375,7 +426,10 @@ Please provide compliance analysis in the following JSON format:
             return {'error': 'Failed to get compliance analysis'}
         
         try:
-            compliance_analysis = json.loads(response)
+            parsed = self._extract_json(response)
+            if parsed is None:
+                raise json.JSONDecodeError("No JSON found", response, 0)
+            compliance_analysis = parsed
             compliance_analysis['analysis_time'] = datetime.now().isoformat()
             compliance_analysis['model_used'] = self.model
             return compliance_analysis
@@ -402,6 +456,8 @@ Please provide compliance analysis in the following JSON format:
             return {'error': 'No vulnerability data provided'}
         
         prompt = f"""
+You are an assistant for mitigation guidance. Follow instructions exactly. Do not ask clarifying questions. If information is missing, state reasonable assumptions and proceed. Respond ONLY in the requested JSON format with no extra commentary.
+
 Based on the following vulnerability, provide detailed mitigation recommendations:
 
 VULNERABILITY DETAILS:
@@ -463,7 +519,10 @@ Please provide comprehensive mitigation recommendations in the following JSON fo
             return {'error': 'Failed to get mitigation recommendations'}
         
         try:
-            recommendations = json.loads(response)
+            parsed = self._extract_json(response)
+            if parsed is None:
+                raise json.JSONDecodeError("No JSON found", response, 0)
+            recommendations = parsed
             recommendations['generated_time'] = datetime.now().isoformat()
             recommendations['model_used'] = self.model
             return recommendations
@@ -477,21 +536,30 @@ Please provide comprehensive mitigation recommendations in the following JSON fo
     
     def _prepare_vulnerability_data(self, scan_results: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Prepare vulnerability data for AI analysis."""
-        vulnerabilities = []
-        
-        for vuln in scan_results.get('vulnerabilities', []):
-            vuln_data = {
+        # Compact: prefer highest severity/score, limit count, truncate fields
+        raw_vulns = scan_results.get('vulnerabilities', [])
+        def sev_rank(v):
+            s = (v.get('severity') or '').lower()
+            mapping = {'critical': 4, 'high': 3, 'medium': 2, 'low': 1}
+            return mapping.get(s, 0)
+        sorted_vulns = sorted(raw_vulns, key=lambda v: (sev_rank(v), v.get('score') or 0), reverse=True)
+        top_vulns = sorted_vulns[:20]
+        def trunc(s: Any, n: int) -> Any:
+            if not isinstance(s, str):
+                return s
+            return s if len(s) <= n else s[:n] + '...'
+        compacted: List[Dict[str, Any]] = []
+        for vuln in top_vulns:
+            compacted.append({
                 'cve_id': vuln.get('cve_id', 'Unknown'),
                 'score': vuln.get('score'),
-                'description': vuln.get('description', ''),
                 'severity': vuln.get('severity', 'unknown'),
                 'host_ip': vuln.get('host_ip', ''),
                 'port': vuln.get('port', ''),
-                'raw_output': vuln.get('raw_output', '')
-            }
-            vulnerabilities.append(vuln_data)
-        
-        return vulnerabilities
+                'description': trunc(vuln.get('description', ''), 280),
+                'raw_output': trunc(vuln.get('raw_output', ''), 280)
+            })
+        return compacted
     
     def _prepare_compliance_data(self, scan_results: Dict[str, Any], 
                                 standard: str) -> Dict[str, Any]:
@@ -509,7 +577,6 @@ Please provide comprehensive mitigation recommendations in the following JSON fo
     def _extract_open_ports(self, scan_results: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract open ports information."""
         open_ports = []
-        
         for host_ip, host_info in scan_results.get('hosts', {}).items():
             for port, port_info in host_info.get('ports', {}).items():
                 if port_info.get('state') == 'open':
@@ -520,13 +587,12 @@ Please provide comprehensive mitigation recommendations in the following JSON fo
                         'product': port_info.get('product', ''),
                         'version': port_info.get('version', '')
                     })
-        
-        return open_ports
+        # Compact: limit to 25 entries
+        return open_ports[:25]
     
     def _extract_services(self, scan_results: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract services information."""
         services = []
-        
         for host_ip, host_info in scan_results.get('hosts', {}).items():
             for port, port_info in host_info.get('ports', {}).items():
                 if port_info.get('state') == 'open' and port_info.get('name'):
@@ -538,8 +604,8 @@ Please provide comprehensive mitigation recommendations in the following JSON fo
                         'version': port_info.get('version', ''),
                         'extrainfo': port_info.get('extrainfo', '')
                     })
-        
-        return services
+        # Compact: limit to 25 entries
+        return services[:25]
     
     def get_service_status(self) -> Dict[str, Any]:
         """Get AI service status and capabilities."""
@@ -555,11 +621,7 @@ Please provide comprehensive mitigation recommendations in the following JSON fo
                 'risk_assessment'
             ],
             'supported_standards': [
-                'OWASP',
-                'PCI_DSS',
-                'NIST',
-                'ISO27001',
-                'HIPAA'
+                'PH_DPA'
             ],
             'available_backends': {
                 'tgpt': self._check_tgpt_availability(),
