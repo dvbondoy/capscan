@@ -1,0 +1,424 @@
+{
+  "test_info": {
+    "target": "192.168.88.250",
+    "test_time": "2025-09-10T09:51:34.247192",
+    "test_type": "improved_compliance_analysis",
+    "description": "Fixed compliance test with proper vulnerability descriptions"
+  },
+  "scan_data": {
+    "target": "192.168.88.250",
+    "vulnerabilities": [
+      {
+        "cve_id": "CVE-2023-38408",
+        "score": 9.8,
+        "description": "OpenSSH remote code execution vulnerability allowing privilege escalation",
+        "severity": "critical",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/22",
+        "raw_output": "CVE-2023-38408 9.8 OpenSSH vulnerability"
+      },
+      {
+        "cve_id": "CVE-2016-1908",
+        "score": 9.8,
+        "description": "OpenSSH authentication bypass vulnerability with privilege escalation",
+        "severity": "critical",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/22",
+        "raw_output": "CVE-2016-1908 9.8 OpenSSH vulnerability"
+      },
+      {
+        "cve_id": "CVE-2010-0425",
+        "score": 10.0,
+        "description": "Apache httpd remote code execution vulnerability with command injection",
+        "severity": "critical",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/80",
+        "raw_output": "CVE-2010-0425 10.0 Apache httpd vulnerability"
+      },
+      {
+        "cve_id": "CVE-2024-38476",
+        "score": 9.8,
+        "description": "Apache httpd remote code execution vulnerability with path traversal",
+        "severity": "critical",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/80",
+        "raw_output": "CVE-2024-38476 9.8 Apache httpd vulnerability"
+      },
+      {
+        "cve_id": "CVE-2021-42013",
+        "score": 9.8,
+        "description": "Apache httpd path traversal vulnerability with directory traversal",
+        "severity": "critical",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/80",
+        "raw_output": "CVE-2021-42013 9.8 Apache httpd vulnerability"
+      },
+      {
+        "cve_id": "CVE-2018-1312",
+        "score": 9.8,
+        "description": "Apache httpd remote code execution vulnerability with command injection",
+        "severity": "critical",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/80",
+        "raw_output": "CVE-2018-1312 9.8 Apache httpd vulnerability"
+      },
+      {
+        "cve_id": "CVE-2011-3192",
+        "score": 7.8,
+        "description": "Apache httpd denial of service vulnerability with memory exhaustion",
+        "severity": "high",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/80",
+        "raw_output": "CVE-2011-3192 7.8 Apache httpd vulnerability"
+      },
+      {
+        "cve_id": "CVE-2021-41773",
+        "score": 7.5,
+        "description": "Apache httpd path traversal vulnerability with information disclosure",
+        "severity": "high",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/80",
+        "raw_output": "CVE-2021-41773 7.5 Apache httpd vulnerability"
+      }
+    ],
+    "hosts": {
+      "192.168.88.250": {
+        "hostname": "target-server.local",
+        "state": "up",
+        "protocols": [
+          "tcp"
+        ],
+        "ports": {
+          "tcp/22": {
+            "state": "open",
+            "name": "ssh",
+            "product": "OpenSSH",
+            "version": "4.7p1"
+          },
+          "tcp/80": {
+            "state": "open",
+            "name": "http",
+            "product": "Apache httpd",
+            "version": "2.2.8"
+          }
+        }
+      }
+    }
+  },
+  "compliance_results": {
+    "OWASP": {
+      "standard": "OWASP",
+      "compliance_score": 36.84,
+      "status": "non_compliant",
+      "total_vulnerabilities": 8,
+      "critical_violations": 4,
+      "high_violations": 0,
+      "medium_violations": 0,
+      "low_violations": 0,
+      "violations": [
+        {
+          "vulnerability_id": "CVE-2023-38408",
+          "description": "OpenSSH remote code execution vulnerability allowing privilege escalation",
+          "score": 9.8,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/22",
+          "violated_requirements": [
+            {
+              "requirement_id": "A01_Broken_Access_Control",
+              "title": "Broken Access Control",
+              "description": "Access control enforces policy such that users cannot act outside of their intended permissions",
+              "severity_weight": 0.9
+            }
+          ],
+          "vulnerability_types": [
+            "rce",
+            "privilege_escalation"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2016-1908",
+          "description": "OpenSSH authentication bypass vulnerability with privilege escalation",
+          "score": 9.8,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/22",
+          "violated_requirements": [
+            {
+              "requirement_id": "A01_Broken_Access_Control",
+              "title": "Broken Access Control",
+              "description": "Access control enforces policy such that users cannot act outside of their intended permissions",
+              "severity_weight": 0.9
+            }
+          ],
+          "vulnerability_types": [
+            "privilege_escalation",
+            "authentication_bypass"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2010-0425",
+          "description": "Apache httpd remote code execution vulnerability with command injection",
+          "score": 10.0,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/80",
+          "violated_requirements": [
+            {
+              "requirement_id": "A03_Injection",
+              "title": "Injection",
+              "description": "Untrusted data is sent to an interpreter as part of a command or query",
+              "severity_weight": 1.0
+            }
+          ],
+          "vulnerability_types": [
+            "rce",
+            "command_injection"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2018-1312",
+          "description": "Apache httpd remote code execution vulnerability with command injection",
+          "score": 9.8,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/80",
+          "violated_requirements": [
+            {
+              "requirement_id": "A03_Injection",
+              "title": "Injection",
+              "description": "Untrusted data is sent to an interpreter as part of a command or query",
+              "severity_weight": 1.0
+            }
+          ],
+          "vulnerability_types": [
+            "rce",
+            "command_injection"
+          ]
+        }
+      ],
+      "recommendations": [
+        {
+          "requirement_id": "A01_Broken_Access_Control",
+          "title": "Broken Access Control",
+          "description": "Access control enforces policy such that users cannot act outside of their intended permissions",
+          "priority": "critical",
+          "violation_count": 2,
+          "affected_vulnerabilities": [
+            "CVE-2023-38408",
+            "CVE-2016-1908"
+          ],
+          "recommended_actions": [
+            "Implement proper access controls and authentication",
+            "Review and test authorization mechanisms",
+            "Implement least privilege principle",
+            "Add input validation and output encoding"
+          ],
+          "timeline": "Immediate (0-24 hours)",
+          "effort": "low"
+        },
+        {
+          "requirement_id": "A03_Injection",
+          "title": "Injection",
+          "description": "Untrusted data is sent to an interpreter as part of a command or query",
+          "priority": "critical",
+          "violation_count": 2,
+          "affected_vulnerabilities": [
+            "CVE-2010-0425",
+            "CVE-2018-1312"
+          ],
+          "recommended_actions": [
+            "Implement parameterized queries",
+            "Use input validation and sanitization",
+            "Implement output encoding",
+            "Use prepared statements"
+          ],
+          "timeline": "Immediate (0-24 hours)",
+          "effort": "low"
+        }
+      ],
+      "analysis_time": "2025-09-10T09:51:34.223566"
+    },
+    "NIST": {
+      "standard": "NIST",
+      "compliance_score": 100.0,
+      "status": "compliant",
+      "total_vulnerabilities": 8,
+      "critical_violations": 0,
+      "high_violations": 0,
+      "medium_violations": 0,
+      "low_violations": 0,
+      "violations": [],
+      "recommendations": [],
+      "analysis_time": "2025-09-10T09:51:34.229599"
+    },
+    "ISO27001": {
+      "standard": "ISO27001",
+      "compliance_score": 23.68,
+      "status": "non_compliant",
+      "total_vulnerabilities": 8,
+      "critical_violations": 5,
+      "high_violations": 0,
+      "medium_violations": 0,
+      "low_violations": 0,
+      "violations": [
+        {
+          "vulnerability_id": "CVE-2023-38408",
+          "description": "OpenSSH remote code execution vulnerability allowing privilege escalation",
+          "score": 9.8,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/22",
+          "violated_requirements": [
+            {
+              "requirement_id": "A.9",
+              "title": "Access Control",
+              "description": "Business requirements for access control and user access management",
+              "severity_weight": 0.9
+            },
+            {
+              "requirement_id": "A.12",
+              "title": "Operations Security",
+              "description": "Operational procedures and responsibilities",
+              "severity_weight": 0.7
+            }
+          ],
+          "vulnerability_types": [
+            "rce",
+            "privilege_escalation"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2016-1908",
+          "description": "OpenSSH authentication bypass vulnerability with privilege escalation",
+          "score": 9.8,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/22",
+          "violated_requirements": [
+            {
+              "requirement_id": "A.9",
+              "title": "Access Control",
+              "description": "Business requirements for access control and user access management",
+              "severity_weight": 0.9
+            }
+          ],
+          "vulnerability_types": [
+            "privilege_escalation",
+            "authentication_bypass"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2010-0425",
+          "description": "Apache httpd remote code execution vulnerability with command injection",
+          "score": 10.0,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/80",
+          "violated_requirements": [
+            {
+              "requirement_id": "A.12",
+              "title": "Operations Security",
+              "description": "Operational procedures and responsibilities",
+              "severity_weight": 0.7
+            }
+          ],
+          "vulnerability_types": [
+            "rce",
+            "command_injection"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2024-38476",
+          "description": "Apache httpd remote code execution vulnerability with path traversal",
+          "score": 9.8,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/80",
+          "violated_requirements": [
+            {
+              "requirement_id": "A.12",
+              "title": "Operations Security",
+              "description": "Operational procedures and responsibilities",
+              "severity_weight": 0.7
+            }
+          ],
+          "vulnerability_types": [
+            "rce",
+            "path_traversal"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2018-1312",
+          "description": "Apache httpd remote code execution vulnerability with command injection",
+          "score": 9.8,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/80",
+          "violated_requirements": [
+            {
+              "requirement_id": "A.12",
+              "title": "Operations Security",
+              "description": "Operational procedures and responsibilities",
+              "severity_weight": 0.7
+            }
+          ],
+          "vulnerability_types": [
+            "rce",
+            "command_injection"
+          ]
+        }
+      ],
+      "recommendations": [
+        {
+          "requirement_id": "A.9",
+          "title": "Access Control",
+          "description": "Business requirements for access control and user access management",
+          "priority": "critical",
+          "violation_count": 2,
+          "affected_vulnerabilities": [
+            "CVE-2023-38408",
+            "CVE-2016-1908"
+          ],
+          "recommended_actions": [
+            "Implement input validation and secure coding practices"
+          ],
+          "timeline": "Immediate (0-24 hours)",
+          "effort": "low"
+        },
+        {
+          "requirement_id": "A.12",
+          "title": "Operations Security",
+          "description": "Operational procedures and responsibilities",
+          "priority": "critical",
+          "violation_count": 4,
+          "affected_vulnerabilities": [
+            "CVE-2023-38408",
+            "CVE-2010-0425",
+            "CVE-2024-38476",
+            "CVE-2018-1312"
+          ],
+          "recommended_actions": [
+            "Implement input validation and secure coding practices"
+          ],
+          "timeline": "Immediate (0-24 hours)",
+          "effort": "low"
+        }
+      ],
+      "analysis_time": "2025-09-10T09:51:34.233924"
+    },
+    "PCI_DSS": {
+      "standard": "PCI_DSS",
+      "compliance_score": 100.0,
+      "status": "compliant",
+      "total_vulnerabilities": 8,
+      "critical_violations": 0,
+      "high_violations": 0,
+      "medium_violations": 0,
+      "low_violations": 0,
+      "violations": [],
+      "recommendations": [],
+      "analysis_time": "2025-09-10T09:51:34.246691"
+    }
+  }
+}

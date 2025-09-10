@@ -264,9 +264,25 @@ class Scanner:
                 vuln['year_score'] = year_score
                 
                 enhanced_count += 1
+            
+            # Always set severity based on score
+            vuln['severity'] = self._score_to_severity(vuln.get('score', 0))
         
         print(f"Enhanced {enhanced_count} vulnerabilities with keyword-based scoring")
         return enhanced_count
+    
+    def _score_to_severity(self, score: float) -> str:
+        """Convert numeric score to severity level."""
+        if score is None or score == 0:
+            return 'unknown'
+        elif score >= 7.0:
+            return 'critical'
+        elif score >= 4.0:
+            return 'high'
+        elif score >= 2.0:
+            return 'medium'
+        else:
+            return 'low'
     
     def get_scoring_statistics(self) -> Dict:
         """Get statistics about the scoring system."""

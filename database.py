@@ -166,6 +166,43 @@ class Database:
             )
         """)
         
+        # AI Analysis Results table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS ai_analysis (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scan_id TEXT NOT NULL,
+                analysis_type TEXT NOT NULL, -- 'compliance', 'mitigation', 'risk_assessment'
+                standard TEXT, -- 'PCI_DSS', 'NIST', 'OWASP', 'ISO27001'
+                compliance_score REAL,
+                risk_level TEXT, -- 'critical', 'high', 'medium', 'low'
+                analysis_data TEXT, -- JSON with detailed analysis
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (scan_id) REFERENCES scan_results(scan_id) ON DELETE CASCADE
+            )
+        """)
+        
+        # Mitigation Recommendations table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS mitigation_recommendations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                scan_id TEXT NOT NULL,
+                vulnerability_id TEXT,
+                recommendation_type TEXT, -- 'immediate', 'short_term', 'long_term'
+                priority TEXT, -- 'critical', 'high', 'medium', 'low'
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+                steps TEXT, -- JSON array of actionable steps
+                resources TEXT, -- JSON array of helpful resources
+                estimated_effort TEXT, -- 'low', 'medium', 'high'
+                status TEXT DEFAULT 'pending', -- 'pending', 'in_progress', 'completed'
+                assigned_to TEXT,
+                due_date TEXT,
+                completed_at TEXT,
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (scan_id) REFERENCES scan_results(scan_id) ON DELETE CASCADE
+            )
+        """)
+        
         # Create indexes for better performance
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_scan_target ON scan_results(target)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_scan_time ON scan_results(scan_time)")
@@ -174,6 +211,10 @@ class Database:
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_vuln_scan ON vulnerabilities(scan_id)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_vuln_cve ON vulnerabilities(cve_id)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_vuln_severity ON vulnerabilities(severity)")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_ai_scan ON ai_analysis(scan_id)")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_ai_type ON ai_analysis(analysis_type)")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_mitigation_scan ON mitigation_recommendations(scan_id)")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_mitigation_status ON mitigation_recommendations(status)")
         
         self.conn.commit()
     
@@ -507,6 +548,323 @@ class Database:
     def __enter__(self):
         """Context manager entry."""
         return self
+    
+    def save_ai_analysis(self, scan_id: str, analysis_type: str, 
+                        standard: str = None, compliance_score: float = None,
+                        risk_level: str = None, analysis_data: Dict[str, Any] = None) -> int:
+        """
+        Save AI analysis results to the database.
+        
+        Args:
+            scan_id: Scan identifier
+            analysis_type: Type of analysis ('compliance', 'mitigation', 'risk_assessment')
+            standard: Compliance standard (e.g., 'OWASP', 'PCI_DSS')
+            compliance_score: Compliance score (0-100)
+            risk_level: Risk level ('critical', 'high', 'medium', 'low')
+            analysis_data: Detailed analysis data as JSON
+            
+        Returns:
+            int: Analysis ID
+        """
+        if not self.conn:
+            raise Exception("Database not initialized")
+        
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+                INSERT INTO ai_analysis (scan_id, analysis_type, standard, 
+                                       compliance_score, risk_level, analysis_data)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                scan_id,
+                analysis_type,
+                standard,
+                compliance_score,
+                risk_level,
+                json.dumps(analysis_data) if analysis_data else None
+            ))
+            
+            analysis_id = cursor.lastrowid
+            self.conn.commit()
+            print(f"✅ AI analysis saved with ID: {analysis_id}")
+            return analysis_id
+            
+        except Exception as e:
+            self.conn.rollback()
+            print(f"❌ Error saving AI analysis: {e}")
+            raise
+    
+    def save_mitigation_recommendations(self, scan_id: str, 
+                                      recommendations: List[Dict[str, Any]]) -> List[int]:
+        """
+        Save mitigation recommendations to the database.
+        
+        Args:
+            scan_id: Scan identifier
+            recommendations: List of mitigation recommendations
+            
+        Returns:
+            List[int]: List of recommendation IDs
+        """
+        if not self.conn:
+            raise Exception("Database not initialized")
+        
+        try:
+            cursor = self.conn.cursor()
+            recommendation_ids = []
+            
+            for rec in recommendations:
+                cursor.execute("""
+                    INSERT INTO mitigation_recommendations 
+                    (scan_id, vulnerability_id, recommendation_type, priority, 
+                     title, description, steps, resources, estimated_effort, 
+                     status, due_date)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    scan_id,
+                    rec.get('vulnerability_id', ''),
+                    rec.get('recommendation_type', ''),
+                    rec.get('priority', 'medium'),
+                    rec.get('title', ''),
+                    rec.get('description', ''),
+                    json.dumps(rec.get('steps', [])),
+                    json.dumps(rec.get('resources', {})),
+                    rec.get('estimated_effort', 'medium'),
+                    rec.get('status', 'pending'),
+                    rec.get('due_date', '')
+                ))
+                
+                recommendation_ids.append(cursor.lastrowid)
+            
+            self.conn.commit()
+            print(f"✅ {len(recommendation_ids)} mitigation recommendations saved")
+            return recommendation_ids
+            
+        except Exception as e:
+            self.conn.rollback()
+            print(f"❌ Error saving mitigation recommendations: {e}")
+            raise
+    
+    def get_ai_analysis(self, scan_id: str, analysis_type: str = None) -> List[Dict[str, Any]]:
+        """
+        Retrieve AI analysis results for a scan.
+        
+        Args:
+            scan_id: Scan identifier
+            analysis_type: Optional filter by analysis type
+            
+        Returns:
+            List[Dict]: AI analysis results
+        """
+        if not self.conn:
+            raise Exception("Database not initialized")
+        
+        try:
+            cursor = self.conn.cursor()
+            
+            if analysis_type:
+                cursor.execute("""
+                    SELECT * FROM ai_analysis 
+                    WHERE scan_id = ? AND analysis_type = ?
+                    ORDER BY created_at DESC
+                """, (scan_id, analysis_type))
+            else:
+                cursor.execute("""
+                    SELECT * FROM ai_analysis 
+                    WHERE scan_id = ?
+                    ORDER BY created_at DESC
+                """, (scan_id,))
+            
+            rows = cursor.fetchall()
+            results = []
+            
+            for row in rows:
+                analysis = {
+                    'id': row[0],
+                    'scan_id': row[1],
+                    'analysis_type': row[2],
+                    'standard': row[3],
+                    'compliance_score': row[4],
+                    'risk_level': row[5],
+                    'analysis_data': json.loads(row[6]) if row[6] else None,
+                    'created_at': row[7]
+                }
+                results.append(analysis)
+            
+            return results
+            
+        except Exception as e:
+            print(f"❌ Error retrieving AI analysis: {e}")
+            return []
+    
+    def get_mitigation_recommendations(self, scan_id: str, 
+                                     status: str = None) -> List[Dict[str, Any]]:
+        """
+        Retrieve mitigation recommendations for a scan.
+        
+        Args:
+            scan_id: Scan identifier
+            status: Optional filter by status
+            
+        Returns:
+            List[Dict]: Mitigation recommendations
+        """
+        if not self.conn:
+            raise Exception("Database not initialized")
+        
+        try:
+            cursor = self.conn.cursor()
+            
+            if status:
+                cursor.execute("""
+                    SELECT * FROM mitigation_recommendations 
+                    WHERE scan_id = ? AND status = ?
+                    ORDER BY priority DESC, created_at ASC
+                """, (scan_id, status))
+            else:
+                cursor.execute("""
+                    SELECT * FROM mitigation_recommendations 
+                    WHERE scan_id = ?
+                    ORDER BY priority DESC, created_at ASC
+                """, (scan_id,))
+            
+            rows = cursor.fetchall()
+            results = []
+            
+            for row in rows:
+                recommendation = {
+                    'id': row[0],
+                    'scan_id': row[1],
+                    'vulnerability_id': row[2],
+                    'recommendation_type': row[3],
+                    'priority': row[4],
+                    'title': row[5],
+                    'description': row[6],
+                    'steps': json.loads(row[7]) if row[7] else [],
+                    'resources': json.loads(row[8]) if row[8] else {},
+                    'estimated_effort': row[9],
+                    'status': row[10],
+                    'assigned_to': row[11],
+                    'due_date': row[12],
+                    'completed_at': row[13],
+                    'created_at': row[14]
+                }
+                results.append(recommendation)
+            
+            return results
+            
+        except Exception as e:
+            print(f"❌ Error retrieving mitigation recommendations: {e}")
+            return []
+    
+    def update_mitigation_status(self, recommendation_id: int, 
+                               status: str, assigned_to: str = None) -> bool:
+        """
+        Update mitigation recommendation status.
+        
+        Args:
+            recommendation_id: Recommendation ID
+            status: New status
+            assigned_to: Optional assignee
+            
+        Returns:
+            bool: Success status
+        """
+        if not self.conn:
+            raise Exception("Database not initialized")
+        
+        try:
+            cursor = self.conn.cursor()
+            
+            if status == 'completed':
+                cursor.execute("""
+                    UPDATE mitigation_recommendations 
+                    SET status = ?, assigned_to = ?, completed_at = CURRENT_TIMESTAMP
+                    WHERE id = ?
+                """, (status, assigned_to, recommendation_id))
+            else:
+                cursor.execute("""
+                    UPDATE mitigation_recommendations 
+                    SET status = ?, assigned_to = ?
+                    WHERE id = ?
+                """, (status, assigned_to, recommendation_id))
+            
+            self.conn.commit()
+            return cursor.rowcount > 0
+            
+        except Exception as e:
+            print(f"❌ Error updating mitigation status: {e}")
+            return False
+    
+    def get_ai_summary(self, scan_id: str = None) -> Dict[str, Any]:
+        """
+        Get AI analysis summary statistics.
+        
+        Args:
+            scan_id: Optional specific scan ID
+            
+        Returns:
+            Dict: AI summary statistics
+        """
+        if not self.conn:
+            raise Exception("Database not initialized")
+        
+        try:
+            cursor = self.conn.cursor()
+            
+            if scan_id:
+                # Summary for specific scan
+                cursor.execute("""
+                    SELECT 
+                        COUNT(*) as total_analyses,
+                        COUNT(CASE WHEN analysis_type = 'compliance' THEN 1 END) as compliance_analyses,
+                        COUNT(CASE WHEN analysis_type = 'mitigation' THEN 1 END) as mitigation_analyses,
+                        AVG(compliance_score) as avg_compliance_score
+                    FROM ai_analysis WHERE scan_id = ?
+                """, (scan_id,))
+                
+                cursor.execute("""
+                    SELECT 
+                        COUNT(*) as total_recommendations,
+                        COUNT(CASE WHEN status = 'completed' THEN 1 END) as completed_recommendations,
+                        COUNT(CASE WHEN priority = 'critical' THEN 1 END) as critical_recommendations
+                    FROM mitigation_recommendations WHERE scan_id = ?
+                """, (scan_id,))
+            else:
+                # Summary for all scans
+                cursor.execute("""
+                    SELECT 
+                        COUNT(*) as total_analyses,
+                        COUNT(CASE WHEN analysis_type = 'compliance' THEN 1 END) as compliance_analyses,
+                        COUNT(CASE WHEN analysis_type = 'mitigation' THEN 1 END) as mitigation_analyses,
+                        AVG(compliance_score) as avg_compliance_score
+                    FROM ai_analysis
+                """)
+                
+                cursor.execute("""
+                    SELECT 
+                        COUNT(*) as total_recommendations,
+                        COUNT(CASE WHEN status = 'completed' THEN 1 END) as completed_recommendations,
+                        COUNT(CASE WHEN priority = 'critical' THEN 1 END) as critical_recommendations
+                    FROM mitigation_recommendations
+                """)
+            
+            ai_stats = cursor.fetchone()
+            rec_stats = cursor.fetchone()
+            
+            return {
+                'total_analyses': ai_stats[0] or 0,
+                'compliance_analyses': ai_stats[1] or 0,
+                'mitigation_analyses': ai_stats[2] or 0,
+                'avg_compliance_score': round(ai_stats[3] or 0, 2),
+                'total_recommendations': rec_stats[0] or 0,
+                'completed_recommendations': rec_stats[1] or 0,
+                'critical_recommendations': rec_stats[2] or 0
+            }
+            
+        except Exception as e:
+            print(f"❌ Error getting AI summary: {e}")
+            return {}
     
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Context manager exit."""

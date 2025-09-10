@@ -1,0 +1,277 @@
+{
+  "test_info": {
+    "target": "192.168.88.250",
+    "test_time": "2025-09-10T09:43:57.217117",
+    "test_type": "compliance_analysis_test"
+  },
+  "sample_scan_data": {
+    "target": "192.168.88.250",
+    "scan_time": "2025-09-10T09:43:57.195822",
+    "vulnerabilities": [
+      {
+        "cve_id": "CVE-2021-44228",
+        "score": 9.8,
+        "description": "Apache Log4j2 Remote Code Execution vulnerability - critical security issue",
+        "severity": "critical",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/8080",
+        "raw_output": "CVE-2021-44228 9.8 Apache Log4j2 2.0-beta9 through 2.15.0"
+      },
+      {
+        "cve_id": "CVE-2020-14145",
+        "score": 7.5,
+        "description": "OpenSSH through 8.3 and earlier vulnerability with privilege escalation",
+        "severity": "high",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/22",
+        "raw_output": "CVE-2020-14145 7.5 OpenSSH through 8.3 and earlier"
+      },
+      {
+        "cve_id": "CVE-2019-12345",
+        "score": 5.2,
+        "description": "Information disclosure vulnerability in web application",
+        "severity": "medium",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/80",
+        "raw_output": "CVE-2019-12345 5.2 Information disclosure"
+      },
+      {
+        "cve_id": "CVE-2021-34527",
+        "score": 8.8,
+        "description": "Windows Print Spooler Remote Code Execution vulnerability",
+        "severity": "high",
+        "host_ip": "192.168.88.250",
+        "port": "tcp/445",
+        "raw_output": "CVE-2021-34527 8.8 Windows Print Spooler RCE"
+      }
+    ],
+    "hosts": {
+      "192.168.88.250": {
+        "hostname": "target-server.local",
+        "state": "up",
+        "protocols": [
+          "tcp"
+        ],
+        "ports": {
+          "tcp/22": {
+            "state": "open",
+            "name": "ssh",
+            "product": "OpenSSH",
+            "version": "8.2p1",
+            "extrainfo": "Ubuntu-4ubuntu0.2"
+          },
+          "tcp/80": {
+            "state": "open",
+            "name": "http",
+            "product": "Apache httpd",
+            "version": "2.4.41",
+            "extrainfo": "Ubuntu"
+          },
+          "tcp/443": {
+            "state": "open",
+            "name": "https",
+            "product": "Apache httpd",
+            "version": "2.4.41",
+            "extrainfo": "Ubuntu"
+          },
+          "tcp/8080": {
+            "state": "open",
+            "name": "http-proxy",
+            "product": "Apache Tomcat",
+            "version": "9.0.65",
+            "extrainfo": "Ubuntu"
+          },
+          "tcp/445": {
+            "state": "open",
+            "name": "microsoft-ds",
+            "product": "Samba smbd",
+            "version": "4.13.17",
+            "extrainfo": "Ubuntu"
+          }
+        }
+      }
+    }
+  },
+  "compliance_results": {
+    "OWASP": {
+      "standard": "OWASP",
+      "compliance_score": 56.25,
+      "status": "non_compliant",
+      "total_vulnerabilities": 4,
+      "critical_violations": 1,
+      "high_violations": 0,
+      "medium_violations": 0,
+      "low_violations": 0,
+      "violations": [
+        {
+          "vulnerability_id": "CVE-2020-14145",
+          "description": "OpenSSH through 8.3 and earlier vulnerability with privilege escalation",
+          "score": 7.5,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/22",
+          "violated_requirements": [
+            {
+              "requirement_id": "A01_Broken_Access_Control",
+              "title": "Broken Access Control",
+              "description": "Access control enforces policy such that users cannot act outside of their intended permissions",
+              "severity_weight": 0.9
+            }
+          ],
+          "vulnerability_types": [
+            "privilege_escalation"
+          ]
+        }
+      ],
+      "recommendations": [
+        {
+          "requirement_id": "A01_Broken_Access_Control",
+          "title": "Broken Access Control",
+          "description": "Access control enforces policy such that users cannot act outside of their intended permissions",
+          "priority": "critical",
+          "violation_count": 1,
+          "affected_vulnerabilities": [
+            "CVE-2020-14145"
+          ],
+          "recommended_actions": [
+            "Implement proper access controls and authentication",
+            "Review and test authorization mechanisms",
+            "Implement least privilege principle",
+            "Add input validation and output encoding"
+          ],
+          "timeline": "Immediate (0-24 hours)",
+          "effort": "low"
+        }
+      ],
+      "analysis_time": "2025-09-10T09:43:57.204231"
+    },
+    "NIST": {
+      "standard": "NIST",
+      "compliance_score": 100.0,
+      "status": "compliant",
+      "total_vulnerabilities": 4,
+      "critical_violations": 0,
+      "high_violations": 0,
+      "medium_violations": 0,
+      "low_violations": 0,
+      "violations": [],
+      "recommendations": [],
+      "analysis_time": "2025-09-10T09:43:57.207956"
+    },
+    "ISO27001": {
+      "standard": "ISO27001",
+      "compliance_score": 0.0,
+      "status": "non_compliant",
+      "total_vulnerabilities": 4,
+      "critical_violations": 2,
+      "high_violations": 1,
+      "medium_violations": 0,
+      "low_violations": 0,
+      "violations": [
+        {
+          "vulnerability_id": "CVE-2021-44228",
+          "description": "Apache Log4j2 Remote Code Execution vulnerability - critical security issue",
+          "score": 9.8,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/8080",
+          "violated_requirements": [
+            {
+              "requirement_id": "A.12",
+              "title": "Operations Security",
+              "description": "Operational procedures and responsibilities",
+              "severity_weight": 0.7
+            }
+          ],
+          "vulnerability_types": [
+            "rce",
+            "log4j"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2020-14145",
+          "description": "OpenSSH through 8.3 and earlier vulnerability with privilege escalation",
+          "score": 7.5,
+          "severity": "critical",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/22",
+          "violated_requirements": [
+            {
+              "requirement_id": "A.9",
+              "title": "Access Control",
+              "description": "Business requirements for access control and user access management",
+              "severity_weight": 0.9
+            }
+          ],
+          "vulnerability_types": [
+            "privilege_escalation"
+          ]
+        },
+        {
+          "vulnerability_id": "CVE-2021-34527",
+          "description": "Windows Print Spooler Remote Code Execution vulnerability",
+          "score": 8.8,
+          "severity": "high",
+          "host_ip": "192.168.88.250",
+          "port": "tcp/445",
+          "violated_requirements": [
+            {
+              "requirement_id": "A.12",
+              "title": "Operations Security",
+              "description": "Operational procedures and responsibilities",
+              "severity_weight": 0.7
+            }
+          ],
+          "vulnerability_types": [
+            "rce"
+          ]
+        }
+      ],
+      "recommendations": [
+        {
+          "requirement_id": "A.9",
+          "title": "Access Control",
+          "description": "Business requirements for access control and user access management",
+          "priority": "critical",
+          "violation_count": 1,
+          "affected_vulnerabilities": [
+            "CVE-2020-14145"
+          ],
+          "recommended_actions": [],
+          "timeline": "Immediate (0-24 hours)",
+          "effort": "low"
+        },
+        {
+          "requirement_id": "A.12",
+          "title": "Operations Security",
+          "description": "Operational procedures and responsibilities",
+          "priority": "high",
+          "violation_count": 2,
+          "affected_vulnerabilities": [
+            "CVE-2021-44228",
+            "CVE-2021-34527"
+          ],
+          "recommended_actions": [
+            "Implement input validation and secure coding practices"
+          ],
+          "timeline": "1-7 days",
+          "effort": "low"
+        }
+      ],
+      "analysis_time": "2025-09-10T09:43:57.210479"
+    },
+    "PCI_DSS": {
+      "standard": "PCI_DSS",
+      "compliance_score": 100.0,
+      "status": "compliant",
+      "total_vulnerabilities": 4,
+      "critical_violations": 0,
+      "high_violations": 0,
+      "medium_violations": 0,
+      "low_violations": 0,
+      "violations": [],
+      "recommendations": [],
+      "analysis_time": "2025-09-10T09:43:57.216663"
+    }
+  }
+}

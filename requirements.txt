@@ -11,6 +11,10 @@ sqlcipher3>=0.5.0
 
 # AI integration for scan interpretation
 tgpt>=2.0.0
+openai>=1.0.0
+pydantic>=2.0.0
+jinja2>=3.0.0
+plotly>=5.0.0
 
 # Additional dependencies
 uuid

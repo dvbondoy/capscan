@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import simpledialog
+from tkinter import simpledialog, messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 import threading
@@ -8,6 +8,10 @@ import os
 from datetime import datetime
 from engine import Scanner
 from database import Database
+from ai_service import AIService
+from compliance.analyzers import ComplianceAnalyzer
+from compliance.frameworks import ComplianceStandard
+from mitigation.engine import MitigationEngine
 
 class CapScanGUI:
     def __init__(self, db_password=None):
@@ -22,10 +26,27 @@ class CapScanGUI:
         self.scan_thread = None
         self.is_scanning = False
         
+        # Initialize AI services (use mock backend for no API key required)
+        self.ai_service = AIService(backend="mock")
+        self.compliance_analyzers = {
+            'OWASP': ComplianceAnalyzer(ComplianceStandard.OWASP),
+            'PCI_DSS': ComplianceAnalyzer(ComplianceStandard.PCI_DSS),
+            'NIST': ComplianceAnalyzer(ComplianceStandard.NIST),
+            'ISO27001': ComplianceAnalyzer(ComplianceStandard.ISO27001),
+            'HIPAA': ComplianceAnalyzer(ComplianceStandard.HIPAA),
+            'SOX': ComplianceAnalyzer(ComplianceStandard.SOX)
+        }
+        self.mitigation_engine = MitigationEngine()
+        
         # Database variables
         self.db_password = db_password
         self.scan_id = None
         self.db_connected = bool(db_password)
+        
+        # AI analysis results
+        self.ai_analysis_results = {}
+        self.compliance_results = {}
+        self.mitigation_plan = {}
         
         # Create GUI elements
         self.create_widgets()
@@ -89,6 +110,28 @@ class CapScanGUI:
             self.options_frame, 
             text="Enable Keyword-based Scoring", 
             variable=self.enhance_scores_var
+        )
+        
+        # AI Analysis options
+        self.ai_analysis_var = tk.BooleanVar(value=True)
+        self.ai_analysis_check = ttk.Checkbutton(
+            self.options_frame, 
+            text="Enable AI Analysis", 
+            variable=self.ai_analysis_var
+        )
+        
+        self.compliance_analysis_var = tk.BooleanVar(value=True)
+        self.compliance_analysis_check = ttk.Checkbutton(
+            self.options_frame, 
+            text="Enable Compliance Analysis", 
+            variable=self.compliance_analysis_var
+        )
+        
+        self.mitigation_recommendations_var = tk.BooleanVar(value=True)
+        self.mitigation_recommendations_check = ttk.Checkbutton(
+            self.options_frame, 
+            text="Enable Mitigation Recommendations", 
+            variable=self.mitigation_recommendations_var
         )
         
         # Database options
@@ -202,6 +245,18 @@ class CapScanGUI:
         self.stats_scrollbar = ttk.Scrollbar(self.stats_frame, orient=VERTICAL, command=self.stats_text.yview)
         self.stats_text.configure(yscrollcommand=self.stats_scrollbar.set)
         
+        # AI Analysis tab
+        self.ai_frame = ttk.Frame(self.results_notebook)
+        self.results_notebook.add(self.ai_frame, text="AI Analysis")
+        
+        # Compliance Analysis tab
+        self.compliance_frame = ttk.Frame(self.results_notebook)
+        self.results_notebook.add(self.compliance_frame, text="Compliance")
+        
+        # Mitigation Recommendations tab
+        self.mitigation_frame = ttk.Frame(self.results_notebook)
+        self.results_notebook.add(self.mitigation_frame, text="Mitigation")
+        
         # Database tab
         self.db_frame = ttk.Frame(self.results_notebook)
         self.results_notebook.add(self.db_frame, text="Database")
@@ -268,11 +323,171 @@ class CapScanGUI:
         self.recent_scans_scrollbar = ttk.Scrollbar(self.recent_scans_frame, orient=VERTICAL, command=self.recent_scans_tree.yview)
         self.recent_scans_tree.configure(yscrollcommand=self.recent_scans_scrollbar.set)
         
+        # AI Analysis tab components
+        self.create_ai_analysis_tab()
+        
+        # Compliance Analysis tab components
+        self.create_compliance_analysis_tab()
+        
+        # Mitigation Recommendations tab components
+        self.create_mitigation_tab()
+        
         # Bind events
         self.vulns_tree.bind("<<TreeviewSelect>>", self.on_vuln_select)
         self.ports_entry.bind("<KeyRelease>", self.on_port_entry_change)
         
+        # Check AI service status after all tabs are created
+        self.check_ai_service_status()
+        
         # Initialize database info display handled by update_db_status_ui()
+    
+    def create_ai_analysis_tab(self):
+        """Create AI Analysis tab components"""
+        # AI Analysis controls
+        self.ai_controls_frame = ttk.LabelFrame(self.ai_frame, text="AI Analysis Controls", padding="10")
+        
+        self.ai_status_label = ttk.Label(self.ai_controls_frame, text="AI Service: Checking...")
+        self.ai_analyze_btn = ttk.Button(
+            self.ai_controls_frame, 
+            text="Run AI Analysis", 
+            command=self.run_ai_analysis,
+            bootstyle=SUCCESS,
+            width=15,
+            state=DISABLED
+        )
+        
+        # AI Analysis results
+        self.ai_results_frame = ttk.LabelFrame(self.ai_frame, text="AI Analysis Results", padding="10")
+        self.ai_results_text = tk.Text(
+            self.ai_results_frame, 
+            height=15, 
+            width=80, 
+            font=("Consolas", 9),
+            wrap=tk.WORD
+        )
+        self.ai_results_scrollbar = ttk.Scrollbar(self.ai_results_frame, orient=VERTICAL, command=self.ai_results_text.yview)
+        self.ai_results_text.configure(yscrollcommand=self.ai_results_scrollbar.set)
+        
+        # Layout AI Analysis tab
+        self.ai_controls_frame.pack(fill=X, pady=(0, 10))
+        self.ai_status_label.pack(side=LEFT, padx=(0, 10))
+        self.ai_analyze_btn.pack(side=LEFT)
+        
+        self.ai_results_frame.pack(fill=BOTH, expand=True)
+        self.ai_results_text.pack(side=LEFT, fill=BOTH, expand=True)
+        self.ai_results_scrollbar.pack(side=RIGHT, fill=Y)
+    
+    def create_compliance_analysis_tab(self):
+        """Create Compliance Analysis tab components"""
+        # Compliance controls
+        self.compliance_controls_frame = ttk.LabelFrame(self.compliance_frame, text="Compliance Analysis Controls", padding="10")
+        
+        self.compliance_standard_label = ttk.Label(self.compliance_controls_frame, text="Standard:")
+        self.compliance_standard_var = tk.StringVar(value="OWASP")
+        self.compliance_standard_combo = ttk.Combobox(
+            self.compliance_controls_frame,
+            textvariable=self.compliance_standard_var,
+            values=["OWASP", "PCI_DSS", "NIST", "ISO27001", "HIPAA", "SOX"],
+            state="readonly",
+            width=15
+        )
+        
+        self.compliance_analyze_btn = ttk.Button(
+            self.compliance_controls_frame, 
+            text="Run Compliance Analysis", 
+            command=self.run_compliance_analysis,
+            bootstyle=SUCCESS,
+            width=20,
+            state=DISABLED
+        )
+        
+        # Compliance results
+        self.compliance_results_frame = ttk.LabelFrame(self.compliance_frame, text="Compliance Analysis Results", padding="10")
+        self.compliance_results_text = tk.Text(
+            self.compliance_results_frame, 
+            height=15, 
+            width=80, 
+            font=("Consolas", 9),
+            wrap=tk.WORD
+        )
+        self.compliance_results_scrollbar = ttk.Scrollbar(self.compliance_results_frame, orient=VERTICAL, command=self.compliance_results_text.yview)
+        self.compliance_results_text.configure(yscrollcommand=self.compliance_results_scrollbar.set)
+        
+        # Layout Compliance Analysis tab
+        self.compliance_controls_frame.pack(fill=X, pady=(0, 10))
+        self.compliance_standard_label.pack(side=LEFT, padx=(0, 5))
+        self.compliance_standard_combo.pack(side=LEFT, padx=(0, 10))
+        self.compliance_analyze_btn.pack(side=LEFT)
+        
+        self.compliance_results_frame.pack(fill=BOTH, expand=True)
+        self.compliance_results_text.pack(side=LEFT, fill=BOTH, expand=True)
+        self.compliance_results_scrollbar.pack(side=RIGHT, fill=Y)
+    
+    def create_mitigation_tab(self):
+        """Create Mitigation Recommendations tab components"""
+        # Mitigation controls
+        self.mitigation_controls_frame = ttk.LabelFrame(self.mitigation_frame, text="Mitigation Controls", padding="10")
+        
+        self.mitigation_generate_btn = ttk.Button(
+            self.mitigation_controls_frame, 
+            text="Generate Mitigation Plan", 
+            command=self.generate_mitigation_plan,
+            bootstyle=SUCCESS,
+            width=20,
+            state=DISABLED
+        )
+        
+        # Mitigation recommendations tree
+        self.mitigation_tree_frame = ttk.Frame(self.mitigation_frame)
+        self.mitigation_tree = ttk.Treeview(
+            self.mitigation_tree_frame,
+            columns=("Priority", "Title", "Timeline", "Effort", "Status"),
+            show="headings",
+            height=10
+        )
+        
+        # Configure mitigation tree columns
+        self.mitigation_tree.heading("Priority", text="Priority")
+        self.mitigation_tree.heading("Title", text="Title")
+        self.mitigation_tree.heading("Timeline", text="Timeline")
+        self.mitigation_tree.heading("Effort", text="Effort")
+        self.mitigation_tree.heading("Status", text="Status")
+        
+        self.mitigation_tree.column("Priority", width=80)
+        self.mitigation_tree.column("Title", width=300)
+        self.mitigation_tree.column("Timeline", width=100)
+        self.mitigation_tree.column("Effort", width=80)
+        self.mitigation_tree.column("Status", width=100)
+        
+        self.mitigation_tree_scrollbar = ttk.Scrollbar(self.mitigation_tree_frame, orient=VERTICAL, command=self.mitigation_tree.yview)
+        self.mitigation_tree.configure(yscrollcommand=self.mitigation_tree_scrollbar.set)
+        
+        # Mitigation details
+        self.mitigation_details_frame = ttk.LabelFrame(self.mitigation_frame, text="Mitigation Details", padding="5")
+        self.mitigation_details_text = tk.Text(
+            self.mitigation_details_frame, 
+            height=8, 
+            width=80, 
+            font=("Consolas", 9),
+            wrap=tk.WORD
+        )
+        self.mitigation_details_scrollbar = ttk.Scrollbar(self.mitigation_details_frame, orient=VERTICAL, command=self.mitigation_details_text.yview)
+        self.mitigation_details_text.configure(yscrollcommand=self.mitigation_details_scrollbar.set)
+        
+        # Layout Mitigation tab
+        self.mitigation_controls_frame.pack(fill=X, pady=(0, 10))
+        self.mitigation_generate_btn.pack(side=LEFT)
+        
+        self.mitigation_tree_frame.pack(fill=BOTH, expand=True, pady=(0, 10))
+        self.mitigation_tree.pack(side=LEFT, fill=BOTH, expand=True)
+        self.mitigation_tree_scrollbar.pack(side=RIGHT, fill=Y)
+        
+        self.mitigation_details_frame.pack(fill=X)
+        self.mitigation_details_text.pack(side=LEFT, fill=BOTH, expand=True)
+        self.mitigation_details_scrollbar.pack(side=RIGHT, fill=Y)
+        
+        # Bind mitigation tree selection
+        self.mitigation_tree.bind("<<TreeviewSelect>>", self.on_mitigation_select)
         
     def setup_layout(self):
         """Setup the layout of all widgets"""
@@ -305,12 +520,19 @@ class CapScanGUI:
         self.max_reports_spinbox.pack(side=LEFT, padx=(0, 20))
         self.enhance_scores_check.pack(side=LEFT)
         
+        # AI options (second row)
+        self.ai_options_frame = ttk.Frame(self.input_frame)
+        self.ai_options_frame.grid(row=3, column=0, columnspan=3, sticky=W, pady=5)
+        self.ai_analysis_check.pack(side=LEFT, padx=(0, 20))
+        self.compliance_analysis_check.pack(side=LEFT, padx=(0, 20))
+        self.mitigation_recommendations_check.pack(side=LEFT)
+        
         # Database options
-        self.db_options_frame.grid(row=3, column=0, columnspan=3, sticky=W, pady=5)
+        self.db_options_frame.grid(row=4, column=0, columnspan=3, sticky=W, pady=5)
         self.save_to_db_check.pack(side=LEFT, padx=(0, 20))
         
         # Scan buttons
-        self.scan_buttons_frame.grid(row=4, column=0, columnspan=3, pady=10)
+        self.scan_buttons_frame.grid(row=5, column=0, columnspan=3, pady=10)
         self.scan_toggle_btn.pack(side=LEFT, padx=(0, 10))
         self.save_results_btn.pack(side=LEFT)
         
@@ -464,6 +686,12 @@ class CapScanGUI:
         self.update_summary()
         self.update_vulnerabilities()
         self.update_statistics()
+        
+        # Enable AI features if scan results are available
+        if self.scanner.scan_results:
+            self.ai_analyze_btn.config(state=NORMAL)
+            self.compliance_analyze_btn.config(state=NORMAL)
+            self.mitigation_generate_btn.config(state=NORMAL)
         
     def scan_error(self, error_msg):
         """Handle scan error"""
@@ -838,6 +1066,361 @@ Status: Connected
                 
         except Exception as e:
             self.show_error(f"Error accessing database: {str(e)}")
+    
+    # AI-related methods
+    def check_ai_service_status(self):
+        """Check AI service status and update UI"""
+        try:
+            status = self.ai_service.get_service_status()
+            if status['ai_available']:
+                backend = status['active_backend']
+                if backend == 'mock':
+                    self.ai_status_label.config(text=f"AI Service: Available ({backend} - No API key needed)", bootstyle=SUCCESS)
+                else:
+                    self.ai_status_label.config(text=f"AI Service: Available ({backend})", bootstyle=SUCCESS)
+                self.ai_analyze_btn.config(state=NORMAL)
+                self.compliance_analyze_btn.config(state=NORMAL)
+                self.mitigation_generate_btn.config(state=NORMAL)
+            else:
+                self.ai_status_label.config(text="AI Service: Unavailable", bootstyle=WARNING)
+                self.ai_analyze_btn.config(state=DISABLED)
+                self.compliance_analyze_btn.config(state=DISABLED)
+                self.mitigation_generate_btn.config(state=DISABLED)
+        except Exception as e:
+            self.ai_status_label.config(text=f"AI Service: Error - {str(e)}", bootstyle=DANGER)
+            self.ai_analyze_btn.config(state=DISABLED)
+            self.compliance_analyze_btn.config(state=DISABLED)
+            self.mitigation_generate_btn.config(state=DISABLED)
+    
+    def run_ai_analysis(self):
+        """Run AI analysis on scan results"""
+        if not self.scanner.scan_results:
+            self.show_error("No scan results available. Please run a scan first.")
+            return
+        
+        try:
+            self.ai_analyze_btn.config(state=DISABLED, text="Analyzing...")
+            self.ai_results_text.delete(1.0, tk.END)
+            self.ai_results_text.insert(1.0, "Running AI analysis... Please wait.\n")
+            self.root.update()
+            
+            # Run AI analysis
+            analysis = self.ai_service.analyze_vulnerabilities(self.scanner.scan_results)
+            self.ai_analysis_results = analysis
+            
+            # Display results
+            self.display_ai_analysis_results(analysis)
+            
+            # Save to database if connected
+            if self.db_connected and self.scan_id:
+                self.save_ai_analysis_to_db(analysis)
+            
+        except Exception as e:
+            self.show_error(f"AI analysis failed: {str(e)}")
+        finally:
+            self.ai_analyze_btn.config(state=NORMAL, text="Run AI Analysis")
+    
+    def display_ai_analysis_results(self, analysis):
+        """Display AI analysis results in the text widget"""
+        self.ai_results_text.delete(1.0, tk.END)
+        
+        if 'error' in analysis:
+            self.ai_results_text.insert(1.0, f"Error: {analysis['error']}\n")
+            return
+        
+        # Format analysis results
+        result_text = "AI Vulnerability Analysis Results\n"
+        result_text += "=" * 50 + "\n\n"
+        
+        if 'risk_assessment' in analysis:
+            risk = analysis['risk_assessment']
+            result_text += f"Overall Risk Level: {risk.get('overall_risk_level', 'Unknown')}\n"
+            result_text += f"Business Impact: {risk.get('business_impact', 'N/A')}\n"
+            result_text += f"Exploitability: {risk.get('exploitability', 'N/A')}\n\n"
+            
+            if 'critical_vulnerabilities' in risk:
+                result_text += "Critical Vulnerabilities:\n"
+                for vuln in risk['critical_vulnerabilities']:
+                    result_text += f"  - {vuln}\n"
+                result_text += "\n"
+            
+            if 'high_risk_vulnerabilities' in risk:
+                result_text += "High Risk Vulnerabilities:\n"
+                for vuln in risk['high_risk_vulnerabilities']:
+                    result_text += f"  - {vuln}\n"
+                result_text += "\n"
+        
+        if 'vulnerability_analysis' in analysis:
+            result_text += "Enhanced Vulnerability Analysis:\n"
+            result_text += "-" * 30 + "\n"
+            for vuln in analysis['vulnerability_analysis'][:5]:  # Show first 5
+                result_text += f"CVE: {vuln.get('cve_id', 'N/A')}\n"
+                result_text += f"  Enhanced Score: {vuln.get('enhanced_score', 'N/A')}\n"
+                result_text += f"  Risk Factors: {', '.join(vuln.get('risk_factors', []))}\n"
+                result_text += f"  Business Impact: {vuln.get('business_impact', 'N/A')}\n"
+                result_text += f"  Exploit Likelihood: {vuln.get('exploit_likelihood', 'N/A')}\n"
+                result_text += f"  Remediation Priority: {vuln.get('remediation_priority', 'N/A')}\n\n"
+        
+        if 'recommendations' in analysis:
+            rec = analysis['recommendations']
+            result_text += "AI Recommendations:\n"
+            result_text += "-" * 20 + "\n"
+            
+            if 'immediate_actions' in rec:
+                result_text += "Immediate Actions:\n"
+                for action in rec['immediate_actions']:
+                    result_text += f"  - {action}\n"
+                result_text += "\n"
+            
+            if 'short_term_goals' in rec:
+                result_text += "Short-term Goals:\n"
+                for goal in rec['short_term_goals']:
+                    result_text += f"  - {goal}\n"
+                result_text += "\n"
+            
+            if 'long_term_strategy' in rec:
+                result_text += f"Long-term Strategy: {rec['long_term_strategy']}\n"
+        
+        if 'raw_analysis' in analysis:
+            result_text += "\nRaw AI Analysis:\n"
+            result_text += "-" * 20 + "\n"
+            result_text += analysis['raw_analysis']
+        
+        self.ai_results_text.insert(1.0, result_text)
+    
+    def run_compliance_analysis(self):
+        """Run compliance analysis on scan results"""
+        if not self.scanner.scan_results:
+            self.show_error("No scan results available. Please run a scan first.")
+            return
+        
+        try:
+            standard = self.compliance_standard_var.get()
+            self.compliance_analyze_btn.config(state=DISABLED, text="Analyzing...")
+            self.compliance_results_text.delete(1.0, tk.END)
+            self.compliance_results_text.insert(1.0, f"Running {standard} compliance analysis... Please wait.\n")
+            self.root.update()
+            
+            # Run compliance analysis
+            analyzer = self.compliance_analyzers[standard]
+            results = analyzer.analyze_scan_results(self.scanner.scan_results)
+            self.compliance_results[standard] = results
+            
+            # Display results
+            self.display_compliance_results(results, standard)
+            
+            # Save to database if connected
+            if self.db_connected and self.scan_id:
+                self.save_compliance_analysis_to_db(results, standard)
+            
+        except Exception as e:
+            self.show_error(f"Compliance analysis failed: {str(e)}")
+        finally:
+            self.compliance_analyze_btn.config(state=NORMAL, text="Run Compliance Analysis")
+    
+    def display_compliance_results(self, results, standard):
+        """Display compliance analysis results"""
+        self.compliance_results_text.delete(1.0, tk.END)
+        
+        result_text = f"{standard} Compliance Analysis Results\n"
+        result_text += "=" * 50 + "\n\n"
+        
+        result_text += f"Compliance Score: {results.get('compliance_score', 'N/A')}/100\n"
+        result_text += f"Status: {results.get('status', 'N/A').replace('_', ' ').title()}\n"
+        result_text += f"Total Vulnerabilities: {results.get('total_vulnerabilities', 0)}\n\n"
+        
+        result_text += "Violation Summary:\n"
+        result_text += f"  Critical: {results.get('critical_violations', 0)}\n"
+        result_text += f"  High: {results.get('high_violations', 0)}\n"
+        result_text += f"  Medium: {results.get('medium_violations', 0)}\n"
+        result_text += f"  Low: {results.get('low_violations', 0)}\n\n"
+        
+        if 'violations' in results and results['violations']:
+            result_text += "Key Violations:\n"
+            result_text += "-" * 15 + "\n"
+            for i, violation in enumerate(results['violations'][:5], 1):
+                result_text += f"{i}. {violation.get('vulnerability_id', 'N/A')}\n"
+                result_text += f"   Severity: {violation.get('severity', 'N/A')}\n"
+                result_text += f"   Description: {violation.get('description', 'N/A')[:100]}...\n"
+                result_text += f"   Violated Requirements: {len(violation.get('violated_requirements', []))}\n\n"
+        
+        if 'recommendations' in results and results['recommendations']:
+            result_text += "Compliance Recommendations:\n"
+            result_text += "-" * 25 + "\n"
+            for i, rec in enumerate(results['recommendations'][:5], 1):
+                result_text += f"{i}. {rec.get('title', 'N/A')}\n"
+                result_text += f"   Priority: {rec.get('priority', 'N/A')}\n"
+                result_text += f"   Timeline: {rec.get('timeline', 'N/A')}\n"
+                result_text += f"   Effort: {rec.get('effort', 'N/A')}\n"
+                result_text += f"   Violations: {rec.get('violation_count', 0)}\n\n"
+        
+        self.compliance_results_text.insert(1.0, result_text)
+    
+    def generate_mitigation_plan(self):
+        """Generate mitigation plan for scan results"""
+        if not self.scanner.scan_results:
+            self.show_error("No scan results available. Please run a scan first.")
+            return
+        
+        try:
+            self.mitigation_generate_btn.config(state=DISABLED, text="Generating...")
+            self.mitigation_tree.delete(*self.mitigation_tree.get_children())
+            self.mitigation_details_text.delete(1.0, tk.END)
+            self.mitigation_details_text.insert(1.0, "Generating mitigation plan... Please wait.\n")
+            self.root.update()
+            
+            # Generate mitigation plan
+            plan = self.mitigation_engine.generate_mitigation_plan(self.scanner.scan_results)
+            self.mitigation_plan = plan
+            
+            # Display results
+            self.display_mitigation_plan(plan)
+            
+            # Save to database if connected
+            if self.db_connected and self.scan_id:
+                self.save_mitigation_plan_to_db(plan)
+            
+        except Exception as e:
+            self.show_error(f"Mitigation plan generation failed: {str(e)}")
+        finally:
+            self.mitigation_generate_btn.config(state=NORMAL, text="Generate Mitigation Plan")
+    
+    def display_mitigation_plan(self, plan):
+        """Display mitigation plan in the tree and details"""
+        self.mitigation_tree.delete(*self.mitigation_tree.get_children())
+        self.mitigation_details_text.delete(1.0, tk.END)
+        
+        if not plan or 'mitigation_plan' not in plan:
+            self.mitigation_details_text.insert(1.0, "No mitigation recommendations available.")
+            return
+        
+        # Display summary
+        summary = plan.get('summary', {})
+        summary_text = f"Mitigation Plan Summary\n"
+        summary_text += "=" * 25 + "\n\n"
+        summary_text += f"Total Recommendations: {summary.get('total_recommendations', 0)}\n"
+        summary_text += f"Critical Actions: {summary.get('critical_actions', 0)}\n"
+        summary_text += f"High Actions: {summary.get('high_actions', 0)}\n"
+        summary_text += f"Medium Actions: {summary.get('medium_actions', 0)}\n"
+        summary_text += f"Low Actions: {summary.get('low_actions', 0)}\n"
+        summary_text += f"Estimated Timeline: {summary.get('estimated_timeline', 'N/A')}\n"
+        summary_text += f"Overall Effort: {summary.get('overall_effort', 'N/A')}\n\n"
+        
+        self.mitigation_details_text.insert(1.0, summary_text)
+        
+        # Add recommendations to tree
+        for rec in plan['mitigation_plan']:
+            for recommendation in rec.get('recommendations', []):
+                self.mitigation_tree.insert("", "end", values=(
+                    rec.get('priority', 'N/A'),
+                    rec.get('title', 'N/A'),
+                    recommendation.get('timeline', 'N/A'),
+                    rec.get('estimated_effort', 'N/A'),
+                    'Pending'
+                ))
+    
+    def on_mitigation_select(self, event):
+        """Handle mitigation recommendation selection"""
+        selection = self.mitigation_tree.selection()
+        if not selection:
+            return
+        
+        item = self.mitigation_tree.item(selection[0])
+        values = item['values']
+        
+        # Find the corresponding recommendation in the plan
+        title = values[1]
+        for rec in self.mitigation_plan.get('mitigation_plan', []):
+            if rec.get('title') == title:
+                details_text = f"Mitigation Recommendation Details\n"
+                details_text += "=" * 35 + "\n\n"
+                details_text += f"Title: {rec.get('title', 'N/A')}\n"
+                details_text += f"Description: {rec.get('description', 'N/A')}\n"
+                details_text += f"Priority: {rec.get('priority', 'N/A')}\n"
+                details_text += f"Vulnerability Type: {rec.get('vulnerability_type', 'N/A')}\n"
+                details_text += f"Host: {rec.get('host_ip', 'N/A')}:{rec.get('port', 'N/A')}\n\n"
+                
+                details_text += "Recommendations:\n"
+                details_text += "-" * 15 + "\n"
+                for i, rec_detail in enumerate(rec.get('recommendations', []), 1):
+                    details_text += f"{i}. {rec_detail.get('action', 'N/A')}\n"
+                    details_text += f"   Timeline: {rec_detail.get('timeline', 'N/A')}\n"
+                    details_text += f"   Description: {rec_detail.get('description', 'N/A')}\n"
+                    details_text += f"   Difficulty: {rec_detail.get('difficulty', 'N/A')}\n"
+                    details_text += f"   Tools Needed: {', '.join(rec_detail.get('tools_needed', []))}\n"
+                    details_text += f"   Verification: {rec_detail.get('verification', 'N/A')}\n\n"
+                
+                if 'verification_steps' in rec:
+                    details_text += "Verification Steps:\n"
+                    details_text += "-" * 18 + "\n"
+                    for i, step in enumerate(rec['verification_steps'], 1):
+                        details_text += f"{i}. {step}\n"
+                
+                if 'resources' in rec:
+                    details_text += "\nResources:\n"
+                    details_text += "-" * 10 + "\n"
+                    for category, items in rec['resources'].items():
+                        details_text += f"{category.title()}:\n"
+                        for item in items:
+                            details_text += f"  - {item}\n"
+                
+                self.mitigation_details_text.delete(1.0, tk.END)
+                self.mitigation_details_text.insert(1.0, details_text)
+                break
+    
+    def save_ai_analysis_to_db(self, analysis):
+        """Save AI analysis to database"""
+        try:
+            with Database(password=self.db_password) as db:
+                db.save_ai_analysis(
+                    scan_id=self.scan_id,
+                    analysis_type="vulnerability_analysis",
+                    compliance_score=None,
+                    risk_level=analysis.get('risk_assessment', {}).get('overall_risk_level'),
+                    analysis_data=analysis
+                )
+        except Exception as e:
+            print(f"Error saving AI analysis to database: {e}")
+    
+    def save_compliance_analysis_to_db(self, results, standard):
+        """Save compliance analysis to database"""
+        try:
+            with Database(password=self.db_password) as db:
+                db.save_ai_analysis(
+                    scan_id=self.scan_id,
+                    analysis_type="compliance",
+                    standard=standard,
+                    compliance_score=results.get('compliance_score'),
+                    risk_level=results.get('status'),
+                    analysis_data=results
+                )
+        except Exception as e:
+            print(f"Error saving compliance analysis to database: {e}")
+    
+    def save_mitigation_plan_to_db(self, plan):
+        """Save mitigation plan to database"""
+        try:
+            with Database(password=self.db_password) as db:
+                recommendations = []
+                for rec in plan.get('mitigation_plan', []):
+                    for recommendation in rec.get('recommendations', []):
+                        recommendations.append({
+                            'vulnerability_id': rec.get('vulnerability_id', ''),
+                            'recommendation_type': recommendation.get('timeline', ''),
+                            'priority': rec.get('priority', ''),
+                            'title': rec.get('title', ''),
+                            'description': rec.get('description', ''),
+                            'steps': [rec_detail.get('action', '') for rec_detail in rec.get('recommendations', [])],
+                            'resources': rec.get('resources', {}),
+                            'estimated_effort': rec.get('estimated_effort', ''),
+                            'status': 'pending',
+                            'due_date': recommendation.get('timeline', '')
+                        })
+                
+                if recommendations:
+                    db.save_mitigation_recommendations(self.scan_id, recommendations)
+        except Exception as e:
+            print(f"Error saving mitigation plan to database: {e}")
         
     def run(self):
         """Start the GUI application"""
