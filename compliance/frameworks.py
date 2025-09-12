@@ -602,6 +602,8 @@ class ComplianceFramework:
 
     def _get_ph_dpa_requirements(self) -> Dict[str, Any]:
         """Philippines Data Privacy Act (RA 10173) requirements and NPC IRR mapping.
+        National Privacy Commision (NPC)
+        Implementing Rules and Regulations (IRR)
 
         The mapping aligns common technical vulnerability types to DPA principles and obligations,
         with emphasis on Section 20 (Security of Personal Information) and breach management.

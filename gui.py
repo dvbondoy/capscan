@@ -18,8 +18,15 @@ class CapScanGUI:
         # Initialize ttkbootstrap with flatly theme
         self.root = ttk.Window(themename="flatly")
         self.root.title("CapScan - Vulnerability Scanner")
-        self.root.geometry("1200x800")
+        # Prefer maximizing the window on start; keep a sensible minimum size
         self.root.minsize(1000, 700)
+        try:
+            self.root.state('zoomed')  # Works on Windows and some Linux WMs
+        except Exception:
+            # Fallback for environments that don't support 'zoomed'
+            screen_width = self.root.winfo_screenwidth()
+            screen_height = self.root.winfo_screenheight()
+            self.root.geometry(f"{screen_width}x{screen_height}+0+0")
         
         # Initialize scanner
         self.scanner = Scanner()
@@ -1217,39 +1224,123 @@ Status: Connected
         """Display compliance analysis results"""
         self.compliance_results_text.delete(1.0, tk.END)
         
-        result_text = f"{standard} Compliance Analysis Results\n"
-        result_text += "=" * 50 + "\n\n"
+        # Build a plain-language summary first
+        friendly_text = self._format_compliance_results_plain_language(results, standard)
         
-        result_text += f"Compliance Score: {results.get('compliance_score', 'N/A')}/100\n"
-        result_text += f"Status: {results.get('status', 'N/A').replace('_', ' ').title()}\n"
-        result_text += f"Total Vulnerabilities: {results.get('total_vulnerabilities', 0)}\n\n"
-        
-        result_text += "Violation Summary:\n"
-        result_text += f"  Critical: {results.get('critical_violations', 0)}\n"
-        result_text += f"  High: {results.get('high_violations', 0)}\n"
-        result_text += f"  Medium: {results.get('medium_violations', 0)}\n"
-        result_text += f"  Low: {results.get('low_violations', 0)}\n\n"
+        # Optional short technical appendix for users who want details
+        technical_text = "\n\nTechnical details (for IT teams)\n" + ("-" * 34) + "\n"
+        technical_text += f"Score: {results.get('compliance_score', 'N/A')}/100 | Status: {results.get('status', 'N/A').replace('_', ' ').title()}\n"
+        technical_text += f"Total Vulnerabilities: {results.get('total_vulnerabilities', 0)}\n\n"
+        technical_text += "Violation counts by severity:\n"
+        technical_text += f"  Critical: {results.get('critical_violations', 0)}\n"
+        technical_text += f"  High: {results.get('high_violations', 0)}\n"
+        technical_text += f"  Medium: {results.get('medium_violations', 0)}\n"
+        technical_text += f"  Low: {results.get('low_violations', 0)}\n\n"
         
         if 'violations' in results and results['violations']:
-            result_text += "Key Violations:\n"
-            result_text += "-" * 15 + "\n"
+            technical_text += "Top violations:\n"
             for i, violation in enumerate(results['violations'][:5], 1):
-                result_text += f"{i}. {violation.get('vulnerability_id', 'N/A')}\n"
-                result_text += f"   Severity: {violation.get('severity', 'N/A')}\n"
-                result_text += f"   Description: {violation.get('description', 'N/A')[:100]}...\n"
-                result_text += f"   Violated Requirements: {len(violation.get('violated_requirements', []))}\n\n"
+                technical_text += f"{i}. {violation.get('vulnerability_id', 'N/A')} | Severity: {violation.get('severity', 'N/A')}\n"
+                desc = violation.get('description', 'N/A')
+                if isinstance(desc, str):
+                    desc_display = desc[:160] + ("..." if len(desc) > 160 else "")
+                else:
+                    desc_display = 'N/A'
+                technical_text += f"   {desc_display}\n"
+                technical_text += f"   Violated requirements: {len(violation.get('violated_requirements', []))}\n"
+            technical_text += "\n"
         
         if 'recommendations' in results and results['recommendations']:
-            result_text += "Compliance Recommendations:\n"
-            result_text += "-" * 25 + "\n"
+            technical_text += "Top recommendations:\n"
             for i, rec in enumerate(results['recommendations'][:5], 1):
-                result_text += f"{i}. {rec.get('title', 'N/A')}\n"
-                result_text += f"   Priority: {rec.get('priority', 'N/A')}\n"
-                result_text += f"   Timeline: {rec.get('timeline', 'N/A')}\n"
-                result_text += f"   Effort: {rec.get('effort', 'N/A')}\n"
-                result_text += f"   Violations: {rec.get('violation_count', 0)}\n\n"
+                technical_text += f"{i}. {rec.get('title', 'N/A')} | Priority: {rec.get('priority', 'N/A')} | Timeline: {rec.get('timeline', 'N/A')} | Effort: {rec.get('effort', 'N/A')}\n"
         
-        self.compliance_results_text.insert(1.0, result_text)
+        final_text = friendly_text + technical_text
+        self.compliance_results_text.insert(1.0, final_text)
+
+    def _format_compliance_results_plain_language(self, results, standard):
+        """Return a plain-language summary of compliance results for non-technical users."""
+        # Map status to readable explanations
+        status_raw = results.get('status', 'unknown') or 'unknown'
+        status_clean = str(status_raw).replace('_', ' ').title()
+        status_explainer_map = {
+            'Compliant': 'You meet the important requirements for this standard.',
+            'Partially Compliant': 'You meet some requirements, but a few areas need attention.',
+            'Non Compliant': 'Important requirements are not met. Action is needed to reduce risk.',
+            'Unknown': 'We could not determine overall compliance from this scan.'
+        }
+        status_explainer = status_explainer_map.get(status_clean, 'Current compliance needs review.')
+        
+        score = results.get('compliance_score')
+        if isinstance(score, (int, float)):
+            score_str = f"{score}/100"
+            if score >= 85:
+                score_msg = "Strong overall posture. Keep maintaining controls."
+            elif score >= 70:
+                score_msg = "Moderate posture. Address the highlighted items to improve."
+            elif score >= 50:
+                score_msg = "Needs improvement. Prioritize the recommended actions."
+            else:
+                score_msg = "High risk exposure. Immediate action is recommended."
+        else:
+            score_str = "N/A"
+            score_msg = "Score not available from this scan."
+        
+        crit = results.get('critical_violations', 0)
+        high = results.get('high_violations', 0)
+        med = results.get('medium_violations', 0)
+        low = results.get('low_violations', 0)
+        total_issues = sum(v for v in [crit, high, med, low] if isinstance(v, int))
+        
+        # Headline
+        text = f"{standard} Compliance Overview\n" + ("=" * 50) + "\n\n"
+        text += f"Overall status: {status_clean}\n"
+        text += f"What this means: {status_explainer}\n\n"
+        text += f"Compliance score: {score_str}\n"
+        text += f"Quick take: {score_msg}\n\n"
+        
+        # Simple issue summary
+        text += "Issue summary (the higher the severity, the more urgent):\n"
+        text += f"- Critical issues: {crit}\n"
+        text += f"- High issues: {high}\n"
+        text += f"- Medium issues: {med}\n"
+        text += f"- Low issues: {low}\n"
+        text += f"Total areas to review: {total_issues}\n\n"
+        
+        # Top 3 practical actions
+        text += "Top recommended actions (start here):\n"
+        actions_added = 0
+        if 'recommendations' in results and isinstance(results['recommendations'], list) and results['recommendations']:
+            for rec in results['recommendations']:
+                if actions_added >= 3:
+                    break
+                title = rec.get('title', 'Recommended improvement')
+                timeline = rec.get('timeline', 'As soon as practical')
+                priority = rec.get('priority', 'Medium')
+                text += f"- {title} (Priority: {priority}, Timeline: {timeline})\n"
+                actions_added += 1
+        if actions_added == 0:
+            text += "- No specific actions generated. Re-run analysis or consult your IT team.\n"
+        
+        text += "\n"
+        
+        # Plain description of a few notable violations
+        if 'violations' in results and isinstance(results['violations'], list) and results['violations']:
+            text += "A few notable findings in everyday terms:\n"
+            for v in results['violations'][:3]:
+                sev = v.get('severity', 'Unknown')
+                desc = v.get('description', 'No description available')
+                if isinstance(desc, str):
+                    desc_simple = desc.split('\n')[0]
+                    if len(desc_simple) > 140:
+                        desc_simple = desc_simple[:140] + '...'
+                else:
+                    desc_simple = 'No description available'
+                text += f"- {sev} issue: {desc_simple}\n"
+            text += "\n"
+        
+        text += "Note: This view avoids technical jargon and focuses on business impact and next steps.\n"
+        return text
     
     def generate_mitigation_plan(self):
         """Generate mitigation plan for scan results"""
