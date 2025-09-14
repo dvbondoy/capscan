@@ -666,25 +666,25 @@ class CapScanGUI:
         # Input section
         self.input_frame.pack(fill=X, pady=(0, 10))
         
-        # Target input
+        # Target input with port controls on the right
         self.target_label.grid(row=0, column=0, sticky=W, padx=(0, 10), pady=5)
         self.target_entry.grid(row=0, column=1, sticky=W, padx=(0, 20), pady=5)
         
-        # Port range input
-        self.ports_label.grid(row=1, column=0, sticky=W, padx=(0, 10), pady=5)
-        self.ports_entry.grid(row=1, column=1, sticky=W, padx=(0, 20), pady=5)
+        # Port range input (moved to same row as target)
+        self.ports_label.grid(row=0, column=2, sticky=W, padx=(10, 10), pady=5)
+        self.ports_entry.grid(row=0, column=3, sticky=W, padx=(0, 10), pady=5)
         
-        # Port options
-        self.port_options_frame.grid(row=1, column=2, sticky=W, padx=(10, 0), pady=5)
+        # Port options (moved to same row as target)
+        self.port_options_frame.grid(row=0, column=4, sticky=W, padx=(10, 0), pady=5)
         self.port_preset_label.pack(side=LEFT, padx=(0, 5))
         self.port_preset_combo.pack(side=LEFT)
         
         # Scan options
-        self.options_frame.grid(row=2, column=0, columnspan=3, sticky=W, pady=10)
+        self.options_frame.grid(row=1, column=0, columnspan=5, sticky=W, pady=10)
         # Note: max_reports moved to advanced options
         
         # Advanced options frame positioning (hidden by default)
-        self.advanced_options_frame.grid(row=3, column=0, columnspan=3, sticky=EW, pady=5)
+        self.advanced_options_frame.grid(row=2, column=0, columnspan=5, sticky=EW, pady=5)
         self.advanced_options_frame.grid_remove()  # Ensure it's hidden on startup
         
         # Scoring frame positioning
@@ -702,14 +702,14 @@ class CapScanGUI:
         self.ssh_options_frame.grid_remove()  # Initially hidden
         
         # Scan buttons
-        self.scan_buttons_frame.grid(row=4, column=0, columnspan=3, pady=10)
+        self.scan_buttons_frame.grid(row=3, column=0, columnspan=5, pady=10)
         self.scan_toggle_btn.pack(side=LEFT, padx=(0, 10))
         self.save_results_btn.pack(side=LEFT, padx=(0, 10))
         self.advanced_toggle_btn.pack(side=LEFT, padx=(10, 0))
         
         # Progress bar moved to input frame
-        self.progress_bar.grid(row=5, column=0, columnspan=3, sticky=EW, pady=(5, 5))
-        self.status_label.grid(row=6, column=0, columnspan=3, sticky=W, pady=(0, 5))
+        self.progress_bar.grid(row=4, column=0, columnspan=5, sticky=EW, pady=(5, 5))
+        self.status_label.grid(row=5, column=0, columnspan=5, sticky=W, pady=(0, 5))
         
         # Results section
         self.results_frame.pack(fill=BOTH, expand=True)
@@ -2253,18 +2253,20 @@ Note: SSH scan will only run if the target has port 22 open from the network sca
         self.show_info(help_text)
     
     def test_ssh_connection(self):
-        """Test SSH connection with selected credentials."""
+        """Test SSH connection with selected credentials using the target host/IP."""
         if not self.ssh_creds_var.get():
             self.show_error("Please select SSH credentials first")
             return
         
-        test_host = simpledialog.askstring("Test SSH Connection", "Enter test host IP or hostname:")
+        # Use the target host/IP from the main input field
+        test_host = self.target_entry.get().strip()
         if not test_host:
+            self.show_error("Please enter a target host/IP first")
             return
         
         try:
             self.ssh_test_btn.config(state=DISABLED, text="Testing...")
-            self.ssh_test_status.config(text="Testing connection...")
+            self.ssh_test_status.config(text=f"Testing connection to {test_host}...")
             self.root.update()
             
             # Test connection
@@ -2274,14 +2276,14 @@ Note: SSH scan will only run if the target has port 22 open from the network sca
             )
             
             if result['success']:
-                self.ssh_test_status.config(text="✓ Connection successful", bootstyle=SUCCESS)
+                self.ssh_test_status.config(text=f"✓ Connection to {test_host} successful", bootstyle=SUCCESS)
             else:
-                self.ssh_test_status.config(text="✗ Connection failed", bootstyle=DANGER)
-                self.show_error(f"SSH connection failed: {result.get('error', 'Unknown error')}")
+                self.ssh_test_status.config(text=f"✗ Connection to {test_host} failed", bootstyle=DANGER)
+                self.show_error(f"SSH connection to {test_host} failed: {result.get('error', 'Unknown error')}")
             
         except Exception as e:
-            self.ssh_test_status.config(text="✗ Test error", bootstyle=DANGER)
-            self.show_error(f"Error testing SSH connection: {str(e)}")
+            self.ssh_test_status.config(text=f"✗ Test error for {test_host}", bootstyle=DANGER)
+            self.show_error(f"Error testing SSH connection to {test_host}: {str(e)}")
         finally:
             self.ssh_test_btn.config(state=NORMAL, text="Test Connection")
     
