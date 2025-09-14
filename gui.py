@@ -6,12 +6,15 @@ import threading
 import json
 import os
 from datetime import datetime
+from typing import List
 from engine import Scanner
 from database import Database
 from ai_service import AIService
 from compliance.analyzers import ComplianceAnalyzer
 from compliance.frameworks import ComplianceStandard
 from mitigation.engine import MitigationEngine
+from ssh_scanner import SSHAuthenticatedScanner, SSHCredentials
+from ssh_credentials_manager import SSHCredentialsManager
 
 class CapScanGUI:
     def __init__(self, db_password=None):
@@ -32,6 +35,13 @@ class CapScanGUI:
         self.scanner = Scanner()
         self.scan_thread = None
         self.is_scanning = False
+        
+        # Initialize SSH scanner
+        self.ssh_scanner = SSHAuthenticatedScanner()
+        self.ssh_credentials_manager = SSHCredentialsManager(master_password=db_password)
+        self.ssh_scan_thread = None
+        self.is_ssh_scanning = False
+        self.ssh_scan_results = {}
         
         # Initialize AI services using tgpt CLI backend
         self.ai_service = AIService(backend="tgpt")
@@ -141,6 +151,72 @@ class CapScanGUI:
         )
         # Hide checkbox by default
         self.save_to_db_check.pack_forget()
+        
+        # SSH Scan options (moved to advanced options)
+        self.ssh_options_frame = ttk.LabelFrame(self.advanced_options_frame, text="SSH Authenticated Scan", padding="5")
+        self.ssh_scan_var = tk.BooleanVar(value=False)
+        self.ssh_scan_check = ttk.Checkbutton(
+            self.ssh_options_frame, 
+            text="Enable SSH Authenticated Scan", 
+            variable=self.ssh_scan_var,
+            command=self.toggle_ssh_options
+        )
+        
+        # SSH credentials selection
+        self.ssh_creds_frame = ttk.Frame(self.ssh_options_frame)
+        self.ssh_creds_label = ttk.Label(self.ssh_creds_frame, text="SSH Credentials:")
+        self.ssh_creds_var = tk.StringVar(value="")
+        self.ssh_creds_combo = ttk.Combobox(
+            self.ssh_creds_frame,
+            textvariable=self.ssh_creds_var,
+            state="readonly",
+            width=20
+        )
+        self.ssh_creds_refresh_btn = ttk.Button(
+            self.ssh_creds_frame,
+            text="Refresh",
+            command=self.refresh_ssh_credentials,
+            bootstyle=OUTLINE,
+            width=8
+        )
+        self.ssh_creds_manage_btn = ttk.Button(
+            self.ssh_creds_frame,
+            text="Manage",
+            command=self.manage_ssh_credentials,
+            bootstyle=INFO,
+            width=8
+        )
+        
+        # SSH scan targets
+        self.ssh_targets_frame = ttk.Frame(self.ssh_options_frame)
+        self.ssh_targets_label = ttk.Label(self.ssh_targets_frame, text="SSH Targets:")
+        self.ssh_targets_var = tk.StringVar(value="")
+        self.ssh_targets_entry = ttk.Entry(
+            self.ssh_targets_frame,
+            textvariable=self.ssh_targets_var,
+            width=40
+        )
+        self.ssh_targets_help_btn = ttk.Button(
+            self.ssh_targets_frame,
+            text="?",
+            command=self.show_ssh_targets_help,
+            bootstyle=OUTLINE,
+            width=3
+        )
+        
+        # SSH scan test button
+        self.ssh_test_frame = ttk.Frame(self.ssh_options_frame)
+        self.ssh_test_btn = ttk.Button(
+            self.ssh_test_frame,
+            text="Test SSH Connection",
+            command=self.test_ssh_connection,
+            bootstyle=WARNING,
+            width=18
+        )
+        self.ssh_test_status = ttk.Label(self.ssh_test_frame, text="", bootstyle=SUCCESS)
+        
+        # Initially hide SSH options
+        self.ssh_options_frame.grid_remove()
 
         # Scoring checkbox
         self.scoring_frame = ttk.Frame(self.advanced_options_frame)
@@ -286,6 +362,10 @@ class CapScanGUI:
         self.mitigation_frame = ttk.Frame(self.results_notebook)
         self.results_notebook.add(self.mitigation_frame, text="Mitigation")
         
+        # SSH Scan tab
+        self.ssh_frame = ttk.Frame(self.results_notebook)
+        self.results_notebook.add(self.ssh_frame, text="SSH Scan")
+        
         # Database tab
         self.db_frame = ttk.Frame(self.results_notebook)
         self.results_notebook.add(self.db_frame, text="Database")
@@ -360,6 +440,9 @@ class CapScanGUI:
         
         # Mitigation Recommendations tab components
         self.create_mitigation_tab()
+        
+        # SSH Scan tab components
+        self.create_ssh_scan_tab()
         
         # Bind events
         self.vulns_tree.bind("<<TreeviewSelect>>", self.on_vuln_select)
@@ -519,6 +602,74 @@ class CapScanGUI:
         
         # Bind mitigation tree selection
         self.mitigation_tree.bind("<<TreeviewSelect>>", self.on_mitigation_select)
+    
+    def create_ssh_scan_tab(self):
+        """Create SSH Scan tab components"""
+        # SSH scan summary
+        self.ssh_summary_frame = ttk.LabelFrame(self.ssh_frame, text="SSH Scan Summary", padding="10")
+        
+        self.ssh_summary_text = tk.Text(
+            self.ssh_summary_frame, 
+            height=8, 
+            width=80, 
+            font=("Consolas", 9),
+            wrap=tk.WORD
+        )
+        self.ssh_summary_scrollbar = ttk.Scrollbar(self.ssh_summary_frame, orient=VERTICAL, command=self.ssh_summary_text.yview)
+        self.ssh_summary_text.configure(yscrollcommand=self.ssh_summary_scrollbar.set)
+        
+        # SSH vulnerabilities tree
+        self.ssh_vulns_tree_frame = ttk.Frame(self.ssh_frame)
+        self.ssh_vulns_tree = ttk.Treeview(
+            self.ssh_vulns_tree_frame,
+            columns=("CVE ID", "Score", "Type", "Package", "Description"),
+            show="headings",
+            height=8
+        )
+        
+        # Configure SSH vulnerabilities tree columns
+        self.ssh_vulns_tree.heading("CVE ID", text="CVE ID")
+        self.ssh_vulns_tree.heading("Score", text="Score")
+        self.ssh_vulns_tree.heading("Type", text="Type")
+        self.ssh_vulns_tree.heading("Package", text="Package")
+        self.ssh_vulns_tree.heading("Description", text="Description")
+        
+        self.ssh_vulns_tree.column("CVE ID", width=120)
+        self.ssh_vulns_tree.column("Score", width=80)
+        self.ssh_vulns_tree.column("Type", width=120)
+        self.ssh_vulns_tree.column("Package", width=150)
+        self.ssh_vulns_tree.column("Description", width=300)
+        
+        self.ssh_vulns_tree_scrollbar = ttk.Scrollbar(self.ssh_vulns_tree_frame, orient=VERTICAL, command=self.ssh_vulns_tree.yview)
+        self.ssh_vulns_tree.configure(yscrollcommand=self.ssh_vulns_tree_scrollbar.set)
+        
+        # SSH vulnerability details
+        self.ssh_vuln_details_frame = ttk.LabelFrame(self.ssh_frame, text="SSH Vulnerability Details", padding="5")
+        self.ssh_vuln_details_text = tk.Text(
+            self.ssh_vuln_details_frame, 
+            height=12, 
+            width=80, 
+            font=("Consolas", 9),
+            wrap=tk.WORD
+        )
+        self.ssh_vuln_details_scrollbar = ttk.Scrollbar(self.ssh_vuln_details_frame, orient=VERTICAL, command=self.ssh_vuln_details_text.yview)
+        self.ssh_vuln_details_text.configure(yscrollcommand=self.ssh_vuln_details_scrollbar.set)
+        
+        # Layout SSH Scan tab
+        self.ssh_summary_frame.pack(fill=X, pady=(0, 10))
+        self.ssh_summary_text.pack(side=LEFT, fill=BOTH, expand=True)
+        self.ssh_summary_scrollbar.pack(side=RIGHT, fill=Y)
+        
+        self.ssh_vulns_tree_frame.pack(fill=BOTH, expand=True, pady=(0, 10))
+        self.ssh_vulns_tree.pack(side=LEFT, fill=BOTH, expand=True)
+        self.ssh_vulns_tree_scrollbar.pack(side=RIGHT, fill=Y)
+        
+        self.ssh_vuln_details_frame.pack(fill=X)
+        self.ssh_vuln_details_text.pack(side=LEFT, fill=BOTH, expand=True)
+        self.ssh_vuln_details_scrollbar.pack(side=RIGHT, fill=Y)
+        
+        # Bind SSH vulnerability tree selection
+        self.ssh_vulns_tree.bind("<<TreeviewSelect>>", self.on_ssh_vuln_select)
         
     def setup_layout(self):
         """Setup the layout of all widgets"""
@@ -561,6 +712,10 @@ class CapScanGUI:
         # Database options (inside advanced frame)
         self.db_options_frame.grid(row=2, column=0, sticky=EW, pady=2)
         # Note: save_to_db_check is hidden by default but accessible
+        
+        # SSH options (inside advanced frame)
+        self.ssh_options_frame.grid(row=3, column=0, sticky=EW, pady=2)
+        self.ssh_options_frame.grid_remove()  # Initially hidden
         
         # Scan buttons
         self.scan_buttons_frame.grid(row=4, column=0, columnspan=3, pady=10)
@@ -657,6 +812,10 @@ class CapScanGUI:
             self.compliance_analysis_check.pack(side=LEFT, padx=(0, 20))
             self.mitigation_recommendations_check.pack(side=LEFT)
             self.save_to_db_check.pack(side=LEFT, padx=(0, 20))
+            
+            # Show SSH options
+            self.ssh_options_frame.grid()
+            self.setup_ssh_options_layout()
         
     def toggle_scan(self):
         """Toggle scan state (start/stop)"""
@@ -714,11 +873,17 @@ class CapScanGUI:
                 enhanced_count = self.scanner.enhance_vulnerabilities_with_scores()
                 self.root.after(0, lambda: self.status_label.config(text=f"Enhanced {enhanced_count} vulnerabilities with scores"))
             
-            # Update UI with results
-            self.root.after(0, self.scan_complete)
+            # Run SSH scan if enabled
+            if self.ssh_scan_var.get() and self.ssh_creds_var.get():
+                self.root.after(0, lambda: self.status_label.config(text="Running SSH authenticated scan..."))
+                self.run_ssh_scan_async()
+            else:
+                # Update UI with results
+                self.root.after(0, self.scan_complete)
             
         except Exception as e:
-            self.root.after(0, lambda: self.scan_error(str(e)))
+            error_msg = str(e)
+            self.root.after(0, lambda: self.scan_error(error_msg))
             
     def scan_complete(self):
         """Handle scan completion"""
@@ -1682,6 +1847,474 @@ Status: Connected
                     db.save_mitigation_recommendations(self.scan_id, recommendations)
         except Exception as e:
             print(f"Error saving mitigation plan to database: {e}")
+    
+    # SSH Scan Methods
+    def toggle_ssh_options(self):
+        """Toggle SSH options visibility."""
+        if self.ssh_scan_var.get():
+            self.ssh_options_frame.grid()
+            self.setup_ssh_options_layout()
+            self.refresh_ssh_credentials()
+        else:
+            self.ssh_options_frame.grid_remove()
+    
+    def setup_ssh_options_layout(self):
+        """Setup layout for SSH options."""
+        # SSH scan checkbox
+        self.ssh_scan_check.pack(anchor=W, pady=(0, 10))
+        
+        # SSH credentials frame
+        self.ssh_creds_frame.pack(fill=X, pady=(0, 5))
+        self.ssh_creds_label.pack(side=LEFT, padx=(0, 5))
+        self.ssh_creds_combo.pack(side=LEFT, padx=(0, 5))
+        self.ssh_creds_refresh_btn.pack(side=LEFT, padx=(0, 5))
+        self.ssh_creds_manage_btn.pack(side=LEFT)
+        
+        # SSH targets frame
+        self.ssh_targets_frame.pack(fill=X, pady=(0, 5))
+        self.ssh_targets_label.pack(side=LEFT, padx=(0, 5))
+        self.ssh_targets_entry.pack(side=LEFT, padx=(0, 5))
+        self.ssh_targets_help_btn.pack(side=LEFT)
+        
+        # SSH test frame
+        self.ssh_test_frame.pack(fill=X, pady=(0, 5))
+        self.ssh_test_btn.pack(side=LEFT, padx=(0, 10))
+        self.ssh_test_status.pack(side=LEFT)
+    
+    def refresh_ssh_credentials(self):
+        """Refresh SSH credentials list."""
+        try:
+            credentials = self.ssh_credentials_manager.list_credentials()
+            cred_names = [cred['name'] for cred in credentials]
+            self.ssh_creds_combo['values'] = cred_names
+            if cred_names and not self.ssh_creds_var.get():
+                self.ssh_creds_var.set(cred_names[0])
+        except Exception as e:
+            self.show_error(f"Error refreshing SSH credentials: {str(e)}")
+    
+    def manage_ssh_credentials(self):
+        """Open SSH credentials management dialog."""
+        try:
+            from tkinter import Toplevel, Label, Entry, Button, messagebox as mb
+            
+            # Create credentials management window
+            cred_window = Toplevel(self.root)
+            cred_window.title("Manage SSH Credentials")
+            cred_window.geometry("500x400")
+            cred_window.transient(self.root)
+            cred_window.grab_set()
+            
+            # Credentials list
+            cred_list_frame = ttk.LabelFrame(cred_window, text="Saved Credentials", padding="10")
+            cred_list_frame.pack(fill=BOTH, expand=True, padx=10, pady=10)
+            
+            # Listbox for credentials
+            cred_listbox = tk.Listbox(cred_list_frame, height=10)
+            cred_listbox.pack(fill=BOTH, expand=True, pady=(0, 10))
+            
+            # Buttons
+            button_frame = ttk.Frame(cred_list_frame)
+            button_frame.pack(fill=X)
+            
+            ttk.Button(button_frame, text="Add New", command=lambda: self.add_ssh_credential(cred_window)).pack(side=LEFT, padx=(0, 5))
+            ttk.Button(button_frame, text="Edit", command=lambda: self.edit_ssh_credential(cred_window, cred_listbox)).pack(side=LEFT, padx=(0, 5))
+            ttk.Button(button_frame, text="Delete", command=lambda: self.delete_ssh_credential(cred_window, cred_listbox)).pack(side=LEFT, padx=(0, 5))
+            ttk.Button(button_frame, text="Close", command=cred_window.destroy).pack(side=RIGHT)
+            
+            # Load credentials
+            self.load_credentials_list(cred_listbox)
+            
+        except Exception as e:
+            self.show_error(f"Error opening credentials manager: {str(e)}")
+    
+    def load_credentials_list(self, listbox):
+        """Load credentials into listbox."""
+        try:
+            listbox.delete(0, tk.END)
+            credentials = self.ssh_credentials_manager.list_credentials()
+            for cred in credentials:
+                listbox.insert(tk.END, f"{cred['name']} - {cred['username']}@{cred['port']}")
+        except Exception as e:
+            print(f"Error loading credentials list: {e}")
+    
+    def add_ssh_credential(self, parent):
+        """Add new SSH credential."""
+        try:
+            from tkinter import simpledialog
+            
+            name = simpledialog.askstring("SSH Credentials", "Enter credential name:")
+            if not name:
+                return
+            
+            username = simpledialog.askstring("SSH Credentials", "Enter username:")
+            if not username:
+                return
+            
+            password = simpledialog.askstring("SSH Credentials", "Enter password (optional):", show="*")
+            private_key = simpledialog.askstring("SSH Credentials", "Enter private key path (optional):")
+            passphrase = simpledialog.askstring("SSH Credentials", "Enter passphrase (optional):", show="*")
+            
+            port = simpledialog.askinteger("SSH Credentials", "Enter SSH port:", initialvalue=22)
+            if not port:
+                port = 22
+            
+            success = self.ssh_credentials_manager.save_credentials(
+                name=name,
+                username=username,
+                password=password,
+                private_key_path=private_key,
+                passphrase=passphrase,
+                port=port
+            )
+            
+            if success:
+                self.show_info(f"SSH credentials '{name}' saved successfully")
+                self.refresh_ssh_credentials()
+            else:
+                self.show_error("Failed to save SSH credentials")
+                
+        except Exception as e:
+            self.show_error(f"Error adding SSH credential: {str(e)}")
+    
+    def edit_ssh_credential(self, parent, listbox):
+        """Edit SSH credential."""
+        selection = listbox.curselection()
+        if not selection:
+            self.show_error("Please select a credential to edit")
+            return
+        
+        # Get selected credential name
+        selected_text = listbox.get(selection[0])
+        cred_name = selected_text.split(' - ')[0]
+        
+        # Load credential data
+        cred_data = self.ssh_credentials_manager.get_credentials(cred_name)
+        if not cred_data:
+            self.show_error("Credential not found")
+            return
+        
+        # For now, just show info - full edit dialog would be more complex
+        info_text = f"Name: {cred_data['name']}\n"
+        info_text += f"Username: {cred_data['username']}\n"
+        info_text += f"Port: {cred_data['port']}\n"
+        info_text += f"Has Password: {'Yes' if cred_data.get('password') else 'No'}\n"
+        info_text += f"Has Private Key: {'Yes' if cred_data.get('private_key_path') else 'No'}\n"
+        info_text += f"Last Used: {cred_data.get('last_used', 'Never')}"
+        
+        self.show_info(info_text)
+    
+    def delete_ssh_credential(self, parent, listbox):
+        """Delete SSH credential."""
+        selection = listbox.curselection()
+        if not selection:
+            self.show_error("Please select a credential to delete")
+            return
+        
+        # Get selected credential name
+        selected_text = listbox.get(selection[0])
+        cred_name = selected_text.split(' - ')[0]
+        
+        # Confirm deletion
+        if messagebox.askyesno("Confirm Delete", f"Are you sure you want to delete '{cred_name}'?"):
+            success = self.ssh_credentials_manager.delete_credentials(cred_name)
+            if success:
+                self.show_info(f"SSH credentials '{cred_name}' deleted successfully")
+                self.load_credentials_list(listbox)
+                self.refresh_ssh_credentials()
+            else:
+                self.show_error("Failed to delete SSH credentials")
+    
+    def show_ssh_targets_help(self):
+        """Show help for SSH targets format."""
+        help_text = """SSH Targets Format:
+        
+• Single IP: 192.168.1.100
+• Multiple IPs: 192.168.1.100,192.168.1.101,192.168.1.102
+• IP Range: 192.168.1.100-192.168.1.110
+• CIDR: 192.168.1.0/24
+• Hostnames: server1.example.com,server2.example.com
+
+Note: SSH scan will only run on hosts that have port 22 open from the network scan."""
+        
+        self.show_info(help_text)
+    
+    def test_ssh_connection(self):
+        """Test SSH connection with selected credentials."""
+        if not self.ssh_creds_var.get():
+            self.show_error("Please select SSH credentials first")
+            return
+        
+        test_host = simpledialog.askstring("Test SSH Connection", "Enter test host IP or hostname:")
+        if not test_host:
+            return
+        
+        try:
+            self.ssh_test_btn.config(state=DISABLED, text="Testing...")
+            self.ssh_test_status.config(text="Testing connection...")
+            self.root.update()
+            
+            # Test connection
+            result = self.ssh_credentials_manager.test_credentials(
+                self.ssh_creds_var.get(), 
+                test_host
+            )
+            
+            if result['success']:
+                self.ssh_test_status.config(text="✓ Connection successful", bootstyle=SUCCESS)
+            else:
+                self.ssh_test_status.config(text="✗ Connection failed", bootstyle=DANGER)
+                self.show_error(f"SSH connection failed: {result.get('error', 'Unknown error')}")
+            
+        except Exception as e:
+            self.ssh_test_status.config(text="✗ Test error", bootstyle=DANGER)
+            self.show_error(f"Error testing SSH connection: {str(e)}")
+        finally:
+            self.ssh_test_btn.config(state=NORMAL, text="Test SSH Connection")
+    
+    
+    def update_ssh_scan_results(self):
+        """Update UI with SSH scan results."""
+        if not self.ssh_scan_results:
+            print("DEBUG: No SSH scan results to process")
+            return
+        
+        print(f"DEBUG: SSH scan results keys: {list(self.ssh_scan_results.keys())}")
+        print(f"DEBUG: SSH scan vulnerabilities count: {len(self.ssh_scan_results.get('vulnerabilities', []))}")
+        print(f"DEBUG: SSH scan hosts count: {len(self.ssh_scan_results.get('hosts', {}))}")
+        
+        # Add SSH vulnerabilities to main scanner results
+        ssh_vulns = self.ssh_scan_results.get('vulnerabilities', [])
+        if ssh_vulns and hasattr(self.scanner, 'vulnerabilities'):
+            print(f"DEBUG: Adding {len(ssh_vulns)} SSH vulnerabilities to main scanner")
+            self.scanner.vulnerabilities.extend(ssh_vulns)
+        else:
+            print(f"DEBUG: No SSH vulnerabilities to add. ssh_vulns: {len(ssh_vulns)}, hasattr: {hasattr(self.scanner, 'vulnerabilities')}")
+        
+        # Update main summary
+        self.update_summary()
+        self.update_vulnerabilities()
+        self.update_statistics()
+        
+        # Update SSH scan display
+        self.update_ssh_scan_display()
+        
+        # Show completion message
+        summary = self.ssh_scanner.get_scan_summary()
+        self.show_info(f"SSH scan completed: {summary.get('successful_scans', 0)}/{summary.get('total_hosts', 0)} hosts successful")
+    
+    def run_ssh_scan_async(self):
+        """Run SSH scan asynchronously."""
+        try:
+            # Get SSH targets
+            ssh_targets_text = self.ssh_targets_var.get().strip()
+            if not ssh_targets_text:
+                # Use targets from network scan that have SSH open
+                ssh_targets = self._get_ssh_enabled_targets()
+            else:
+                # Parse SSH targets
+                ssh_targets = self._parse_ssh_targets(ssh_targets_text)
+            
+            if not ssh_targets:
+                self.root.after(0, lambda: self.status_label.config(text="No SSH-enabled targets found"))
+                self.root.after(0, self.scan_complete)
+                return
+            
+            # Run SSH scan in thread
+            self.ssh_scan_thread = threading.Thread(
+                target=self._run_ssh_scan_thread, 
+                args=(ssh_targets, self.ssh_creds_var.get())
+            )
+            self.ssh_scan_thread.daemon = True
+            self.ssh_scan_thread.start()
+            
+        except Exception as e:
+            error_msg = f"SSH scan setup failed: {str(e)}"
+            self.root.after(0, lambda: self.scan_error(error_msg))
+    
+    def _run_ssh_scan_thread(self, targets, credentials_name):
+        """Run SSH scan in separate thread."""
+        try:
+            # Create a new SSH scanner instance for this thread
+            thread_ssh_scanner = SSHAuthenticatedScanner()
+            
+            # Get credentials
+            credentials_data = self.ssh_credentials_manager.get_credentials(credentials_name)
+            if not credentials_data:
+                self.root.after(0, lambda: self.show_error("SSH credentials not found"))
+                return
+            
+            # Convert to SSH credentials object
+            ssh_creds = SSHCredentials(
+                username=credentials_data['username'],
+                password=credentials_data.get('password'),
+                private_key_path=credentials_data.get('private_key_path'),
+                passphrase=credentials_data.get('passphrase'),
+                port=credentials_data['port'],
+                timeout=credentials_data['timeout']
+            )
+            
+            # Run SSH scan in this thread
+            ssh_scan_results = thread_ssh_scanner.scan_hosts_with_ssh(targets, ssh_creds)
+            
+            # Store results and update UI on main thread
+            self.ssh_scan_results = ssh_scan_results
+            self.ssh_scanner = thread_ssh_scanner  # Update the main scanner reference
+            self.root.after(0, self.update_ssh_scan_results)
+            self.root.after(0, self.scan_complete)
+            
+        except Exception as e:
+            error_msg = f"SSH scan failed: {str(e)}"
+            self.root.after(0, lambda: self.scan_error(error_msg))
+    
+    def _get_ssh_enabled_targets(self):
+        """Get targets from network scan that have SSH port open."""
+        ssh_targets = []
+        
+        if not self.scanner.scan_results:
+            return ssh_targets
+        
+        for host_ip, host_info in self.scanner.scan_results.get('hosts', {}).items():
+            ports = host_info.get('ports', {})
+            for port, port_info in ports.items():
+                if port_info.get('state') == 'open' and '22' in port:
+                    ssh_targets.append(host_ip)
+                    break
+        
+        return ssh_targets
+    
+    def _parse_ssh_targets(self, targets_text):
+        """Parse SSH targets from text input."""
+        targets = []
+        
+        # Split by comma
+        for target in targets_text.split(','):
+            target = target.strip()
+            if target:
+                # Handle IP ranges
+                if '-' in target and '.' in target:
+                    # IP range like 192.168.1.100-192.168.1.110
+                    start_ip, end_ip = target.split('-', 1)
+                    start_parts = start_ip.split('.')
+                    end_parts = end_ip.split('.')
+                    
+                    if len(start_parts) == 4 and len(end_parts) == 4:
+                        # Generate IP range
+                        start_last = int(start_parts[3])
+                        end_last = int(end_parts[3])
+                        
+                        for i in range(start_last, end_last + 1):
+                            targets.append(f"{start_parts[0]}.{start_parts[1]}.{start_parts[2]}.{i}")
+                else:
+                    targets.append(target)
+        
+        return targets
+    
+    def on_ssh_vuln_select(self, event):
+        """Handle SSH vulnerability selection"""
+        selection = self.ssh_vulns_tree.selection()
+        if not selection:
+            return
+        
+        item = self.ssh_vulns_tree.item(selection[0])
+        cve_id = item['values'][0]
+        
+        # Find the SSH vulnerability details
+        ssh_vulns = self.ssh_scan_results.get('vulnerabilities', [])
+        vuln_details = None
+        for vuln in ssh_vulns:
+            if vuln.get('cve_id') == cve_id:
+                vuln_details = vuln
+                break
+        
+        if vuln_details:
+            details_text = f"""
+SSH Vulnerability Details
+{'='*30}
+CVE ID: {vuln_details.get('cve_id', 'N/A')}
+Score: {vuln_details.get('score', 'N/A')}
+Type: {vuln_details.get('vulnerability_type', 'N/A')}
+Package: {vuln_details.get('package_name', 'N/A')} {vuln_details.get('package_version', '')}
+Description: {vuln_details.get('description', 'N/A')}
+
+System Information:
+Host IP: {vuln_details.get('host_ip', 'N/A')}
+OS Distro: {vuln_details.get('os_distro', 'N/A')}
+Kernel: {vuln_details.get('kernel_version', 'N/A')}
+Architecture: {vuln_details.get('architecture', 'N/A')}
+
+Exploit Information:
+Exploit ID: {vuln_details.get('exploit_id', 'N/A')}
+Attack Type: {vuln_details.get('attack_type', 'N/A')}
+Platform: {vuln_details.get('platform', 'N/A')}
+Verified: {vuln_details.get('verified', False)}
+Complexity: {vuln_details.get('complexity', 'N/A')}
+
+Discovery Method: {vuln_details.get('discovery_method', 'N/A')}
+Scan Time: {vuln_details.get('scan_time', 'N/A')}
+
+References:
+"""
+            for ref in vuln_details.get('references', []):
+                details_text += f"  - {ref}\n"
+            
+            if vuln_details.get('tags'):
+                details_text += f"\nTags: {', '.join(vuln_details.get('tags', []))}\n"
+            
+            self.ssh_vuln_details_text.delete(1.0, tk.END)
+            self.ssh_vuln_details_text.insert(1.0, details_text)
+    
+    def update_ssh_scan_display(self):
+        """Update SSH scan display with results."""
+        if not self.ssh_scan_results:
+            return
+        
+        # Update SSH summary
+        summary = self.ssh_scanner.get_scan_summary()
+        ssh_summary_text = f"""
+SSH AUTHENTICATED SCAN SUMMARY
+{'='*50}
+Total Hosts: {summary.get('total_hosts', 0)}
+Successful Scans: {summary.get('successful_scans', 0)}
+Failed Scans: {summary.get('failed_scans', 0)}
+SSH Vulnerabilities Found: {summary.get('total_vulnerabilities', 0)}
+
+Credentials Used: {self.ssh_scan_results.get('credentials_used', {}).get('username', 'N/A')}@{self.ssh_scan_results.get('credentials_used', {}).get('port', 'N/A')}
+Authentication Method: {self.ssh_scan_results.get('credentials_used', {}).get('auth_method', 'N/A')}
+
+Vulnerability Types:
+"""
+        for vuln_type, count in summary.get('vulnerability_types', {}).items():
+            ssh_summary_text += f"  {vuln_type}: {count}\n"
+        
+        # Add host details
+        ssh_summary_text += "\nHost Details:\n"
+        for host_ip, host_info in self.ssh_scan_results.get('hosts', {}).items():
+            status = host_info.get('status', 'unknown')
+            system_info = host_info.get('system_info')
+            if system_info:
+                ssh_summary_text += f"  {host_ip}: {status} - {system_info.distro} {system_info.kernel_version}\n"
+            else:
+                ssh_summary_text += f"  {host_ip}: {status}\n"
+        
+        self.ssh_summary_text.delete(1.0, tk.END)
+        self.ssh_summary_text.insert(1.0, ssh_summary_text)
+        
+        # Update SSH vulnerabilities tree
+        for item in self.ssh_vulns_tree.get_children():
+            self.ssh_vulns_tree.delete(item)
+        
+        ssh_vulns = self.ssh_scan_results.get('vulnerabilities', [])
+        for vuln in ssh_vulns:
+            cve_id = vuln.get('cve_id', 'N/A')
+            score = vuln.get('score', 'N/A')
+            vuln_type = vuln.get('vulnerability_type', 'N/A')
+            package = vuln.get('package_name', 'N/A')
+            description = vuln.get('description', 'N/A')
+            
+            # Truncate description for display
+            display_desc = description[:60] + "..." if len(description) > 60 else description
+            
+            self.ssh_vulns_tree.insert("", "end", values=(cve_id, score, vuln_type, package, display_desc))
         
     def run(self):
         """Start the GUI application"""
