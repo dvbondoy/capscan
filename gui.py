@@ -154,7 +154,7 @@ class CapScanGUI:
         
         # SSH Scan options (moved to advanced options)
         self.ssh_options_frame = ttk.LabelFrame(self.advanced_options_frame, text="SSH Authenticated Scan", padding="5")
-        self.ssh_scan_var = tk.BooleanVar(value=False)
+        self.ssh_scan_var = tk.BooleanVar(value=True)
         self.ssh_scan_check = ttk.Checkbutton(
             self.ssh_options_frame, 
             text="Enable SSH Authenticated Scan", 
@@ -186,37 +186,21 @@ class CapScanGUI:
             bootstyle=INFO,
             width=8
         )
-        
-        # SSH scan targets
-        self.ssh_targets_frame = ttk.Frame(self.ssh_options_frame)
-        self.ssh_targets_label = ttk.Label(self.ssh_targets_frame, text="SSH Targets:")
-        self.ssh_targets_var = tk.StringVar(value="")
-        self.ssh_targets_entry = ttk.Entry(
-            self.ssh_targets_frame,
-            textvariable=self.ssh_targets_var,
-            width=40
-        )
-        self.ssh_targets_help_btn = ttk.Button(
-            self.ssh_targets_frame,
-            text="?",
-            command=self.show_ssh_targets_help,
-            bootstyle=OUTLINE,
-            width=3
-        )
-        
-        # SSH scan test button
-        self.ssh_test_frame = ttk.Frame(self.ssh_options_frame)
         self.ssh_test_btn = ttk.Button(
-            self.ssh_test_frame,
-            text="Test SSH Connection",
+            self.ssh_creds_frame,
+            text="Test Connection",
             command=self.test_ssh_connection,
             bootstyle=WARNING,
-            width=18
+            width=12
         )
-        self.ssh_test_status = ttk.Label(self.ssh_test_frame, text="", bootstyle=SUCCESS)
         
-        # Initially hide SSH options
-        self.ssh_options_frame.grid_remove()
+        # SSH scan targets - removed, will use main target instead
+        
+        # SSH test status label (moved to credentials frame)
+        self.ssh_test_status = ttk.Label(self.ssh_creds_frame, text="", bootstyle=SUCCESS)
+        
+        # Initially show SSH options since checkbox is checked by default
+        # self.ssh_options_frame.grid_remove()  # Commented out since SSH is enabled by default
 
         # Scoring checkbox
         self.scoring_frame = ttk.Frame(self.advanced_options_frame)
@@ -813,7 +797,7 @@ class CapScanGUI:
             self.mitigation_recommendations_check.pack(side=LEFT)
             self.save_to_db_check.pack(side=LEFT, padx=(0, 20))
             
-            # Show SSH options
+            # Show SSH options (already enabled by default)
             self.ssh_options_frame.grid()
             self.setup_ssh_options_layout()
         
@@ -938,6 +922,14 @@ class CapScanGUI:
         """Update summary display"""
         summary = self.scanner.get_scan_summary()
         
+        # Get SSH scan summary if available
+        ssh_summary = {}
+        if hasattr(self, 'ssh_scanner') and self.ssh_scanner:
+            try:
+                ssh_summary = self.ssh_scanner.get_scan_summary()
+            except:
+                ssh_summary = {}
+        
         summary_text = f"""
 VULNERABILITY SCAN SUMMARY
 {'='*50}
@@ -955,7 +947,238 @@ Severity Breakdown:
 XML Output: {summary.get('xml_output_path', 'N/A')}
 """
         
+        # Add SSH scan results if available
+        if ssh_summary and ssh_summary.get('total_hosts', 0) > 0:
+            summary_text += f"""
+
+SSH AUTHENTICATED SCAN SUMMARY
+{'='*50}
+SSH Hosts Scanned: {ssh_summary.get('total_hosts', 0)}
+Successful SSH Scans: {ssh_summary.get('successful_scans', 0)}
+Failed SSH Scans: {ssh_summary.get('failed_scans', 0)}
+SSH Vulnerabilities Found: {ssh_summary.get('total_vulnerabilities', 0)}
+
+SSH Vulnerability Types:
+"""
+            for vuln_type, count in ssh_summary.get('vulnerability_types', {}).items():
+                summary_text += f"  {vuln_type}: {count}\n"
+            
+            # Add SSH host details
+            if hasattr(self, 'ssh_scan_results') and self.ssh_scan_results:
+                summary_text += "\nSSH Host Details:\n"
+                for host_ip, host_info in self.ssh_scan_results.get('hosts', {}).items():
+                    status = host_info.get('status', 'unknown')
+                    system_info = host_info.get('system_info')
+                    if system_info:
+                        summary_text += f"  {host_ip}: {status} - {system_info.distro} {system_info.kernel_version}\n"
+                    else:
+                        summary_text += f"  {host_ip}: {status}\n"
+            
+            # Add brief scan comparison summary
+            summary_text += self._generate_brief_scan_comparison()
+            
+        elif hasattr(self, 'ssh_scan_var') and self.ssh_scan_var.get():
+            summary_text += f"""
+
+SSH AUTHENTICATED SCAN
+{'='*50}
+Status: Enabled but no SSH scan results available
+Note: SSH scan requires valid credentials and SSH port 22 to be open
+"""
+        
         self.summary_text.insert(1.0, summary_text)
+    
+    def _generate_brief_scan_comparison(self):
+        """Generate brief scan comparison summary for the summary tab."""
+        try:
+            # Get vulnerabilities from both scans
+            network_vulns = self.scanner.get_vulnerabilities() if hasattr(self.scanner, 'get_vulnerabilities') else []
+            ssh_vulns = self.ssh_scan_results.get('vulnerabilities', []) if hasattr(self, 'ssh_scan_results') and self.ssh_scan_results else []
+            
+            # Extract CVE IDs for comparison
+            network_cves = set()
+            ssh_cves = set()
+            
+            for vuln in network_vulns:
+                cve_id = vuln.get('cve_id')
+                if cve_id and cve_id != 'N/A':
+                    network_cves.add(cve_id)
+            
+            for vuln in ssh_vulns:
+                cve_id = vuln.get('cve_id')
+                if cve_id and cve_id != 'N/A':
+                    ssh_cves.add(cve_id)
+            
+            # Calculate overlaps and unique vulnerabilities
+            common_cves = network_cves.intersection(ssh_cves)
+            network_only_cves = network_cves - ssh_cves
+            ssh_only_cves = ssh_cves - network_cves
+            
+            return f"""
+
+SCAN COMPARISON SUMMARY
+{'-'*30}
+Common Vulnerabilities: {len(common_cves)}
+Network-Only: {len(network_only_cves)}
+SSH-Only: {len(ssh_only_cves)}
+Total Unique: {len(network_cves) + len(ssh_cves) - len(common_cves)}
+
+Note: See Statistics tab for detailed comparison analysis
+"""
+            
+        except Exception as e:
+            return f"\n\nSCAN COMPARISON ERROR\n{'-'*25}\nError generating comparison: {str(e)}\n"
+    
+    def _generate_scan_comparison(self):
+        """Generate comparison analysis between network scan and SSH scan results."""
+        try:
+            # Get vulnerabilities from both scans
+            network_vulns = self.scanner.get_vulnerabilities() if hasattr(self.scanner, 'get_vulnerabilities') else []
+            ssh_vulns = self.ssh_scan_results.get('vulnerabilities', []) if hasattr(self, 'ssh_scan_results') and self.ssh_scan_results else []
+            
+            # Extract CVE IDs for comparison
+            network_cves = set()
+            ssh_cves = set()
+            
+            for vuln in network_vulns:
+                cve_id = vuln.get('cve_id')
+                if cve_id and cve_id != 'N/A':
+                    network_cves.add(cve_id)
+            
+            for vuln in ssh_vulns:
+                cve_id = vuln.get('cve_id')
+                if cve_id and cve_id != 'N/A':
+                    ssh_cves.add(cve_id)
+            
+            # Calculate overlaps and unique vulnerabilities
+            common_cves = network_cves.intersection(ssh_cves)
+            network_only_cves = network_cves - ssh_cves
+            ssh_only_cves = ssh_cves - network_cves
+            
+            # Calculate severity breakdown for each category
+            common_high = self._count_vulns_by_severity(network_vulns + ssh_vulns, common_cves, 'high')
+            common_medium = self._count_vulns_by_severity(network_vulns + ssh_vulns, common_cves, 'medium')
+            common_low = self._count_vulns_by_severity(network_vulns + ssh_vulns, common_cves, 'low')
+            
+            network_only_high = self._count_vulns_by_severity(network_vulns, network_only_cves, 'high')
+            network_only_medium = self._count_vulns_by_severity(network_vulns, network_only_cves, 'medium')
+            network_only_low = self._count_vulns_by_severity(network_vulns, network_only_cves, 'low')
+            
+            ssh_only_high = self._count_vulns_by_severity(ssh_vulns, ssh_only_cves, 'high')
+            ssh_only_medium = self._count_vulns_by_severity(ssh_vulns, ssh_only_cves, 'medium')
+            ssh_only_low = self._count_vulns_by_severity(ssh_vulns, ssh_only_cves, 'low')
+            
+            # Generate comparison text
+            comparison_text = f"""
+
+SCAN COMPARISON ANALYSIS
+{'='*50}
+Total Network Scan Vulnerabilities: {len(network_cves)}
+Total SSH Scan Vulnerabilities: {len(ssh_cves)}
+Common Vulnerabilities (Found in Both): {len(common_cves)}
+Network-Only Vulnerabilities: {len(network_only_cves)}
+SSH-Only Vulnerabilities: {len(ssh_only_cves)}
+
+COMMON VULNERABILITIES (Found in Both Scans)
+{'-'*45}
+Count: {len(common_cves)}
+Severity Breakdown:
+  High: {common_high}
+  Medium: {common_medium}
+  Low: {common_low}
+
+Top Common CVEs:
+"""
+            # Show top 5 common CVEs
+            for i, cve in enumerate(list(common_cves)[:5], 1):
+                comparison_text += f"  {i}. {cve}\n"
+            
+            if len(common_cves) > 5:
+                comparison_text += f"  ... and {len(common_cves) - 5} more\n"
+            
+            comparison_text += f"""
+
+NETWORK-ONLY VULNERABILITIES (Not Found in SSH Scan)
+{'-'*50}
+Count: {len(network_only_cves)}
+Severity Breakdown:
+  High: {network_only_high}
+  Medium: {network_only_medium}
+  Low: {network_only_low}
+
+Top Network-Only CVEs:
+"""
+            # Show top 5 network-only CVEs
+            for i, cve in enumerate(list(network_only_cves)[:5], 1):
+                comparison_text += f"  {i}. {cve}\n"
+            
+            if len(network_only_cves) > 5:
+                comparison_text += f"  ... and {len(network_only_cves) - 5} more\n"
+            
+            comparison_text += f"""
+
+SSH-ONLY VULNERABILITIES (Not Found in Network Scan)
+{'-'*50}
+Count: {len(ssh_only_cves)}
+Severity Breakdown:
+  High: {ssh_only_high}
+  Medium: {ssh_only_medium}
+  Low: {ssh_only_low}
+
+Top SSH-Only CVEs:
+"""
+            # Show top 5 SSH-only CVEs
+            for i, cve in enumerate(list(ssh_only_cves)[:5], 1):
+                comparison_text += f"  {i}. {cve}\n"
+            
+            if len(ssh_only_cves) > 5:
+                comparison_text += f"  ... and {len(ssh_only_cves) - 5} more\n"
+            
+            # Add analysis insights
+            comparison_text += f"""
+
+ANALYSIS INSIGHTS
+{'-'*20}
+"""
+            if len(common_cves) > 0:
+                comparison_text += f"• {len(common_cves)} vulnerabilities were detected by both scan methods\n"
+            
+            if len(network_only_cves) > 0:
+                comparison_text += f"• Network scan found {len(network_only_cves)} additional vulnerabilities not detected by SSH scan\n"
+            
+            if len(ssh_only_cves) > 0:
+                comparison_text += f"• SSH scan found {len(ssh_only_cves)} additional vulnerabilities not detected by network scan\n"
+            
+            if len(common_cves) == 0 and len(network_only_cves) > 0 and len(ssh_only_cves) > 0:
+                comparison_text += "• No overlap between scan methods - they detected completely different vulnerability sets\n"
+            elif len(common_cves) > 0:
+                overlap_percentage = (len(common_cves) / max(len(network_cves), len(ssh_cves))) * 100
+                comparison_text += f"• Scan overlap: {overlap_percentage:.1f}% of vulnerabilities were found by both methods\n"
+            
+            return comparison_text
+            
+        except Exception as e:
+            return f"\n\nSCAN COMPARISON ERROR\n{'-'*25}\nError generating comparison: {str(e)}\n"
+    
+    def _count_vulns_by_severity(self, vulnerabilities, cve_set, severity_level):
+        """Count vulnerabilities by severity level for a given set of CVEs."""
+        count = 0
+        for vuln in vulnerabilities:
+            cve_id = vuln.get('cve_id')
+            if cve_id in cve_set:
+                score = vuln.get('score')
+                if score == 'N/A' or score is None:
+                    vuln_severity = 'unknown'
+                elif score >= 7.0:
+                    vuln_severity = 'high'
+                elif score >= 4.0:
+                    vuln_severity = 'medium'
+                else:
+                    vuln_severity = 'low'
+                
+                if vuln_severity == severity_level:
+                    count += 1
+        return count
         
     def update_vulnerabilities(self):
         """Update vulnerabilities display"""
@@ -1016,6 +1239,10 @@ VULNERABILITY DETAILS
    Raw Output: {vuln.get('raw_output', 'N/A')}
    {'-'*40}
 """
+        
+        # Add detailed scan comparison analysis if SSH scan results are available
+        if hasattr(self, 'ssh_scan_results') and self.ssh_scan_results and self.ssh_scan_results.get('vulnerabilities'):
+            stats_text += self._generate_scan_comparison()
         
         self.stats_text.insert(1.0, stats_text)
         
@@ -1868,17 +2095,8 @@ Status: Connected
         self.ssh_creds_label.pack(side=LEFT, padx=(0, 5))
         self.ssh_creds_combo.pack(side=LEFT, padx=(0, 5))
         self.ssh_creds_refresh_btn.pack(side=LEFT, padx=(0, 5))
-        self.ssh_creds_manage_btn.pack(side=LEFT)
-        
-        # SSH targets frame
-        self.ssh_targets_frame.pack(fill=X, pady=(0, 5))
-        self.ssh_targets_label.pack(side=LEFT, padx=(0, 5))
-        self.ssh_targets_entry.pack(side=LEFT, padx=(0, 5))
-        self.ssh_targets_help_btn.pack(side=LEFT)
-        
-        # SSH test frame
-        self.ssh_test_frame.pack(fill=X, pady=(0, 5))
-        self.ssh_test_btn.pack(side=LEFT, padx=(0, 10))
+        self.ssh_creds_manage_btn.pack(side=LEFT, padx=(0, 5))
+        self.ssh_test_btn.pack(side=LEFT, padx=(0, 5))
         self.ssh_test_status.pack(side=LEFT)
     
     def refresh_ssh_credentials(self):
@@ -2025,16 +2243,12 @@ Status: Connected
                 self.show_error("Failed to delete SSH credentials")
     
     def show_ssh_targets_help(self):
-        """Show help for SSH targets format."""
-        help_text = """SSH Targets Format:
+        """Show help for SSH targets format - now using main target."""
+        help_text = """SSH Scanning:
         
-• Single IP: 192.168.1.100
-• Multiple IPs: 192.168.1.100,192.168.1.101,192.168.1.102
-• IP Range: 192.168.1.100-192.168.1.110
-• CIDR: 192.168.1.0/24
-• Hostnames: server1.example.com,server2.example.com
+SSH scan will use the same target host/IP as the main network scan.
 
-Note: SSH scan will only run on hosts that have port 22 open from the network scan."""
+Note: SSH scan will only run if the target has port 22 open from the network scan."""
         
         self.show_info(help_text)
     
@@ -2069,7 +2283,7 @@ Note: SSH scan will only run on hosts that have port 22 open from the network sc
             self.ssh_test_status.config(text="✗ Test error", bootstyle=DANGER)
             self.show_error(f"Error testing SSH connection: {str(e)}")
         finally:
-            self.ssh_test_btn.config(state=NORMAL, text="Test SSH Connection")
+            self.ssh_test_btn.config(state=NORMAL, text="Test Connection")
     
     
     def update_ssh_scan_results(self):
@@ -2105,19 +2319,22 @@ Note: SSH scan will only run on hosts that have port 22 open from the network sc
     def run_ssh_scan_async(self):
         """Run SSH scan asynchronously."""
         try:
-            # Get SSH targets
-            ssh_targets_text = self.ssh_targets_var.get().strip()
-            if not ssh_targets_text:
-                # Use targets from network scan that have SSH open
-                ssh_targets = self._get_ssh_enabled_targets()
-            else:
-                # Parse SSH targets
-                ssh_targets = self._parse_ssh_targets(ssh_targets_text)
-            
-            if not ssh_targets:
-                self.root.after(0, lambda: self.status_label.config(text="No SSH-enabled targets found"))
+            # Use the main target from the network scan
+            main_target = self.target_entry.get().strip()
+            if not main_target:
+                self.root.after(0, lambda: self.status_label.config(text="No target specified for SSH scan"))
                 self.root.after(0, self.scan_complete)
                 return
+            
+            # Check if the target has SSH port open from network scan
+            ssh_targets = self._get_ssh_enabled_targets()
+            if main_target not in ssh_targets:
+                # Check if port 22 is open for the main target
+                if not self._is_ssh_port_open(main_target):
+                    self.root.after(0, lambda: self.status_label.config(text=f"SSH port 22 not open on {main_target}"))
+                    self.root.after(0, self.scan_complete)
+                    return
+                ssh_targets = [main_target]
             
             # Run SSH scan in thread
             self.ssh_scan_thread = threading.Thread(
@@ -2182,32 +2399,20 @@ Note: SSH scan will only run on hosts that have port 22 open from the network sc
         
         return ssh_targets
     
-    def _parse_ssh_targets(self, targets_text):
-        """Parse SSH targets from text input."""
-        targets = []
+    def _is_ssh_port_open(self, target):
+        """Check if SSH port 22 is open for a specific target."""
+        if not self.scanner.scan_results:
+            return False
         
-        # Split by comma
-        for target in targets_text.split(','):
-            target = target.strip()
-            if target:
-                # Handle IP ranges
-                if '-' in target and '.' in target:
-                    # IP range like 192.168.1.100-192.168.1.110
-                    start_ip, end_ip = target.split('-', 1)
-                    start_parts = start_ip.split('.')
-                    end_parts = end_ip.split('.')
-                    
-                    if len(start_parts) == 4 and len(end_parts) == 4:
-                        # Generate IP range
-                        start_last = int(start_parts[3])
-                        end_last = int(end_parts[3])
-                        
-                        for i in range(start_last, end_last + 1):
-                            targets.append(f"{start_parts[0]}.{start_parts[1]}.{start_parts[2]}.{i}")
-                else:
-                    targets.append(target)
+        host_info = self.scanner.scan_results.get('hosts', {}).get(target, {})
+        ports = host_info.get('ports', {})
         
-        return targets
+        for port, port_info in ports.items():
+            if port_info.get('state') == 'open' and '22' in port:
+                return True
+        
+        return False
+    
     
     def on_ssh_vuln_select(self, event):
         """Handle SSH vulnerability selection"""
