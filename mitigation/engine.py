@@ -8,6 +8,12 @@ import json
 from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime, timedelta
 from enum import Enum
+import sys
+import os
+
+# Add the parent directory to the path to import services
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from services.exploitdb_service import ExploitDBService
 
 
 class MitigationPriority(Enum):
@@ -48,6 +54,11 @@ class MitigationEngine:
         """
         self.ai_service = ai_service
         self.mitigation_templates = self._load_mitigation_templates()
+        try:
+            self.exploitdb_service = ExploitDBService()
+        except Exception as e:
+            print(f"Warning: Could not initialize ExploitDB service: {e}")
+            self.exploitdb_service = None
     
     def generate_mitigation_plan(self, scan_results: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -116,7 +127,7 @@ class MitigationEngine:
         return groups
     
     def _generate_vulnerability_mitigation(self, vulnerability: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        """Generate mitigation recommendation for a specific vulnerability."""
+        """Generate mitigation recommendation for a specific vulnerability with enhanced context."""
         cve_id = vulnerability.get('cve_id', 'Unknown')
         severity = vulnerability.get('severity', 'unknown').lower()
         score = vulnerability.get('score', 0) or 0
@@ -124,12 +135,15 @@ class MitigationEngine:
         # Determine priority based on severity and score
         priority = self._determine_priority(severity, score)
         
-        # Get mitigation template based on vulnerability type
-        vuln_type = self._identify_vulnerability_type(vulnerability)
+        # Get enhanced vulnerability type using enriched data
+        vuln_type = self._identify_enhanced_vulnerability_type(vulnerability)
         template = self._get_mitigation_template(vuln_type)
         
-        # Generate recommendations
-        recommendations = self._generate_recommendations(vulnerability, template, priority)
+        # Get ExploitDB information for this CVE
+        exploit_info = self._get_exploit_information(cve_id)
+        
+        # Generate recommendations with enhanced context
+        recommendations = self._generate_enhanced_recommendations(vulnerability, template, priority, exploit_info)
         
         if not recommendations:
             return None
@@ -144,11 +158,24 @@ class MitigationEngine:
             'priority': priority.value,
             'host_ip': vulnerability.get('host_ip', ''),
             'port': vulnerability.get('port', ''),
+            'service_name': vulnerability.get('service_name', ''),
+            'product': vulnerability.get('product', ''),
+            'version': vulnerability.get('version', ''),
+            'attack_vector': vulnerability.get('attack_vector', 'Unknown'),
+            'complexity': vulnerability.get('complexity', 'Unknown'),
+            'privileges_required': vulnerability.get('privileges_required', 'Unknown'),
+            'user_interaction': vulnerability.get('user_interaction', 'Unknown'),
+            'confidentiality_impact': vulnerability.get('confidentiality_impact', 'Unknown'),
+            'integrity_impact': vulnerability.get('integrity_impact', 'Unknown'),
+            'availability_impact': vulnerability.get('availability_impact', 'Unknown'),
+            'cvss_vector': vulnerability.get('cvss_vector', ''),
+            'references': vulnerability.get('references', []),
+            'exploit_info': exploit_info,
             'recommendations': recommendations,
             'estimated_timeline': self._estimate_timeline(priority),
             'estimated_effort': self._estimate_effort(vuln_type, severity),
-            'verification_steps': self._generate_verification_steps(vuln_type),
-            'resources': self._get_resources(vuln_type),
+            'verification_steps': self._generate_enhanced_verification_steps(vuln_type, vulnerability, exploit_info),
+            'resources': self._get_enhanced_resources(vuln_type, vulnerability, exploit_info),
             'created_time': datetime.now().isoformat()
         }
     
@@ -600,3 +627,238 @@ class MitigationEngine:
                 ]
             }
         }
+    
+    def _identify_enhanced_vulnerability_type(self, vulnerability: Dict[str, Any]) -> str:
+        """Enhanced vulnerability type identification using enriched data."""
+        # First try the existing classification
+        vuln_type = self._identify_vulnerability_type(vulnerability)
+        
+        # If we have ExploitDB data, use it to refine the classification
+        cve_id = vulnerability.get('cve_id', '')
+        if cve_id and self.exploitdb_service:
+            try:
+                exploits = self.exploitdb_service.get_exploits_for_cve(cve_id)
+                if exploits:
+                    # Get the most common attack type from exploits
+                    attack_types = [exploit.get('attack_type', 'unknown') for exploit in exploits]
+                    if attack_types:
+                        # Count attack types
+                        type_counts = {}
+                        for attack_type in attack_types:
+                            if attack_type != 'unknown':
+                                type_counts[attack_type] = type_counts.get(attack_type, 0) + 1
+                        
+                        if type_counts:
+                            # Get the most common attack type
+                            most_common_type = max(type_counts, key=type_counts.get)
+                            return most_common_type
+            except Exception as e:
+                print(f"Error getting exploits for {cve_id}: {e}")
+        
+        # Use service-specific classification if available
+        product = vulnerability.get('product', '').lower()
+        service_name = vulnerability.get('service_name', '').lower()
+        
+        if 'apache' in product or 'httpd' in product:
+            if vuln_type in ['buffer_overflow', 'denial_of_service', 'information_disclosure']:
+                return f'apache_{vuln_type}'
+            else:
+                return 'apache_vulnerability'
+        elif 'nginx' in product:
+            if vuln_type in ['buffer_overflow', 'denial_of_service']:
+                return f'nginx_{vuln_type}'
+            else:
+                return 'nginx_vulnerability'
+        elif 'ssh' in service_name or 'openssh' in product:
+            if vuln_type in ['authentication_bypass', 'privilege_escalation']:
+                return f'ssh_{vuln_type}'
+            else:
+                return 'ssh_vulnerability'
+        elif 'mysql' in product or 'mariadb' in product:
+            return 'database_vulnerability'
+        elif 'ssl' in vuln_type or 'tls' in vuln_type:
+            return 'ssl_tls_vulnerability'
+        
+        return vuln_type
+    
+    def _get_exploit_information(self, cve_id: str) -> Dict[str, Any]:
+        """Get ExploitDB information for a CVE."""
+        if not cve_id or not self.exploitdb_service:
+            return {}
+        
+        try:
+            exploits = self.exploitdb_service.get_exploits_for_cve(cve_id)
+            if not exploits:
+                return {}
+        except Exception as e:
+            print(f"Error getting exploit information for {cve_id}: {e}")
+            return {}
+        
+        # Analyze exploits
+        verified_exploits = [e for e in exploits if e.get('is_verified', False)]
+        attack_types = [e.get('attack_type', 'unknown') for e in exploits]
+        platforms = [e.get('platform_info', {}).get('os', 'unknown') for e in exploits]
+        complexities = [e.get('complexity', 'unknown') for e in exploits]
+        
+        # Get most common values
+        attack_type_counts = {}
+        for attack_type in attack_types:
+            if attack_type != 'unknown':
+                attack_type_counts[attack_type] = attack_type_counts.get(attack_type, 0) + 1
+        
+        platform_counts = {}
+        for platform in platforms:
+            if platform != 'unknown':
+                platform_counts[platform] = platform_counts.get(platform, 0) + 1
+        
+        complexity_counts = {}
+        for complexity in complexities:
+            if complexity != 'unknown':
+                complexity_counts[complexity] = complexity_counts.get(complexity, 0) + 1
+        
+        return {
+            'total_exploits': len(exploits),
+            'verified_exploits': len(verified_exploits),
+            'most_common_attack_type': max(attack_type_counts, key=attack_type_counts.get) if attack_type_counts else 'unknown',
+            'most_common_platform': max(platform_counts, key=platform_counts.get) if platform_counts else 'unknown',
+            'most_common_complexity': max(complexity_counts, key=complexity_counts.get) if complexity_counts else 'unknown',
+            'exploits': exploits[:5],  # Limit to first 5 for display
+            'has_verified_exploits': len(verified_exploits) > 0,
+            'exploit_availability': 'high' if len(exploits) >= 3 else 'medium' if len(exploits) >= 1 else 'low'
+        }
+    
+    def _generate_enhanced_recommendations(self, vulnerability: Dict[str, Any], 
+                                         template: Dict[str, Any], 
+                                         priority: MitigationPriority,
+                                         exploit_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Generate enhanced recommendations with exploit context."""
+        recommendations = []
+        
+        # Get base recommendations from template
+        base_recommendations = self._generate_recommendations(vulnerability, template, priority)
+        
+        # Enhance with exploit-specific information
+        for rec in base_recommendations:
+            enhanced_rec = dict(rec)
+            
+            # Add exploit-specific context
+            if exploit_info.get('has_verified_exploits'):
+                total_exploits = exploit_info.get('total_exploits', 0)
+                enhanced_rec['exploit_context'] = f"Verified exploits available ({total_exploits} total)"
+                enhanced_rec['urgency'] = 'high' if exploit_info.get('exploit_availability') == 'high' else 'medium'
+            else:
+                total_exploits = exploit_info.get('total_exploits', 0)
+                enhanced_rec['exploit_context'] = f"No verified exploits found ({total_exploits} total)"
+                enhanced_rec['urgency'] = 'low'
+            
+            # Add attack vector specific recommendations
+            attack_vector = vulnerability.get('attack_vector', 'Unknown')
+            if attack_vector == 'Network':
+                enhanced_rec['network_considerations'] = [
+                    "Implement network segmentation",
+                    "Use firewall rules to restrict access",
+                    "Consider VPN or private network access"
+                ]
+            elif attack_vector == 'Local':
+                enhanced_rec['local_considerations'] = [
+                    "Restrict local access permissions",
+                    "Implement privilege separation",
+                    "Monitor local user activities"
+                ]
+            
+            # Add complexity-specific recommendations
+            complexity = vulnerability.get('complexity', 'Unknown')
+            if complexity == 'Low':
+                enhanced_rec['implementation_notes'] = "Low complexity - can be implemented quickly"
+            elif complexity == 'High':
+                enhanced_rec['implementation_notes'] = "High complexity - requires careful planning and testing"
+            
+            recommendations.append(enhanced_rec)
+        
+        # Add exploit-specific immediate actions if exploits are available
+        if exploit_info.get('has_verified_exploits'):
+            total_exploits = exploit_info.get('total_exploits', 0)
+            exploit_specific_rec = {
+                'timeline': MitigationTimeline.IMMEDIATE.value,
+                'action': 'Block known exploit patterns',
+                'description': f"Block patterns from {total_exploits} known exploits",
+                'estimated_time': '1-2 hours',
+                'difficulty': 'easy',
+                'tools_needed': ['WAF', 'Firewall', 'IDS/IPS'],
+                'verification': 'Test with known exploit patterns',
+                'exploit_context': 'Based on verified exploits',
+                'urgency': 'high'
+            }
+            recommendations.insert(0, exploit_specific_rec)
+        
+        return recommendations
+    
+    def _generate_enhanced_verification_steps(self, vuln_type: str, vulnerability: Dict[str, Any], exploit_info: Dict[str, Any]) -> List[str]:
+        """Generate enhanced verification steps with exploit context."""
+        base_steps = self._generate_verification_steps(vuln_type)
+        enhanced_steps = list(base_steps)
+        
+        # Add exploit-specific verification
+        if exploit_info.get('has_verified_exploits'):
+            total_exploits = exploit_info.get('total_exploits', 0)
+            enhanced_steps.append(f"Test with {total_exploits} known exploit patterns")
+            enhanced_steps.append("Verify that verified exploits no longer work")
+        
+        # Add service-specific verification
+        product = vulnerability.get('product', '')
+        version = vulnerability.get('version', '')
+        if product and version:
+            enhanced_steps.append(f"Verify {product} {version} is patched or updated")
+            enhanced_steps.append(f"Test {product} specific functionality")
+        
+        # Add CVSS-specific verification
+        cvss_vector = vulnerability.get('cvss_vector', '')
+        if cvss_vector:
+            enhanced_steps.append(f"Verify CVSS vector {cvss_vector} is addressed")
+        
+        return enhanced_steps
+    
+    def _get_enhanced_resources(self, vuln_type: str, vulnerability: Dict[str, Any], exploit_info: Dict[str, Any]) -> Dict[str, List[str]]:
+        """Get enhanced resources with exploit and service-specific information."""
+        base_resources = self._get_resources(vuln_type)
+        enhanced_resources = dict(base_resources)
+        
+        # Add CVE-specific resources
+        cve_id = vulnerability.get('cve_id', '')
+        if cve_id:
+            enhanced_resources['cve_resources'] = [
+                f"https://cve.mitre.org/cgi-bin/cvename.cgi?name={cve_id}",
+                f"https://nvd.nist.gov/vuln/detail/{cve_id}",
+                f"https://vulners.com/cve/{cve_id}"
+            ]
+        
+        # Add exploit-specific resources
+        if exploit_info.get('has_verified_exploits'):
+            enhanced_resources['exploit_resources'] = [
+                "https://www.exploit-db.com/",
+                "Metasploit Framework",
+                "Exploit Database Search"
+            ]
+        
+        # Add service-specific resources
+        product = vulnerability.get('product', '')
+        if 'apache' in product.lower():
+            enhanced_resources['service_resources'] = [
+                "https://httpd.apache.org/security/",
+                "Apache Security Advisories",
+                "Apache Configuration Hardening Guide"
+            ]
+        elif 'nginx' in product.lower():
+            enhanced_resources['service_resources'] = [
+                "https://nginx.org/en/security_advisories.html",
+                "Nginx Security Advisories",
+                "Nginx Configuration Hardening Guide"
+            ]
+        elif 'ssh' in vulnerability.get('service_name', '').lower():
+            enhanced_resources['service_resources'] = [
+                "OpenSSH Security Advisories",
+                "SSH Configuration Hardening Guide",
+                "SSH Key Management Best Practices"
+            ]
+        
+        return enhanced_resources

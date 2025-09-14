@@ -83,7 +83,19 @@ class Scanner:
                         if 'script' in port_info:
                             for script_name, script_output in port_info['script'].items():
                                 if 'vulners' in script_name.lower():
-                                    vulns = self._parse_vulners_output(script_output)
+                                    # Prepare service information for enhanced parsing
+                                    service_info = {
+                                        'name': port_info.get('name', ''),
+                                        'product': port_info.get('product', ''),
+                                        'version': port_info.get('version', ''),
+                                        'extrainfo': port_info.get('extrainfo', '')
+                                    }
+                                    vulns = self._parse_vulners_output(
+                                        script_output, 
+                                        host_ip=host, 
+                                        port=f"{protocol}/{port}",
+                                        service_info=service_info
+                                    )
                                     host_info['vulnerabilities'].extend(vulns)
                                     scan_data['vulnerabilities'].extend(vulns)
                 
@@ -100,15 +112,18 @@ class Scanner:
             print(f"Error during scan: {str(e)}")
             return {'error': str(e)}
     
-    def _parse_vulners_output(self, script_output: str) -> List[Dict]:
+    def _parse_vulners_output(self, script_output: str, host_ip: str = None, port: str = None, service_info: Dict = None) -> List[Dict]:
         """
-        Parse vulners script output to extract vulnerability information.
+        Parse vulners script output to extract vulnerability information with enhanced context.
         
         Args:
             script_output (str): Raw output from vulners script
+            host_ip (str): Host IP address where vulnerability was found
+            port (str): Port where vulnerability was found
+            service_info (Dict): Service information (product, version, etc.)
             
         Returns:
-            List[Dict]: Parsed vulnerability information
+            List[Dict]: Parsed vulnerability information with enhanced context
         """
         vulnerabilities = []
         lines = script_output.split('\n')
@@ -126,7 +141,26 @@ class Scanner:
                         'cve_id': parts[0] if parts[0].startswith('CVE-') else None,
                         'score': self._extract_score(line),
                         'description': ' '.join(parts[1:]) if len(parts) > 1 else line,
-                        'raw_output': line
+                        'raw_output': line,
+                        'host_ip': host_ip,
+                        'port': port,
+                        'service_name': service_info.get('name', '') if service_info else '',
+                        'product': service_info.get('product', '') if service_info else '',
+                        'version': service_info.get('version', '') if service_info else '',
+                        'extrainfo': service_info.get('extrainfo', '') if service_info else '',
+                        'vulnerability_type': self._classify_vulnerability_type(line, service_info),
+                        'attack_vector': self._extract_attack_vector(line),
+                        'complexity': self._extract_complexity(line),
+                        'privileges_required': self._extract_privileges_required(line),
+                        'user_interaction': self._extract_user_interaction(line),
+                        'scope': self._extract_scope(line),
+                        'confidentiality_impact': self._extract_confidentiality_impact(line),
+                        'integrity_impact': self._extract_integrity_impact(line),
+                        'availability_impact': self._extract_availability_impact(line),
+                        'cvss_vector': self._extract_cvss_vector(line),
+                        'references': self._extract_references(line),
+                        'published_date': self._extract_published_date(line),
+                        'last_modified_date': self._extract_last_modified_date(line)
                     }
                     vulnerabilities.append(vuln)
             except Exception as e:
@@ -442,6 +476,175 @@ class Scanner:
         if summary['xml_output_path']:
             print(f"\nResults saved to: {summary['xml_output_path']}")
         print("="*50)
+    
+    def _classify_vulnerability_type(self, line: str, service_info: Dict = None) -> str:
+        """Classify vulnerability type based on description and service information."""
+        line_lower = line.lower()
+        product = service_info.get('product', '').lower() if service_info else ''
+        service_name = service_info.get('name', '').lower() if service_info else ''
+        
+        # Service-specific patterns
+        if 'apache' in product or 'httpd' in product:
+            if 'buffer overflow' in line_lower or 'overflow' in line_lower:
+                return 'apache_buffer_overflow'
+            elif 'denial of service' in line_lower or 'dos' in line_lower:
+                return 'apache_dos'
+            elif 'information disclosure' in line_lower:
+                return 'apache_info_disclosure'
+            else:
+                return 'apache_vulnerability'
+        
+        elif 'nginx' in product:
+            if 'buffer overflow' in line_lower:
+                return 'nginx_buffer_overflow'
+            elif 'denial of service' in line_lower:
+                return 'nginx_dos'
+            else:
+                return 'nginx_vulnerability'
+        
+        elif 'ssh' in service_name or 'openssh' in product:
+            if 'authentication bypass' in line_lower:
+                return 'ssh_auth_bypass'
+            elif 'privilege escalation' in line_lower:
+                return 'ssh_priv_escalation'
+            else:
+                return 'ssh_vulnerability'
+        
+        elif 'mysql' in product or 'mariadb' in product:
+            return 'database_vulnerability'
+        
+        elif 'ssl' in line_lower or 'tls' in line_lower:
+            return 'ssl_tls_vulnerability'
+        
+        # Generic patterns
+        if 'sql injection' in line_lower or 'sqli' in line_lower:
+            return 'sql_injection'
+        elif 'cross-site scripting' in line_lower or 'xss' in line_lower:
+            return 'xss'
+        elif 'remote code execution' in line_lower or 'rce' in line_lower:
+            return 'rce'
+        elif 'buffer overflow' in line_lower or 'overflow' in line_lower:
+            return 'buffer_overflow'
+        elif 'privilege escalation' in line_lower:
+            return 'privilege_escalation'
+        elif 'authentication bypass' in line_lower:
+            return 'authentication_bypass'
+        elif 'denial of service' in line_lower or 'dos' in line_lower:
+            return 'denial_of_service'
+        elif 'information disclosure' in line_lower:
+            return 'information_disclosure'
+        else:
+            return 'generic'
+    
+    def _extract_attack_vector(self, line: str) -> str:
+        """Extract attack vector from CVSS vector string."""
+        import re
+        # Look for AV: pattern in CVSS vector
+        av_match = re.search(r'AV:([NAL])', line)
+        if av_match:
+            av = av_match.group(1)
+            return {'N': 'Network', 'A': 'Adjacent', 'L': 'Local'}.get(av, 'Unknown')
+        return 'Unknown'
+    
+    def _extract_complexity(self, line: str) -> str:
+        """Extract attack complexity from CVSS vector string."""
+        import re
+        ac_match = re.search(r'AC:([LH])', line)
+        if ac_match:
+            ac = ac_match.group(1)
+            return {'L': 'Low', 'H': 'High'}.get(ac, 'Unknown')
+        return 'Unknown'
+    
+    def _extract_privileges_required(self, line: str) -> str:
+        """Extract privileges required from CVSS vector string."""
+        import re
+        pr_match = re.search(r'PR:([NLH])', line)
+        if pr_match:
+            pr = pr_match.group(1)
+            return {'N': 'None', 'L': 'Low', 'H': 'High'}.get(pr, 'Unknown')
+        return 'Unknown'
+    
+    def _extract_user_interaction(self, line: str) -> str:
+        """Extract user interaction requirement from CVSS vector string."""
+        import re
+        ui_match = re.search(r'UI:([NR])', line)
+        if ui_match:
+            ui = ui_match.group(1)
+            return {'N': 'None', 'R': 'Required'}.get(ui, 'Unknown')
+        return 'Unknown'
+    
+    def _extract_scope(self, line: str) -> str:
+        """Extract scope from CVSS vector string."""
+        import re
+        s_match = re.search(r'S:([UC])', line)
+        if s_match:
+            s = s_match.group(1)
+            return {'U': 'Unchanged', 'C': 'Changed'}.get(s, 'Unknown')
+        return 'Unknown'
+    
+    def _extract_confidentiality_impact(self, line: str) -> str:
+        """Extract confidentiality impact from CVSS vector string."""
+        import re
+        c_match = re.search(r'C:([NLH])', line)
+        if c_match:
+            c = c_match.group(1)
+            return {'N': 'None', 'L': 'Low', 'H': 'High'}.get(c, 'Unknown')
+        return 'Unknown'
+    
+    def _extract_integrity_impact(self, line: str) -> str:
+        """Extract integrity impact from CVSS vector string."""
+        import re
+        i_match = re.search(r'I:([NLH])', line)
+        if i_match:
+            i = i_match.group(1)
+            return {'N': 'None', 'L': 'Low', 'H': 'High'}.get(i, 'Unknown')
+        return 'Unknown'
+    
+    def _extract_availability_impact(self, line: str) -> str:
+        """Extract availability impact from CVSS vector string."""
+        import re
+        a_match = re.search(r'A:([NLH])', line)
+        if a_match:
+            a = a_match.group(1)
+            return {'N': 'None', 'L': 'Low', 'H': 'High'}.get(a, 'Unknown')
+        return 'Unknown'
+    
+    def _extract_cvss_vector(self, line: str) -> str:
+        """Extract full CVSS vector string."""
+        import re
+        vector_match = re.search(r'CVSS:3\.0/[^\\s]+', line)
+        if vector_match:
+            return vector_match.group(0)
+        return ''
+    
+    def _extract_references(self, line: str) -> List[str]:
+        """Extract reference URLs from vulnerability line."""
+        import re
+        url_pattern = r'https?://[^\\s]+'
+        urls = re.findall(url_pattern, line)
+        return urls
+    
+    def _extract_published_date(self, line: str) -> str:
+        """Extract published date from vulnerability line."""
+        import re
+        # Look for date patterns in the line
+        date_patterns = [
+            r'\\d{4}-\\d{2}-\\d{2}',
+            r'\\d{4}/\\d{2}/\\d{2}',
+            r'\\d{2}/\\d{2}/\\d{4}'
+        ]
+        
+        for pattern in date_patterns:
+            match = re.search(pattern, line)
+            if match:
+                return match.group(0)
+        return ''
+    
+    def _extract_last_modified_date(self, line: str) -> str:
+        """Extract last modified date from vulnerability line."""
+        # This would typically be extracted from CVE database
+        # For now, return empty string
+        return ''
 
 
 # Example usage

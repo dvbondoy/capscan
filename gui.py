@@ -1372,7 +1372,7 @@ Status: Connected
             self.mitigation_generate_btn.config(state=NORMAL, text="Generate Mitigation Plan")
     
     def display_mitigation_plan(self, plan):
-        """Display mitigation plan in the tree and details"""
+        """Display enhanced mitigation plan in the tree and details"""
         self.mitigation_tree.delete(*self.mitigation_tree.get_children())
         self.mitigation_details_text.delete(1.0, tk.END)
         
@@ -1380,10 +1380,10 @@ Status: Connected
             self.mitigation_details_text.insert(1.0, "No mitigation recommendations available.")
             return
         
-        # Display summary
+        # Display enhanced summary
         summary = plan.get('summary', {})
-        summary_text = f"Mitigation Plan Summary\n"
-        summary_text += "=" * 25 + "\n\n"
+        summary_text = f"Enhanced Mitigation Plan Summary\n"
+        summary_text += "=" * 35 + "\n\n"
         summary_text += f"Total Recommendations: {summary.get('total_recommendations', 0)}\n"
         summary_text += f"Critical Actions: {summary.get('critical_actions', 0)}\n"
         summary_text += f"High Actions: {summary.get('high_actions', 0)}\n"
@@ -1392,21 +1392,49 @@ Status: Connected
         summary_text += f"Estimated Timeline: {summary.get('estimated_timeline', 'N/A')}\n"
         summary_text += f"Overall Effort: {summary.get('overall_effort', 'N/A')}\n\n"
         
+        # Add vulnerability context summary
+        vuln_context = self._get_vulnerability_context_summary(plan['mitigation_plan'])
+        if vuln_context:
+            summary_text += "Vulnerability Context:\n"
+            summary_text += "-" * 20 + "\n"
+            summary_text += f"Services Affected: {vuln_context.get('services', 'N/A')}\n"
+            summary_text += f"Products Affected: {vuln_context.get('products', 'N/A')}\n"
+            summary_text += f"Exploits Available: {vuln_context.get('exploits_available', 'N/A')}\n"
+            summary_text += f"Verified Exploits: {vuln_context.get('verified_exploits', 'N/A')}\n\n"
+        
         self.mitigation_details_text.insert(1.0, summary_text)
         
-        # Add recommendations to tree
+        # Add enhanced recommendations to tree
         for rec in plan['mitigation_plan']:
+            # Create enhanced title with context
+            title = rec.get('title', 'N/A')
+            if rec.get('product'):
+                title += f" ({rec.get('product')} {rec.get('version', '')})"
+            
+            # Add exploit context to title
+            exploit_info = rec.get('exploit_info', {})
+            if exploit_info.get('has_verified_exploits'):
+                title += " [EXPLOITS AVAILABLE]"
+            
             for recommendation in rec.get('recommendations', []):
+                # Enhanced timeline with urgency
+                timeline = recommendation.get('timeline', 'N/A')
+                urgency = recommendation.get('urgency', '')
+                if urgency == 'high':
+                    timeline += " [URGENT]"
+                elif urgency == 'medium':
+                    timeline += " [MEDIUM]"
+                
                 self.mitigation_tree.insert("", "end", values=(
                     rec.get('priority', 'N/A'),
-                    rec.get('title', 'N/A'),
-                    recommendation.get('timeline', 'N/A'),
+                    title,
+                    timeline,
                     rec.get('estimated_effort', 'N/A'),
                     'Pending'
                 ))
     
     def on_mitigation_select(self, event):
-        """Handle mitigation recommendation selection"""
+        """Handle enhanced mitigation recommendation selection"""
         selection = self.mitigation_tree.selection()
         if not selection:
             return
@@ -1417,42 +1445,141 @@ Status: Connected
         # Find the corresponding recommendation in the plan
         title = values[1]
         for rec in self.mitigation_plan.get('mitigation_plan', []):
-            if rec.get('title') == title:
-                details_text = f"Mitigation Recommendation Details\n"
-                details_text += "=" * 35 + "\n\n"
+            if rec.get('title') in title:  # Use partial match for enhanced titles
+                details_text = f"Enhanced Mitigation Recommendation Details\n"
+                details_text += "=" * 45 + "\n\n"
+                
+                # Basic information
+                details_text += "Vulnerability Information:\n"
+                details_text += "-" * 25 + "\n"
+                details_text += f"CVE ID: {rec.get('vulnerability_id', 'N/A')}\n"
                 details_text += f"Title: {rec.get('title', 'N/A')}\n"
                 details_text += f"Description: {rec.get('description', 'N/A')}\n"
+                details_text += f"Severity: {rec.get('severity', 'N/A')}\n"
+                details_text += f"CVSS Score: {rec.get('score', 'N/A')}\n"
                 details_text += f"Priority: {rec.get('priority', 'N/A')}\n"
-                details_text += f"Vulnerability Type: {rec.get('vulnerability_type', 'N/A')}\n"
-                details_text += f"Host: {rec.get('host_ip', 'N/A')}:{rec.get('port', 'N/A')}\n\n"
+                details_text += f"Vulnerability Type: {rec.get('vulnerability_type', 'N/A')}\n\n"
                 
-                details_text += "Recommendations:\n"
+                # Service information
+                details_text += "Service Information:\n"
+                details_text += "-" * 20 + "\n"
+                details_text += f"Host: {rec.get('host_ip', 'N/A')}:{rec.get('port', 'N/A')}\n"
+                details_text += f"Service: {rec.get('service_name', 'N/A')}\n"
+                details_text += f"Product: {rec.get('product', 'N/A')}\n"
+                details_text += f"Version: {rec.get('version', 'N/A')}\n\n"
+                
+                # CVSS details
+                details_text += "CVSS Details:\n"
                 details_text += "-" * 15 + "\n"
+                details_text += f"Attack Vector: {rec.get('attack_vector', 'N/A')}\n"
+                details_text += f"Complexity: {rec.get('complexity', 'N/A')}\n"
+                details_text += f"Privileges Required: {rec.get('privileges_required', 'N/A')}\n"
+                details_text += f"User Interaction: {rec.get('user_interaction', 'N/A')}\n"
+                details_text += f"Confidentiality Impact: {rec.get('confidentiality_impact', 'N/A')}\n"
+                details_text += f"Integrity Impact: {rec.get('integrity_impact', 'N/A')}\n"
+                details_text += f"Availability Impact: {rec.get('availability_impact', 'N/A')}\n"
+                if rec.get('cvss_vector'):
+                    details_text += f"CVSS Vector: {rec.get('cvss_vector')}\n"
+                details_text += "\n"
+                
+                # Exploit information
+                exploit_info = rec.get('exploit_info', {})
+                if exploit_info:
+                    details_text += "Exploit Information:\n"
+                    details_text += "-" * 20 + "\n"
+                    details_text += f"Total Exploits: {exploit_info.get('total_exploits', 0)}\n"
+                    details_text += f"Verified Exploits: {exploit_info.get('verified_exploits', 0)}\n"
+                    details_text += f"Most Common Attack Type: {exploit_info.get('most_common_attack_type', 'N/A')}\n"
+                    details_text += f"Most Common Platform: {exploit_info.get('most_common_platform', 'N/A')}\n"
+                    details_text += f"Exploit Availability: {exploit_info.get('exploit_availability', 'N/A')}\n"
+                    details_text += f"Has Verified Exploits: {'Yes' if exploit_info.get('has_verified_exploits') else 'No'}\n\n"
+                
+                # Recommendations
+                details_text += "Mitigation Recommendations:\n"
+                details_text += "-" * 28 + "\n"
                 for i, rec_detail in enumerate(rec.get('recommendations', []), 1):
                     details_text += f"{i}. {rec_detail.get('action', 'N/A')}\n"
                     details_text += f"   Timeline: {rec_detail.get('timeline', 'N/A')}\n"
                     details_text += f"   Description: {rec_detail.get('description', 'N/A')}\n"
                     details_text += f"   Difficulty: {rec_detail.get('difficulty', 'N/A')}\n"
                     details_text += f"   Tools Needed: {', '.join(rec_detail.get('tools_needed', []))}\n"
-                    details_text += f"   Verification: {rec_detail.get('verification', 'N/A')}\n\n"
+                    details_text += f"   Verification: {rec_detail.get('verification', 'N/A')}\n"
+                    
+                    # Add enhanced context
+                    if rec_detail.get('exploit_context'):
+                        details_text += f"   Exploit Context: {rec_detail.get('exploit_context')}\n"
+                    if rec_detail.get('urgency'):
+                        details_text += f"   Urgency: {rec_detail.get('urgency').upper()}\n"
+                    if rec_detail.get('implementation_notes'):
+                        details_text += f"   Implementation Notes: {rec_detail.get('implementation_notes')}\n"
+                    
+                    # Add network/local considerations
+                    if rec_detail.get('network_considerations'):
+                        details_text += f"   Network Considerations:\n"
+                        for consideration in rec_detail.get('network_considerations', []):
+                            details_text += f"     - {consideration}\n"
+                    if rec_detail.get('local_considerations'):
+                        details_text += f"   Local Considerations:\n"
+                        for consideration in rec_detail.get('local_considerations', []):
+                            details_text += f"     - {consideration}\n"
+                    
+                    details_text += "\n"
                 
+                # Verification steps
                 if 'verification_steps' in rec:
                     details_text += "Verification Steps:\n"
                     details_text += "-" * 18 + "\n"
                     for i, step in enumerate(rec['verification_steps'], 1):
                         details_text += f"{i}. {step}\n"
+                    details_text += "\n"
                 
+                # Resources
                 if 'resources' in rec:
-                    details_text += "\nResources:\n"
+                    details_text += "Resources:\n"
                     details_text += "-" * 10 + "\n"
                     for category, items in rec['resources'].items():
-                        details_text += f"{category.title()}:\n"
+                        details_text += f"{category.replace('_', ' ').title()}:\n"
                         for item in items:
                             details_text += f"  - {item}\n"
+                        details_text += "\n"
+                
+                # References
+                if rec.get('references'):
+                    details_text += "References:\n"
+                    details_text += "-" * 11 + "\n"
+                    for ref in rec.get('references', []):
+                        details_text += f"  - {ref}\n"
                 
                 self.mitigation_details_text.delete(1.0, tk.END)
                 self.mitigation_details_text.insert(1.0, details_text)
                 break
+    
+    def _get_vulnerability_context_summary(self, mitigation_plan):
+        """Get vulnerability context summary for display."""
+        if not mitigation_plan:
+            return {}
+        
+        services = set()
+        products = set()
+        total_exploits = 0
+        verified_exploits = 0
+        
+        for rec in mitigation_plan:
+            if rec.get('service_name'):
+                services.add(rec.get('service_name'))
+            if rec.get('product'):
+                products.add(rec.get('product'))
+            
+            exploit_info = rec.get('exploit_info', {})
+            total_exploits += exploit_info.get('total_exploits', 0)
+            verified_exploits += exploit_info.get('verified_exploits', 0)
+        
+        return {
+            'services': ', '.join(services) if services else 'N/A',
+            'products': ', '.join(products) if products else 'N/A',
+            'exploits_available': total_exploits,
+            'verified_exploits': verified_exploits
+        }
     
     def save_ai_analysis_to_db(self, analysis):
         """Save AI analysis to database"""
