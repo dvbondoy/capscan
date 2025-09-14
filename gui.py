@@ -61,13 +61,7 @@ class CapScanGUI:
         # Main container
         self.main_frame = ttk.Frame(self.root, padding="10")
         
-        # Title
-        self.title_label = ttk.Label(
-            self.main_frame, 
-            text="CapScan Vulnerability Scanner", 
-            font=("Arial", 16, "bold"),
-            bootstyle=PRIMARY
-        )
+        # Title - removed as requested
         
         # Input section
         self.input_frame = ttk.LabelFrame(self.main_frame, text="Scan Configuration", padding="10")
@@ -97,53 +91,78 @@ class CapScanGUI:
         
         # Scan options
         self.options_frame = ttk.Frame(self.input_frame)
-        self.max_reports_label = ttk.Label(self.options_frame, text="Max Reports per Port:")
-        self.max_reports_var = tk.StringVar(value="10")
-        self.max_reports_spinbox = ttk.Spinbox(
-            self.options_frame, 
-            from_=1, 
-            to=100, 
-            textvariable=self.max_reports_var,
-            width=10
-        )
+        
+        # Advanced options toggle - moved to after scan_buttons_frame creation
+        
+        # Advanced options frame (initially hidden)
+        self.advanced_options_frame = ttk.LabelFrame(self.input_frame, text="Advanced Options", padding="5")
+        self.advanced_options_frame.grid_remove()  # Hide by default
+        
+        # AI options frame (inside advanced frame)
+        self.ai_options_frame = ttk.Frame(self.advanced_options_frame)
         
         self.enhance_scores_var = tk.BooleanVar(value=True)
-        self.enhance_scores_check = ttk.Checkbutton(
-            self.options_frame, 
-            text="Enable Keyword-based Scoring", 
-            variable=self.enhance_scores_var
-        )
         
         # AI Analysis options
         self.ai_analysis_var = tk.BooleanVar(value=True)
         self.ai_analysis_check = ttk.Checkbutton(
-            self.options_frame, 
+            self.ai_options_frame, 
             text="Enable AI Analysis", 
             variable=self.ai_analysis_var
         )
+        # Hide checkbox by default
+        self.ai_analysis_check.pack_forget()
         
         self.compliance_analysis_var = tk.BooleanVar(value=True)
         self.compliance_analysis_check = ttk.Checkbutton(
-            self.options_frame, 
+            self.ai_options_frame, 
             text="Enable Compliance Analysis", 
             variable=self.compliance_analysis_var
         )
+        # Hide checkbox by default
+        self.compliance_analysis_check.pack_forget()
         
         self.mitigation_recommendations_var = tk.BooleanVar(value=True)
         self.mitigation_recommendations_check = ttk.Checkbutton(
-            self.options_frame, 
+            self.ai_options_frame, 
             text="Enable Mitigation Recommendations", 
             variable=self.mitigation_recommendations_var
         )
+        # Hide checkbox by default
+        self.mitigation_recommendations_check.pack_forget()
         
-        # Database options
-        self.db_options_frame = ttk.Frame(self.input_frame)
+        # Database options (moved to advanced options)
+        self.db_options_frame = ttk.Frame(self.advanced_options_frame)
         self.save_to_db_var = tk.BooleanVar(value=True)
         self.save_to_db_check = ttk.Checkbutton(
             self.db_options_frame, 
             text="Save to Database", 
             variable=self.save_to_db_var
         )
+        # Hide checkbox by default
+        self.save_to_db_check.pack_forget()
+
+        # Scoring checkbox
+        self.scoring_frame = ttk.Frame(self.advanced_options_frame)
+        
+        # Max reports per port (moved to advanced options)
+        self.max_reports_label = ttk.Label(self.scoring_frame, text="Max Reports per Port:")
+        self.max_reports_var = tk.StringVar(value="10")
+        self.max_reports_spinbox = ttk.Spinbox(
+            self.scoring_frame, 
+            from_=1, 
+            to=100, 
+            textvariable=self.max_reports_var,
+            width=10
+        )
+        
+        self.enhance_scores_check = ttk.Checkbutton(
+            self.scoring_frame, 
+            text="Enable Scoring", 
+            variable=self.enhance_scores_var
+        )
+        # Hide checkbox by default
+        self.enhance_scores_check.pack_forget()
         
         # DB Info button moved to Database Controls in Database tab
         
@@ -165,14 +184,22 @@ class CapScanGUI:
             state=DISABLED
         )
         
-        # Progress section
-        self.progress_frame = ttk.LabelFrame(self.main_frame, text="Scan Progress", padding="10")
+        # Advanced options toggle
+        self.advanced_toggle_btn = ttk.Button(
+            self.scan_buttons_frame,
+            text="Show Advanced Options",
+            command=self.toggle_advanced_options,
+            bootstyle=OUTLINE,
+            width=20
+        )
+        
+        # Progress bar moved to input frame
         self.progress_bar = ttk.Progressbar(
-            self.progress_frame, 
+            self.input_frame, 
             mode='indeterminate',
             bootstyle=SUCCESS
         )
-        self.status_label = ttk.Label(self.progress_frame, text="Ready to scan...")
+        self.status_label = ttk.Label(self.input_frame, text="Ready to scan...")
         
         # Results section
         self.results_frame = ttk.LabelFrame(self.main_frame, text="Scan Results", padding="10")
@@ -204,7 +231,7 @@ class CapScanGUI:
             self.vulns_tree_frame,
             columns=("CVE ID", "Score", "Severity", "Description"),
             show="headings",
-            height=15
+            height=8
         )
         
         # Configure treeview columns
@@ -225,7 +252,7 @@ class CapScanGUI:
         self.vuln_details_frame = ttk.LabelFrame(self.vulns_frame, text="Vulnerability Details", padding="5")
         self.vuln_details_text = tk.Text(
             self.vuln_details_frame, 
-            height=6, 
+            height=12, 
             width=80, 
             font=("Consolas", 9),
             wrap=tk.WORD
@@ -445,7 +472,8 @@ class CapScanGUI:
             self.mitigation_tree_frame,
             columns=("Priority", "Title", "Timeline", "Effort", "Status"),
             show="headings",
-            height=10
+            # height=6
+            height=3
         )
         
         # Configure mitigation tree columns
@@ -468,7 +496,8 @@ class CapScanGUI:
         self.mitigation_details_frame = ttk.LabelFrame(self.mitigation_frame, text="Mitigation Details", padding="5")
         self.mitigation_details_text = tk.Text(
             self.mitigation_details_frame, 
-            height=8, 
+            # height=15, 
+            height=18, 
             width=80, 
             font=("Consolas", 9),
             wrap=tk.WORD
@@ -497,8 +526,7 @@ class CapScanGUI:
         # Main frame
         self.main_frame.pack(fill=BOTH, expand=True)
         
-        # Title
-        self.title_label.pack(pady=(0, 20))
+        # Title removed
         
         # Input section
         self.input_frame.pack(fill=X, pady=(0, 10))
@@ -518,30 +546,31 @@ class CapScanGUI:
         
         # Scan options
         self.options_frame.grid(row=2, column=0, columnspan=3, sticky=W, pady=10)
-        self.max_reports_label.pack(side=LEFT, padx=(0, 5))
-        self.max_reports_spinbox.pack(side=LEFT, padx=(0, 20))
-        self.enhance_scores_check.pack(side=LEFT)
+        # Note: max_reports moved to advanced options
         
-        # AI options (second row)
-        self.ai_options_frame = ttk.Frame(self.input_frame)
-        self.ai_options_frame.grid(row=3, column=0, columnspan=3, sticky=W, pady=5)
-        self.ai_analysis_check.pack(side=LEFT, padx=(0, 20))
-        self.compliance_analysis_check.pack(side=LEFT, padx=(0, 20))
-        self.mitigation_recommendations_check.pack(side=LEFT)
+        # Advanced options frame positioning (hidden by default)
+        self.advanced_options_frame.grid(row=3, column=0, columnspan=3, sticky=EW, pady=5)
+        self.advanced_options_frame.grid_remove()  # Ensure it's hidden on startup
         
-        # Database options
-        self.db_options_frame.grid(row=4, column=0, columnspan=3, sticky=W, pady=5)
-        self.save_to_db_check.pack(side=LEFT, padx=(0, 20))
+        # Scoring frame positioning
+        self.scoring_frame.grid(row=0, column=0, sticky=EW, pady=2)
+        
+        # AI options frame positioning
+        self.ai_options_frame.grid(row=1, column=0, sticky=EW, pady=2)
+        
+        # Database options (inside advanced frame)
+        self.db_options_frame.grid(row=2, column=0, sticky=EW, pady=2)
+        # Note: save_to_db_check is hidden by default but accessible
         
         # Scan buttons
-        self.scan_buttons_frame.grid(row=5, column=0, columnspan=3, pady=10)
+        self.scan_buttons_frame.grid(row=4, column=0, columnspan=3, pady=10)
         self.scan_toggle_btn.pack(side=LEFT, padx=(0, 10))
-        self.save_results_btn.pack(side=LEFT)
+        self.save_results_btn.pack(side=LEFT, padx=(0, 10))
+        self.advanced_toggle_btn.pack(side=LEFT, padx=(10, 0))
         
-        # Progress section
-        self.progress_frame.pack(fill=X, pady=(0, 10))
-        self.progress_bar.pack(fill=X, pady=(0, 5))
-        self.status_label.pack(anchor=W)
+        # Progress bar moved to input frame
+        self.progress_bar.grid(row=5, column=0, columnspan=3, sticky=EW, pady=(5, 5))
+        self.status_label.grid(row=6, column=0, columnspan=3, sticky=W, pady=(0, 5))
         
         # Results section
         self.results_frame.pack(fill=BOTH, expand=True)
@@ -609,6 +638,25 @@ class CapScanGUI:
             self.port_preset_var.set("All Ports")
         else:
             self.port_preset_var.set("Custom")
+    
+    def toggle_advanced_options(self):
+        """Toggle visibility of advanced options"""
+        if self.advanced_options_frame.winfo_viewable():
+            # Hide advanced options
+            self.advanced_options_frame.grid_remove()
+            self.advanced_toggle_btn.config(text="Show Advanced Options")
+        else:
+            # Show advanced options
+            self.advanced_options_frame.grid()
+            self.advanced_toggle_btn.config(text="Hide Advanced Options")
+            # Show all checkboxes and options when advanced options are revealed
+            self.max_reports_label.pack(side=LEFT, padx=(0, 5))
+            self.max_reports_spinbox.pack(side=LEFT, padx=(0, 20))
+            self.enhance_scores_check.pack(side=LEFT, padx=(0, 20))
+            self.ai_analysis_check.pack(side=LEFT, padx=(0, 20))
+            self.compliance_analysis_check.pack(side=LEFT, padx=(0, 20))
+            self.mitigation_recommendations_check.pack(side=LEFT)
+            self.save_to_db_check.pack(side=LEFT, padx=(0, 20))
         
     def toggle_scan(self):
         """Toggle scan state (start/stop)"""
