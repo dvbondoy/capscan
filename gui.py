@@ -21,15 +21,9 @@ class CapScanGUI:
         # Initialize ttkbootstrap with flatly theme
         self.root = ttk.Window(themename="flatly")
         self.root.title("CapScan - Vulnerability Scanner")
-        # Prefer maximizing the window on start; keep a sensible minimum size
+        # Set window size to 1920x1080
         self.root.minsize(1000, 700)
-        try:
-            self.root.state('zoomed')  # Works on Windows and some Linux WMs
-        except Exception:
-            # Fallback for environments that don't support 'zoomed'
-            screen_width = self.root.winfo_screenwidth()
-            screen_height = self.root.winfo_screenheight()
-            self.root.geometry(f"{screen_width}x{screen_height}+0+0")
+        self.root.geometry("1920x1080+0+0")
         
         # Initialize scanner
         self.scanner = Scanner()
@@ -43,8 +37,8 @@ class CapScanGUI:
         self.is_ssh_scanning = False
         self.ssh_scan_results = {}
         
-        # Initialize AI services using tgpt CLI backend
-        self.ai_service = AIService(backend="tgpt")
+        # Initialize AI services using PhindAI backend
+        self.ai_service = AIService(backend="phind")
         self.compliance_analyzers = {
             'PH_DPA': ComplianceAnalyzer(ComplianceStandard.PH_DPA)
         }

@@ -12,6 +12,9 @@ from typing import Dict, List, Optional, Any, Tuple
 from datetime import datetime
 import logging
 
+# Import PhindAI instead of using tgpt
+from phind_ai import PhindAI
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -23,14 +26,14 @@ class AIService:
     Supports multiple free AI backends including local models and free APIs.
     """
     
-    def __init__(self, model: str = "gpt-3.5-turbo", temperature: float = 0.3, backend: str = "auto"):
+    def __init__(self, model: str = "Phind-70B", temperature: float = 0.3, backend: str = "phind"):
         """
         Initialize AI service.
         
         Args:
-            model (str): AI model to use
+            model (str): AI model to use (default: Phind-70B)
             temperature (float): Temperature for AI responses (0.0-1.0)
-            backend (str): AI backend to use ('auto', 'tgpt', 'ollama', 'huggingface', 'mock')
+            backend (str): AI backend to use ('phind', 'mock')
         """
         self.model = model
         self.temperature = temperature
@@ -38,77 +41,26 @@ class AIService:
         self.ai_available = False
         self.active_backend = None
         
-        # Check available backends
-        self._detect_available_backends()
+        # Initialize PhindAI
+        try:
+            self.phind_ai = PhindAI(model=model, temperature=temperature)
+            self.ai_available = self.phind_ai.available
+            self.active_backend = "phind" if self.ai_available else "mock"
+            logger.info(f"PhindAI initialized with model: {model}")
+        except Exception as e:
+            logger.error(f"Failed to initialize PhindAI: {e}")
+            self.phind_ai = None
+            self.ai_available = False
+            self.active_backend = "mock"
         
         if not self.ai_available:
-            logger.warning("No AI backends available. Using mock responses.")
+            logger.warning("PhindAI not available. Using mock responses.")
             self.active_backend = "mock"
             self.ai_available = True
     
-    def _detect_available_backends(self):
-        """Detect which AI backends are available."""
-        available_backends = []
-        
-        # Check tgpt
-        if self._check_tgpt_availability():
-            available_backends.append("tgpt")
-        
-        # Check Ollama
-        if self._check_ollama_availability():
-            available_backends.append("ollama")
-        
-        # Check Hugging Face Transformers
-        if self._check_huggingface_availability():
-            available_backends.append("huggingface")
-        
-        # Always available
-        available_backends.append("mock")
-        
-        if available_backends:
-            self.ai_available = True
-            if self.backend == "auto":
-                # Prefer local models over API-based ones
-                if "tgpt" in available_backends:
-                    self.active_backend = "tgpt"
-                elif "ollama" in available_backends:
-                    self.active_backend = "ollama"
-                elif "huggingface" in available_backends:
-                    self.active_backend = "huggingface"
-                else:
-                    self.active_backend = "mock"
-            else:
-                self.active_backend = self.backend if self.backend in available_backends else "mock"
-        
-        logger.info(f"Available AI backends: {available_backends}")
-        logger.info(f"Using backend: {self.active_backend}")
-
-    def _check_tgpt_availability(self) -> bool:
-        """Check if tgpt is available and properly configured."""
-        try:
-            tgpt_bin = os.environ.get('TGPT_BIN', '/usr/local/bin/tgpt')
-            result = subprocess.run([tgpt_bin, '--help'], 
-                                  capture_output=True, text=True, timeout=10)
-            return result.returncode == 0 or 'usage' in (result.stdout.lower() + result.stderr.lower())
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            return False
-
-    def _check_ollama_availability(self) -> bool:
-        """Check if Ollama is available."""
-        try:
-            result = subprocess.run(['ollama', '--version'], 
-                                  capture_output=True, text=True, timeout=10)
-            return result.returncode == 0
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            return False
-
-    def _check_huggingface_availability(self) -> bool:
-        """Check if Hugging Face transformers is available."""
-        try:
-            import transformers
-            return True
-        except ImportError:
-            return False
+    def _check_phind_availability(self) -> bool:
+        """Check if PhindAI is available."""
+        return self.phind_ai is not None and self.phind_ai.available
     
     def _call_ai(self, prompt: str, max_tokens: int = 2000) -> Optional[str]:
         """
@@ -124,95 +76,22 @@ class AIService:
         if not self.ai_available:
             return None
         
-        if self.active_backend == "tgpt":
-            response = self._call_tgpt(prompt, max_tokens)
-            if response is None:
-                logger.warning("tgpt failed at runtime; falling back to mock response")
+        if self.active_backend == "phind":
+            if self.phind_ai and self.phind_ai.available:
+                response = self.phind_ai.chat(prompt, max_tokens=max_tokens)
+                if response is None:
+                    logger.warning("PhindAI failed at runtime; falling back to mock response")
+                    return self._call_mock(prompt)
+                return response
+            else:
+                logger.warning("PhindAI not available; falling back to mock response")
                 return self._call_mock(prompt)
-            return response
-        elif self.active_backend == "ollama":
-            return self._call_ollama(prompt, max_tokens)
-        elif self.active_backend == "huggingface":
-            return self._call_huggingface(prompt, max_tokens)
         elif self.active_backend == "mock":
             return self._call_mock(prompt)
         else:
             logger.error(f"Unknown backend: {self.active_backend}")
             return None
 
-    def _call_tgpt(self, prompt: str, max_tokens: int = 2000) -> Optional[str]:
-        """Call tgpt with the given prompt."""
-        try:
-            tgpt_bin = os.environ.get('TGPT_BIN', '/usr/local/bin/tgpt')
-            # Normalize prompt
-            prompt = "" if prompt is None else str(prompt)
-            # Try multiple invocation styles for compatibility
-            candidate_cmds = [
-                # Preferred: plain invocation matches `tgpt "your prompt"`
-                [tgpt_bin, prompt],
-                # Fallbacks for older/newer builds
-                [tgpt_bin, '-q', prompt],
-                [tgpt_bin, 'tx', prompt]
-            ]
-            last_err = None
-            for cmd in candidate_cmds:
-                try:
-                    result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-                    stdout = (result.stdout or '').strip()
-                    stderr = (result.stderr or '').strip()
-                    if result.returncode == 0 and stdout:
-                        return stdout
-                    # Some tgpt builds print to stdout but return non-zero; accept non-empty stdout
-                    if stdout and 'error' not in stdout.lower():
-                        return stdout
-                    last_err = stderr or stdout or f"Non-zero exit: {result.returncode}"
-                except subprocess.TimeoutExpired:
-                    last_err = "Timeout"
-                    continue
-                except Exception as inner_e:
-                    last_err = f"{type(inner_e).__name__}: {inner_e}"
-                    logger.exception(f"tgpt command failed: {' '.join(cmd)}")
-                    continue
-            logger.error(f"tgpt invocation failed: {last_err}")
-            return None
-        except Exception as e:
-            logger.error(f"Error calling tgpt: {e}")
-            return None
-
-    def _call_ollama(self, prompt: str, max_tokens: int = 2000) -> Optional[str]:
-        """Call Ollama with the given prompt."""
-        try:
-            # Use a small, fast model like llama2:7b or codellama:7b
-            model = "llama2:7b"  # You can change this to any Ollama model
-            cmd = ['ollama', 'run', model, prompt]
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-            
-            if result.returncode == 0:
-                return result.stdout.strip()
-            else:
-                logger.error(f"Ollama error: {result.stderr}")
-                return None
-        except Exception as e:
-            logger.error(f"Error calling Ollama: {e}")
-            return None
-
-    def _call_huggingface(self, prompt: str, max_tokens: int = 2000) -> Optional[str]:
-        """Call Hugging Face transformers with the given prompt."""
-        try:
-            from transformers import pipeline
-            
-            # Use a small, fast model for local inference
-            generator = pipeline("text-generation", 
-                              model="microsoft/DialoGPT-small", 
-                              max_length=max_tokens,
-                              do_sample=True,
-                              temperature=self.temperature)
-            
-            result = generator(prompt, max_length=max_tokens, num_return_sequences=1)
-            return result[0]['generated_text'].replace(prompt, "").strip()
-        except Exception as e:
-            logger.error(f"Error calling Hugging Face: {e}")
-            return None
 
     def _call_mock(self, prompt: str) -> str:
         """Generate mock AI responses for testing."""
@@ -270,6 +149,119 @@ class AIService:
         
         else:
             return f"Mock AI Response: I've analyzed your request about '{prompt[:50]}...' and provided recommendations based on security best practices."
+    
+    def _call_mock_vulnerability_analysis(self, scan_results: Dict[str, Any]) -> Dict[str, Any]:
+        """Generate mock vulnerability analysis."""
+        return {
+            'risk_assessment': {
+                'overall_risk_level': 'high',
+                'critical_vulnerabilities': ['CVE-2021-44228'],
+                'high_risk_vulnerabilities': ['CVE-2021-45046'],
+                'business_impact': 'Potential remote code execution and data breach',
+                'exploitability': 'High - publicly available exploits'
+            },
+            'vulnerability_analysis': [
+                {
+                    'cve_id': 'CVE-2021-44228',
+                    'enhanced_score': 9.8,
+                    'risk_factors': ['Remote code execution', 'Widespread usage'],
+                    'business_impact': 'Complete system compromise possible',
+                    'exploit_likelihood': 'high',
+                    'remediation_priority': 'immediate'
+                }
+            ],
+            'recommendations': {
+                'immediate_actions': ['Apply security patches immediately', 'Disable vulnerable services'],
+                'short_term_goals': ['Update all software components', 'Implement monitoring'],
+                'long_term_strategy': 'Establish regular security patching schedule'
+            },
+            'analysis_time': datetime.now().isoformat(),
+            'model_used': self.model,
+            'backend': 'mock',
+            'format': 'mock'
+        }
+    
+    def _call_mock_compliance_analysis(self, scan_results: Dict[str, Any], standard: str) -> Dict[str, Any]:
+        """Generate mock compliance analysis."""
+        return {
+            'compliance_score': 75,
+            'standard': standard,
+            'compliance_level': 'partially_compliant',
+            'critical_gaps': [
+                {
+                    'requirement': 'A02',
+                    'description': 'Cryptographic Failures',
+                    'vulnerabilities': ['CVE-2021-44228'],
+                    'severity': 'critical'
+                }
+            ],
+            'recommendations': [
+                {
+                    'priority': 'critical',
+                    'action': 'Update cryptographic libraries',
+                    'timeline': 'immediate',
+                    'effort': 'medium'
+                }
+            ],
+            'compliance_summary': 'Partially compliant with critical gaps requiring immediate attention',
+            'analysis_time': datetime.now().isoformat(),
+            'model_used': self.model,
+            'format': 'mock'
+        }
+    
+    def _call_mock_mitigation_analysis(self, vulnerability: Dict[str, Any]) -> Dict[str, Any]:
+        """Generate mock mitigation analysis."""
+        return {
+            'vulnerability_summary': {
+                'cve_id': vulnerability.get('cve_id', 'CVE-XXXX-XXXX'),
+                'severity': vulnerability.get('severity', 'high'),
+                'description': vulnerability.get('description', 'Security vulnerability'),
+                'affected_components': ['web_application', 'database']
+            },
+            'immediate_actions': [
+                {
+                    'action': 'Apply security patch',
+                    'description': 'Install the latest security update',
+                    'estimated_time': '2 hours',
+                    'difficulty': 'easy',
+                    'tools_needed': ['package_manager'],
+                    'verification': 'Check version numbers and run tests'
+                }
+            ],
+            'short_term_fixes': [
+                {
+                    'action': 'Implement additional monitoring',
+                    'description': 'Set up security monitoring for affected systems',
+                    'timeline': '1-3 days',
+                    'effort': 'medium',
+                    'dependencies': ['monitoring_tools']
+                }
+            ],
+            'long_term_improvements': [
+                {
+                    'action': 'Security training',
+                    'description': 'Train staff on security best practices',
+                    'timeline': '2-4 weeks',
+                    'effort': 'high',
+                    'benefits': ['Reduced future vulnerabilities', 'Better security awareness']
+                }
+            ],
+            'resources': {
+                'documentation': ['https://cve.mitre.org/', 'https://nvd.nist.gov/'],
+                'tools': ['vulnerability_scanner', 'patch_management'],
+                'training': ['Security awareness course', 'Incident response training']
+            },
+            'testing_verification': [
+                {
+                    'test': 'Verify patch installation',
+                    'expected_result': 'Vulnerability no longer detected',
+                    'tools': ['vulnerability_scanner', 'version_checker']
+                }
+            ],
+            'generated_time': datetime.now().isoformat(),
+            'model_used': self.model,
+            'format': 'mock'
+        }
 
     def _extract_json(self, text: str) -> Optional[dict]:
         """Try to extract a JSON object from possibly noisy text."""
@@ -302,73 +294,12 @@ class AIService:
         if not scan_results or not scan_results.get('vulnerabilities'):
             return {'error': 'No vulnerabilities to analyze'}
         
-        # Prepare vulnerability data for AI analysis
-        vuln_data = self._prepare_vulnerability_data(scan_results)
+        # Use PhindAI directly if available
+        if self.phind_ai and self.phind_ai.available:
+            return self.phind_ai.analyze_vulnerabilities(scan_results)
         
-        prompt = f"""
-You are an assistant for cybersecurity analysis. Follow instructions exactly. Do not ask clarifying questions. If information is missing, state reasonable assumptions and proceed. Respond ONLY in the requested JSON format with no extra commentary.
-
-Analyze the following vulnerability scan results and provide a comprehensive risk assessment:
-
-SCAN SUMMARY:
-- Target: {scan_results.get('target', 'Unknown')}
-- Total Vulnerabilities: {len(scan_results.get('vulnerabilities', []))}
-- Hosts Scanned: {len(scan_results.get('hosts', {}))}
-- Scan Time: {scan_results.get('scan_time', 'Unknown')}
-
-VULNERABILITY DETAILS:
-{json.dumps(vuln_data, indent=2)}
-
-Please provide analysis in the following JSON format:
-{{
-    "risk_assessment": {{
-        "overall_risk_level": "critical|high|medium|low",
-        "critical_vulnerabilities": [],
-        "high_risk_vulnerabilities": [],
-        "business_impact": "description",
-        "exploitability": "description"
-    }},
-    "vulnerability_analysis": [
-        {{
-            "cve_id": "CVE-XXXX-XXXX",
-            "enhanced_score": 8.5,
-            "risk_factors": ["factor1", "factor2"],
-            "business_impact": "description",
-            "exploit_likelihood": "high|medium|low",
-            "remediation_priority": "immediate|high|medium|low"
-        }}
-    ],
-    "recommendations": {{
-        "immediate_actions": ["action1", "action2"],
-        "short_term_goals": ["goal1", "goal2"],
-        "long_term_strategy": "description"
-    }}
-}}
-"""
-        
-        response = self._call_ai(prompt)
-        if not response:
-            return {'error': 'Failed to get AI analysis'}
-        
-        try:
-            # Try to parse JSON response (allow noisy wrappers)
-            parsed = self._extract_json(response)
-            if parsed is None:
-                raise json.JSONDecodeError("No JSON found", response, 0)
-            analysis = parsed
-            analysis['analysis_time'] = datetime.now().isoformat()
-            analysis['model_used'] = self.model
-            analysis['backend'] = self.active_backend
-            return analysis
-        except json.JSONDecodeError:
-            # If JSON parsing fails, return raw response with structure
-            return {
-                'raw_analysis': response,
-                'analysis_time': datetime.now().isoformat(),
-                'model_used': self.model,
-                'backend': self.active_backend,
-                'format': 'text'
-            }
+        # Fallback to mock response
+        return self._call_mock_vulnerability_analysis(scan_results)
     
     def check_compliance(self, scan_results: Dict[str, Any], 
                         standard: str = "OWASP") -> Dict[str, Any]:
@@ -385,62 +316,12 @@ Please provide analysis in the following JSON format:
         if not scan_results:
             return {'error': 'No scan results to analyze'}
         
-        # Prepare compliance-specific data
-        compliance_data = self._prepare_compliance_data(scan_results, standard)
+        # Use PhindAI directly if available
+        if self.phind_ai and self.phind_ai.available:
+            return self.phind_ai.check_compliance(scan_results, standard)
         
-        prompt = f"""
-You are an assistant for compliance analysis. Follow instructions exactly. Do not ask clarifying questions. If information is missing, state reasonable assumptions and proceed. Respond ONLY in the requested JSON format with no extra commentary.
-
-Analyze the following vulnerability scan results for compliance with {standard} standards:
-
-SCAN DATA:
-{json.dumps(compliance_data, indent=2)}
-
-Please provide compliance analysis in the following JSON format:
-{{
-    "compliance_score": 75,
-    "standard": "{standard}",
-    "compliance_level": "compliant|partially_compliant|non_compliant",
-    "critical_gaps": [
-        {{
-            "requirement": "requirement_id",
-            "description": "description",
-            "vulnerabilities": ["CVE-XXXX-XXXX"],
-            "severity": "critical|high|medium|low"
-        }}
-    ],
-    "recommendations": [
-        {{
-            "priority": "critical|high|medium|low",
-            "action": "specific action",
-            "timeline": "immediate|1-7 days|1-4 weeks|1-3 months",
-            "effort": "low|medium|high"
-        }}
-    ],
-    "compliance_summary": "overall compliance status and next steps"
-}}
-"""
-        
-        response = self._call_ai(prompt)
-        if not response:
-            return {'error': 'Failed to get compliance analysis'}
-        
-        try:
-            parsed = self._extract_json(response)
-            if parsed is None:
-                raise json.JSONDecodeError("No JSON found", response, 0)
-            compliance_analysis = parsed
-            compliance_analysis['analysis_time'] = datetime.now().isoformat()
-            compliance_analysis['model_used'] = self.model
-            return compliance_analysis
-        except json.JSONDecodeError:
-            return {
-                'raw_analysis': response,
-                'analysis_time': datetime.now().isoformat(),
-                'model_used': self.model,
-                'standard': standard,
-                'format': 'text'
-            }
+        # Fallback to mock response
+        return self._call_mock_compliance_analysis(scan_results, standard)
     
     def generate_mitigation_recommendations(self, vulnerability: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -455,84 +336,12 @@ Please provide compliance analysis in the following JSON format:
         if not vulnerability:
             return {'error': 'No vulnerability data provided'}
         
-        prompt = f"""
-You are an assistant for mitigation guidance. Follow instructions exactly. Do not ask clarifying questions. If information is missing, state reasonable assumptions and proceed. Respond ONLY in the requested JSON format with no extra commentary.
-
-Based on the following vulnerability, provide detailed mitigation recommendations:
-
-VULNERABILITY DETAILS:
-{json.dumps(vulnerability, indent=2)}
-
-Please provide comprehensive mitigation recommendations in the following JSON format:
-{{
-    "vulnerability_summary": {{
-        "cve_id": "CVE-XXXX-XXXX",
-        "severity": "critical|high|medium|low",
-        "description": "brief description",
-        "affected_components": ["component1", "component2"]
-    }},
-    "immediate_actions": [
-        {{
-            "action": "specific action",
-            "description": "detailed description",
-            "estimated_time": "X hours",
-            "difficulty": "easy|medium|hard",
-            "tools_needed": ["tool1", "tool2"],
-            "verification": "how to verify the fix"
-        }}
-    ],
-    "short_term_fixes": [
-        {{
-            "action": "specific action",
-            "description": "detailed description",
-            "timeline": "1-7 days",
-            "effort": "low|medium|high",
-            "dependencies": ["dependency1", "dependency2"]
-        }}
-    ],
-    "long_term_improvements": [
-        {{
-            "action": "specific action",
-            "description": "detailed description",
-            "timeline": "1-4 weeks",
-            "effort": "low|medium|high",
-            "benefits": ["benefit1", "benefit2"]
-        }}
-    ],
-    "resources": {{
-        "documentation": ["url1", "url2"],
-        "tools": ["tool1", "tool2"],
-        "training": ["course1", "course2"]
-    }},
-    "testing_verification": [
-        {{
-            "test": "test description",
-            "expected_result": "expected outcome",
-            "tools": ["tool1", "tool2"]
-        }}
-    ]
-}}
-"""
+        # Use PhindAI directly if available
+        if self.phind_ai and self.phind_ai.available:
+            return self.phind_ai.generate_mitigation_recommendations(vulnerability)
         
-        response = self._call_ai(prompt)
-        if not response:
-            return {'error': 'Failed to get mitigation recommendations'}
-        
-        try:
-            parsed = self._extract_json(response)
-            if parsed is None:
-                raise json.JSONDecodeError("No JSON found", response, 0)
-            recommendations = parsed
-            recommendations['generated_time'] = datetime.now().isoformat()
-            recommendations['model_used'] = self.model
-            return recommendations
-        except json.JSONDecodeError:
-            return {
-                'raw_recommendations': response,
-                'generated_time': datetime.now().isoformat(),
-                'model_used': self.model,
-                'format': 'text'
-            }
+        # Fallback to mock response
+        return self._call_mock_mitigation_analysis(vulnerability)
     
     def _prepare_vulnerability_data(self, scan_results: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Prepare vulnerability data for AI analysis."""
@@ -621,14 +430,17 @@ Please provide comprehensive mitigation recommendations in the following JSON fo
                 'risk_assessment'
             ],
             'supported_standards': [
+                'OWASP',
+                'NIST',
+                'PCI_DSS',
+                'ISO27001',
                 'PH_DPA'
             ],
             'available_backends': {
-                'tgpt': self._check_tgpt_availability(),
-                'ollama': self._check_ollama_availability(),
-                'huggingface': self._check_huggingface_availability(),
+                'phind': self._check_phind_availability(),
                 'mock': True
-            }
+            },
+            'phind_status': self.phind_ai.get_service_status() if self.phind_ai else None
         }
 
 
