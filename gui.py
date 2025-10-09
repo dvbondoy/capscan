@@ -1378,13 +1378,13 @@ Additional Information:
             vulnerabilities = self.scanner.get_vulnerabilities()
             vuln_file = f"output/vulnerabilities_{timestamp}.json"
             with open(vuln_file, 'w') as f:
-                json.dump(vulnerabilities, f, indent=2)
+                json.dump(vulnerabilities, f, indent=2, default=str)
                 
             # Save summary
             summary = self.scanner.get_scan_summary()
             summary_file = f"output/summary_{timestamp}.json"
             with open(summary_file, 'w') as f:
-                json.dump(summary, f, indent=2)
+                json.dump(summary, f, indent=2, default=str)
                 
             # Save XML
             xml_file = self.scanner.save_as_xml(f"output/vuln_scan_{timestamp}.xml")
