@@ -15,6 +15,7 @@ from compliance.frameworks import ComplianceStandard
 from mitigation.engine import MitigationEngine
 from ssh_scanner import SSHAuthenticatedScanner, SSHCredentials
 from ssh_credentials_manager import SSHCredentialsManager
+from reports import ReportGenerator
 
 class CapScanGUI:
     def __init__(self, db_password=None):
@@ -43,6 +44,9 @@ class CapScanGUI:
             'PH_DPA': ComplianceAnalyzer(ComplianceStandard.PH_DPA)
         }
         self.mitigation_engine = MitigationEngine()
+        
+        # Initialize report generator
+        self.report_generator = ReportGenerator()
         
         # Database variables
         self.db_password = db_password
@@ -234,6 +238,25 @@ class CapScanGUI:
             text="Save Results", 
             command=self.save_results,
             bootstyle=INFO,
+            width=15,
+            state=DISABLED
+        )
+        
+        # Export buttons
+        self.export_pdf_btn = ttk.Button(
+            self.scan_buttons_frame, 
+            text="Export PDF", 
+            command=self.export_to_pdf,
+            bootstyle=WARNING,
+            width=15,
+            state=DISABLED
+        )
+        
+        self.export_html_btn = ttk.Button(
+            self.scan_buttons_frame, 
+            text="Export HTML", 
+            command=self.export_to_html,
+            bootstyle=WARNING,
             width=15,
             state=DISABLED
         )
@@ -446,6 +469,25 @@ class CapScanGUI:
             state=DISABLED
         )
         
+        # AI Export buttons
+        self.ai_export_pdf_btn = ttk.Button(
+            self.ai_controls_frame, 
+            text="Export PDF", 
+            command=self.export_ai_to_pdf,
+            bootstyle=WARNING,
+            width=12,
+            state=DISABLED
+        )
+        
+        self.ai_export_html_btn = ttk.Button(
+            self.ai_controls_frame, 
+            text="Export HTML", 
+            command=self.export_ai_to_html,
+            bootstyle=WARNING,
+            width=12,
+            state=DISABLED
+        )
+        
         # AI Analysis results
         self.ai_results_frame = ttk.LabelFrame(self.ai_frame, text="AI Analysis Results", padding="10")
         self.ai_results_text = tk.Text(
@@ -461,7 +503,9 @@ class CapScanGUI:
         # Layout AI Analysis tab
         self.ai_controls_frame.pack(fill=X, pady=(0, 10))
         self.ai_status_label.pack(side=LEFT, padx=(0, 10))
-        self.ai_analyze_btn.pack(side=LEFT)
+        self.ai_analyze_btn.pack(side=LEFT, padx=(0, 10))
+        self.ai_export_pdf_btn.pack(side=LEFT, padx=(0, 5))
+        self.ai_export_html_btn.pack(side=LEFT, padx=(0, 5))
         
         self.ai_results_frame.pack(fill=BOTH, expand=True)
         self.ai_results_text.pack(side=LEFT, fill=BOTH, expand=True)
@@ -491,6 +535,25 @@ class CapScanGUI:
             state=DISABLED
         )
         
+        # Compliance Export buttons
+        self.compliance_export_pdf_btn = ttk.Button(
+            self.compliance_controls_frame, 
+            text="Export PDF", 
+            command=self.export_compliance_to_pdf,
+            bootstyle=WARNING,
+            width=12,
+            state=DISABLED
+        )
+        
+        self.compliance_export_html_btn = ttk.Button(
+            self.compliance_controls_frame, 
+            text="Export HTML", 
+            command=self.export_compliance_to_html,
+            bootstyle=WARNING,
+            width=12,
+            state=DISABLED
+        )
+        
         # Compliance results
         self.compliance_results_frame = ttk.LabelFrame(self.compliance_frame, text="Compliance Analysis Results", padding="10")
         self.compliance_results_text = tk.Text(
@@ -507,7 +570,9 @@ class CapScanGUI:
         self.compliance_controls_frame.pack(fill=X, pady=(0, 10))
         self.compliance_standard_label.pack(side=LEFT, padx=(0, 5))
         self.compliance_standard_combo.pack(side=LEFT, padx=(0, 10))
-        self.compliance_analyze_btn.pack(side=LEFT)
+        self.compliance_analyze_btn.pack(side=LEFT, padx=(0, 10))
+        self.compliance_export_pdf_btn.pack(side=LEFT, padx=(0, 5))
+        self.compliance_export_html_btn.pack(side=LEFT, padx=(0, 5))
         
         self.compliance_results_frame.pack(fill=BOTH, expand=True)
         self.compliance_results_text.pack(side=LEFT, fill=BOTH, expand=True)
@@ -524,6 +589,25 @@ class CapScanGUI:
             command=self.generate_mitigation_plan,
             bootstyle=SUCCESS,
             width=20,
+            state=DISABLED
+        )
+        
+        # Mitigation Export buttons
+        self.mitigation_export_pdf_btn = ttk.Button(
+            self.mitigation_controls_frame, 
+            text="Export PDF", 
+            command=self.export_mitigation_to_pdf,
+            bootstyle=WARNING,
+            width=12,
+            state=DISABLED
+        )
+        
+        self.mitigation_export_html_btn = ttk.Button(
+            self.mitigation_controls_frame, 
+            text="Export HTML", 
+            command=self.export_mitigation_to_html,
+            bootstyle=WARNING,
+            width=12,
             state=DISABLED
         )
         
@@ -568,7 +652,9 @@ class CapScanGUI:
         
         # Layout Mitigation tab
         self.mitigation_controls_frame.pack(fill=X, pady=(0, 10))
-        self.mitigation_generate_btn.pack(side=LEFT)
+        self.mitigation_generate_btn.pack(side=LEFT, padx=(0, 10))
+        self.mitigation_export_pdf_btn.pack(side=LEFT, padx=(0, 5))
+        self.mitigation_export_html_btn.pack(side=LEFT, padx=(0, 5))
         
         self.mitigation_tree_frame.pack(fill=BOTH, expand=True, pady=(0, 10))
         self.mitigation_tree.pack(side=LEFT, fill=BOTH, expand=True)
@@ -699,6 +785,8 @@ class CapScanGUI:
         self.scan_buttons_frame.grid(row=3, column=0, columnspan=5, pady=10)
         self.scan_toggle_btn.pack(side=LEFT, padx=(0, 10))
         self.save_results_btn.pack(side=LEFT, padx=(0, 10))
+        self.export_pdf_btn.pack(side=LEFT, padx=(0, 10))
+        self.export_html_btn.pack(side=LEFT, padx=(0, 10))
         self.advanced_toggle_btn.pack(side=LEFT, padx=(10, 0))
         
         # Progress bar moved to input frame
@@ -821,6 +909,9 @@ class CapScanGUI:
         # Update UI
         self.is_scanning = True
         self.scan_toggle_btn.config(text="Stop Scan", bootstyle=DANGER)
+        self.save_results_btn.config(state=DISABLED)
+        self.export_pdf_btn.config(state=DISABLED)
+        self.export_html_btn.config(state=DISABLED)
         self.progress_bar.start()
         self.status_label.config(text=f"Scanning {target} on ports {ports}...")
         
@@ -870,6 +961,12 @@ class CapScanGUI:
         self.progress_bar.stop()
         self.status_label.config(text="Scan completed successfully!")
         self.save_results_btn.config(state=NORMAL)
+        
+        # Enable export buttons if formats are available
+        if self.report_generator.is_pdf_available():
+            self.export_pdf_btn.config(state=NORMAL)
+        if self.report_generator.is_html_available():
+            self.export_html_btn.config(state=NORMAL)
         
         # Save to database if enabled
         if self.save_to_db_var.get():
@@ -1296,6 +1393,347 @@ Additional Information:
             
         except Exception as e:
             self.show_error(f"Error saving results: {str(e)}")
+    
+    def export_to_pdf(self):
+        """Export scan results to PDF"""
+        try:
+            if not self.scanner.scan_results:
+                self.show_error("No scan results to export")
+                return
+            
+            # Get file path from user
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            target = self.scanner.scan_results.get('target', 'unknown').replace('.', '_')
+            default_filename = f"capscan_report_{target}_{timestamp}.pdf"
+            
+            file_path = filedialog.asksaveasfilename(
+                title="Export PDF Report",
+                defaultextension=".pdf",
+                filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")],
+                initialfile=default_filename
+            )
+            
+            if file_path:
+                self.status_label.config(text="Generating PDF report...")
+                self.root.update()
+                
+                # Export to PDF
+                output_path = self.report_generator.export_to_pdf(self.scanner.scan_results, file_path)
+                
+                self.show_info(f"PDF report exported successfully:\n{output_path}")
+                self.status_label.config(text="PDF report generated successfully!")
+                
+        except Exception as e:
+            self.show_error(f"Error exporting PDF: {str(e)}")
+            self.status_label.config(text="PDF export failed")
+    
+    def export_to_html(self):
+        """Export scan results to HTML"""
+        try:
+            if not self.scanner.scan_results:
+                self.show_error("No scan results to export")
+                return
+            
+            # Get file path from user
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            target = self.scanner.scan_results.get('target', 'unknown').replace('.', '_')
+            default_filename = f"capscan_report_{target}_{timestamp}.html"
+            
+            file_path = filedialog.asksaveasfilename(
+                title="Export HTML Report",
+                defaultextension=".html",
+                filetypes=[("HTML files", "*.html"), ("All files", "*.*")],
+                initialfile=default_filename
+            )
+            
+            if file_path:
+                self.status_label.config(text="Generating HTML report...")
+                self.root.update()
+                
+                # Export to HTML
+                output_path = self.report_generator.export_to_html(self.scanner.scan_results, file_path)
+                
+                self.show_info(f"HTML report exported successfully:\n{output_path}")
+                self.status_label.config(text="HTML report generated successfully!")
+                
+        except Exception as e:
+            self.show_error(f"Error exporting HTML: {str(e)}")
+            self.status_label.config(text="HTML export failed")
+    
+    def export_ai_to_pdf(self):
+        """Export AI analysis results to PDF"""
+        try:
+            if not self.scanner.scan_results or not self.ai_analysis_results:
+                self.show_error("No AI analysis results to export")
+                return
+            
+            # Get file path from user
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            target = self.scanner.scan_results.get('target', 'unknown').replace('.', '_')
+            default_filename = f"capscan_ai_analysis_{target}_{timestamp}.pdf"
+            
+            file_path = filedialog.asksaveasfilename(
+                title="Export AI Analysis PDF",
+                defaultextension=".pdf",
+                filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")],
+                initialfile=default_filename
+            )
+            
+            if file_path:
+                self.status_label.config(text="Generating AI analysis PDF report...")
+                self.root.update()
+                
+                # Get the exact text currently displayed in the AI results widget
+                ai_text = self.ai_results_text.get("1.0", tk.END)
+
+                # Export preformatted text so PDF matches on-screen content
+                output_path = self.report_generator.export_text_to_pdf(
+                    title="AI Vulnerability Analysis Results",
+                    text_content=ai_text,
+                    output_path=file_path
+                )
+                
+                self.show_info(f"AI analysis PDF report exported successfully:\n{output_path}")
+                self.status_label.config(text="AI analysis PDF report generated successfully!")
+                
+        except Exception as e:
+            self.show_error(f"Error exporting AI analysis PDF: {str(e)}")
+            self.status_label.config(text="AI analysis PDF export failed")
+    
+    def export_ai_to_html(self):
+        """Export AI analysis results to HTML"""
+        try:
+            if not self.scanner.scan_results or not self.ai_analysis_results:
+                self.show_error("No AI analysis results to export")
+                return
+            
+            # Get file path from user
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            target = self.scanner.scan_results.get('target', 'unknown').replace('.', '_')
+            default_filename = f"capscan_ai_analysis_{target}_{timestamp}.html"
+            
+            file_path = filedialog.asksaveasfilename(
+                title="Export AI Analysis HTML",
+                defaultextension=".html",
+                filetypes=[("HTML files", "*.html"), ("All files", "*.*")],
+                initialfile=default_filename
+            )
+            
+            if file_path:
+                self.status_label.config(text="Generating AI analysis HTML report...")
+                self.root.update()
+                
+                # Get the exact text currently displayed in the AI results widget
+                ai_text = self.ai_results_text.get("1.0", tk.END)
+
+                # Export preformatted text so HTML matches on-screen content
+                output_path = self.report_generator.export_text_to_html(
+                    title="AI Vulnerability Analysis Results",
+                    text_content=ai_text,
+                    output_path=file_path
+                )
+                
+                self.show_info(f"AI analysis HTML report exported successfully:\n{output_path}")
+                self.status_label.config(text="AI analysis HTML report generated successfully!")
+                
+        except Exception as e:
+            self.show_error(f"Error exporting AI analysis HTML: {str(e)}")
+            self.status_label.config(text="AI analysis HTML export failed")
+    
+    def export_compliance_to_pdf(self):
+        """Export compliance analysis results to PDF"""
+        try:
+            if not self.scanner.scan_results or not self.compliance_results:
+                self.show_error("No compliance analysis results to export")
+                return
+            
+            # Get file path from user
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            target = self.scanner.scan_results.get('target', 'unknown').replace('.', '_')
+            standard = self.compliance_standard_var.get()
+            default_filename = f"capscan_compliance_{standard}_{target}_{timestamp}.pdf"
+            
+            file_path = filedialog.asksaveasfilename(
+                title="Export Compliance Analysis PDF",
+                defaultextension=".pdf",
+                filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")],
+                initialfile=default_filename
+            )
+            
+            if file_path:
+                self.status_label.config(text="Generating compliance analysis PDF report...")
+                self.root.update()
+                
+                # Capture exactly what's displayed in the Compliance tab
+                comp_text = self.compliance_results_text.get("1.0", tk.END)
+
+                # Export preformatted text so PDF matches on-screen content
+                output_path = self.report_generator.export_text_to_pdf(
+                    title=f"{standard} Compliance Analysis Results",
+                    text_content=comp_text,
+                    output_path=file_path
+                )
+                
+                self.show_info(f"Compliance analysis PDF report exported successfully:\n{output_path}")
+                self.status_label.config(text="Compliance analysis PDF report generated successfully!")
+                
+        except Exception as e:
+            self.show_error(f"Error exporting compliance analysis PDF: {str(e)}")
+            self.status_label.config(text="Compliance analysis PDF export failed")
+    
+    def export_compliance_to_html(self):
+        """Export compliance analysis results to HTML"""
+        try:
+            if not self.scanner.scan_results or not self.compliance_results:
+                self.show_error("No compliance analysis results to export")
+                return
+            
+            # Get file path from user
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            target = self.scanner.scan_results.get('target', 'unknown').replace('.', '_')
+            standard = self.compliance_standard_var.get()
+            default_filename = f"capscan_compliance_{standard}_{target}_{timestamp}.html"
+            
+            file_path = filedialog.asksaveasfilename(
+                title="Export Compliance Analysis HTML",
+                defaultextension=".html",
+                filetypes=[("HTML files", "*.html"), ("All files", "*.*")],
+                initialfile=default_filename
+            )
+            
+            if file_path:
+                self.status_label.config(text="Generating compliance analysis HTML report...")
+                self.root.update()
+                
+                # Capture exactly what's displayed in the Compliance tab
+                comp_text = self.compliance_results_text.get("1.0", tk.END)
+
+                # Export preformatted text so HTML matches on-screen content
+                output_path = self.report_generator.export_text_to_html(
+                    title=f"{standard} Compliance Analysis Results",
+                    text_content=comp_text,
+                    output_path=file_path
+                )
+                
+                self.show_info(f"Compliance analysis HTML report exported successfully:\n{output_path}")
+                self.status_label.config(text="Compliance analysis HTML report generated successfully!")
+                
+        except Exception as e:
+            self.show_error(f"Error exporting compliance analysis HTML: {str(e)}")
+            self.status_label.config(text="Compliance analysis HTML export failed")
+    
+    def export_mitigation_to_pdf(self):
+        """Export mitigation plan results to PDF"""
+        try:
+            if not self.scanner.scan_results or not self.mitigation_plan:
+                self.show_error("No mitigation plan results to export")
+                return
+            
+            # Get file path from user
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            target = self.scanner.scan_results.get('target', 'unknown').replace('.', '_')
+            default_filename = f"capscan_mitigation_{target}_{timestamp}.pdf"
+            
+            file_path = filedialog.asksaveasfilename(
+                title="Export Mitigation Plan PDF",
+                defaultextension=".pdf",
+                filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")],
+                initialfile=default_filename
+            )
+            
+            if file_path:
+                self.status_label.config(text="Generating mitigation plan PDF report...")
+                self.root.update()
+                
+                # Build exported text from current Mitigation tab view
+                content = self.mitigation_details_text.get("1.0", tk.END)
+                # Append mitigation tree items as a table-like text
+                content += "\nMitigation Recommendations (from table)\n" + ("-" * 40) + "\n"
+                content += "Priority | Title | Timeline | Effort | Status\n"
+                content += ("-" * 80) + "\n"
+                for item_id in self.mitigation_tree.get_children():
+                    vals = self.mitigation_tree.item(item_id).get('values', [])
+                    # Ensure we have 5 columns to avoid index errors
+                    priority = str(vals[0]) if len(vals) > 0 else ''
+                    title = str(vals[1]) if len(vals) > 1 else ''
+                    timeline = str(vals[2]) if len(vals) > 2 else ''
+                    effort = str(vals[3]) if len(vals) > 3 else ''
+                    status = str(vals[4]) if len(vals) > 4 else ''
+                    content += f"{priority} | {title} | {timeline} | {effort} | {status}\n"
+
+                # Export preformatted text so PDF matches on-screen content
+                output_path = self.report_generator.export_text_to_pdf(
+                    title="Mitigation Plan",
+                    text_content=content,
+                    output_path=file_path
+                )
+                
+                self.show_info(f"Mitigation plan PDF report exported successfully:\n{output_path}")
+                self.status_label.config(text="Mitigation plan PDF report generated successfully!")
+                
+        except Exception as e:
+            self.show_error(f"Error exporting mitigation plan PDF: {str(e)}")
+            self.status_label.config(text="Mitigation plan PDF export failed")
+    
+    def export_mitigation_to_html(self):
+        """Export mitigation plan results to HTML"""
+        try:
+            if not self.scanner.scan_results or not self.mitigation_plan:
+                self.show_error("No mitigation plan results to export")
+                return
+            
+            # Get file path from user
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            target = self.scanner.scan_results.get('target', 'unknown').replace('.', '_')
+            default_filename = f"capscan_mitigation_{target}_{timestamp}.html"
+            
+            file_path = filedialog.asksaveasfilename(
+                title="Export Mitigation Plan HTML",
+                defaultextension=".html",
+                filetypes=[("HTML files", "*.html"), ("All files", "*.*")],
+                initialfile=default_filename
+            )
+            
+            if file_path:
+                self.status_label.config(text="Generating mitigation plan HTML report...")
+                self.root.update()
+                
+                # Build exported text from current Mitigation tab view
+                content = self.mitigation_details_text.get("1.0", tk.END)
+                # Append mitigation tree items as a table-like text
+                content += "\nMitigation Recommendations (from table)\n" + ("-" * 40) + "\n"
+                content += "Priority | Title | Timeline | Effort | Status\n"
+                content += ("-" * 80) + "\n"
+                for item_id in self.mitigation_tree.get_children():
+                    vals = self.mitigation_tree.item(item_id).get('values', [])
+                    priority = str(vals[0]) if len(vals) > 0 else ''
+                    title = str(vals[1]) if len(vals) > 1 else ''
+                    timeline = str(vals[2]) if len(vals) > 2 else ''
+                    effort = str(vals[3]) if len(vals) > 3 else ''
+                    status = str(vals[4]) if len(vals) > 4 else ''
+                    content += f"{priority} | {title} | {timeline} | {effort} | {status}\n"
+
+                # Export preformatted text so HTML matches on-screen content
+                output_path = self.report_generator.export_text_to_html(
+                    title="Mitigation Plan",
+                    text_content=content,
+                    output_path=file_path
+                )
+                
+                self.show_info(f"Mitigation plan HTML report exported successfully:\n{output_path}")
+                self.status_label.config(text="Mitigation plan HTML report generated successfully!")
+                
+        except Exception as e:
+            self.show_error(f"Error exporting mitigation plan HTML: {str(e)}")
+            self.status_label.config(text="Mitigation plan HTML export failed")
             
     def show_error(self, message):
         """Show error message"""
@@ -1547,6 +1985,12 @@ Status: Connected
             # Display results
             self.display_ai_analysis_results(analysis)
             
+            # Enable export buttons if formats are available
+            if self.report_generator.is_pdf_available():
+                self.ai_export_pdf_btn.config(state=NORMAL)
+            if self.report_generator.is_html_available():
+                self.ai_export_html_btn.config(state=NORMAL)
+            
             # Save to database if connected
             if self.db_connected and self.scan_id:
                 self.save_ai_analysis_to_db(analysis)
@@ -1644,6 +2088,12 @@ Status: Connected
             
             # Display results
             self.display_compliance_results(results, standard)
+            
+            # Enable export buttons if formats are available
+            if self.report_generator.is_pdf_available():
+                self.compliance_export_pdf_btn.config(state=NORMAL)
+            if self.report_generator.is_html_available():
+                self.compliance_export_html_btn.config(state=NORMAL)
             
             # Save to database if connected
             if self.db_connected and self.scan_id:
@@ -1795,6 +2245,12 @@ Status: Connected
             
             # Display results
             self.display_mitigation_plan(plan)
+            
+            # Enable export buttons if formats are available
+            if self.report_generator.is_pdf_available():
+                self.mitigation_export_pdf_btn.config(state=NORMAL)
+            if self.report_generator.is_html_available():
+                self.mitigation_export_html_btn.config(state=NORMAL)
             
             # Save to database if connected
             if self.db_connected and self.scan_id:

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapScan Vulnerability Report</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .summary-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #3498db;
+        }
+        .summary-card.critical { border-left-color: #e74c3c; }
+        .summary-card.high { border-left-color: #f39c12; }
+        .summary-card.medium { border-left-color: #f1c40f; }
+        .summary-card.low { border-left-color: #27ae60; }
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 2em;
+            color: #2c3e50;
+        }
+        .summary-card p {
+            margin: 0;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        .vulnerability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .vulnerability-table th,
+        .vulnerability-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .vulnerability-table th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+        .vulnerability-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .severity-critical { color: #e74c3c; font-weight: bold; }
+        .severity-high { color: #f39c12; font-weight: bold; }
+        .severity-medium { color: #f1c40f; font-weight: bold; }
+        .severity-low { color: #27ae60; font-weight: bold; }
+        .severity-unknown { color: #95a5a6; font-weight: bold; }
+        .chart-container {
+            margin: 20px 0;
+        }
+        .host-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .host-info h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #3498db;
+        }
+        .info-item strong {
+            color: #2c3e50;
+        }
+        .footer {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        .risk-assessment {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .risk-assessment.high {
+            background: #ffeaa7;
+            border-color: #f39c12;
+        }
+        .risk-assessment.critical {
+            background: #fab1a0;
+            border-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CapScan Vulnerability Assessment Report</h1>
+            <p>Generated on {{ report_date }}</p>
+        </div>
+        
+        <div class="content">
+            <!-- Executive Summary -->
+            <div class="section">
+                <h2>Executive Summary</h2>
+                
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3>{{ total_hosts }}</h3>
+                        <p>Hosts Scanned</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>{{ total_vulnerabilities }}</h3>
+                        <p>Total Vulnerabilities</p>
+                    </div>
+                    <div class="summary-card critical">
+                        <h3>{{ severity_counts.Critical }}</h3>
+                        <p>Critical</p>
+                    </div>
+                    <div class="summary-card high">
+                        <h3>{{ severity_counts.High }}</h3>
+                        <p>High</p>
+                    </div>
+                    <div class="summary-card medium">
+                        <h3>{{ severity_counts.Medium }}</h3>
+                        <p>Medium</p>
+                    </div>
+                    <div class="summary-card low">
+                        <h3>{{ severity_counts.Low }}</h3>
+                        <p>Low</p>
+                    </div>
+                </div>
+                
+                <div class="risk-assessment {{ risk_level }}">
+                    <h3>Risk Assessment</h3>
+                    <p>{{ risk_assessment }}</p>
+                </div>
+                
+                {% if charts.severity_chart %}
+                <div class="chart-container">
+                    <div id="severityChart"></div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Vulnerability Details -->
+            <div class="section">
+                <h2>Vulnerability Details</h2>
+                
+                {% if vulnerabilities %}
+                <table class="vulnerability-table">
+                    <thead>
+                        <tr>
+                            <th>CVE ID</th>
+                            <th>Severity</th>
+                            <th>Score</th>
+                            <th>Description</th>
+                            <th>Host</th>
+                            <th>Port</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vuln in vulnerabilities %}
+                        <tr>
+                            <td><strong>{{ vuln.cve_id }}</strong></td>
+                            <td><span class="severity-{{ vuln.severity.lower() }}">{{ vuln.severity }}</span></td>
+                            <td>{{ vuln.score }}</td>
+                            <td>{{ vuln.description[:100] }}{% if vuln.description|length > 100 %}...{% endif %}</td>
+                            <td>{{ vuln.host }}</td>
+                            <td>{{ vuln.port }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No vulnerabilities found during the scan.</p>
+                {% endif %}
+            </div>
+            
+            <!-- AI Analysis -->
+            {% if ai_analysis %}
+            <div class="section">
+                <h2>AI Analysis</h2>
+                {% if ai_analysis.error %}
+                <div class="risk-assessment critical">
+                    <h3>Analysis Error</h3>
+                    <p>{{ ai_analysis.error }}</p>
+                </div>
+                {% else %}
+                {% if ai_analysis.summary %}
+                <div class="host-info">
+                    <h3>Analysis Summary</h3>
+                    <p>{{ ai_analysis.summary }}</p>
+                </div>
+                {% endif %}
+                
+                {% if ai_analysis.risk_assessment %}
+                <div class="host-info">
+                    <h3>Risk Assessment</h3>
+                    {% if ai_analysis.risk_assessment.overall_risk_level %}
+                    <p><strong>Overall Risk Level:</strong> {{ ai_analysis.risk_assessment.overall_risk_level }}</p>
+                    <p><strong>Business Impact:</strong> {{ ai_analysis.risk_assessment.business_impact }}</p>
+                    <p><strong>Exploitability:</strong> {{ ai_analysis.risk_assessment.exploitability }}</p>
+                    
+                    {% if ai_analysis.risk_assessment.critical_vulnerabilities %}
+                    <h4>Critical Vulnerabilities:</h4>
+                    <ul>
+                        {% for vuln in ai_analysis.risk_assessment.critical_vulnerabilities %}
+                        <li>{{ vuln }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                    {% if ai_analysis.risk_assessment.high_risk_vulnerabilities %}
+                    <h4>High Risk Vulnerabilities:</h4>
+                    <ul>
+                        {% for vuln in ai_analysis.risk_assessment.high_risk_vulnerabilities %}
+                        <li>{{ vuln }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% else %}
+                    <p>{{ ai_analysis.risk_assessment }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                {% if ai_analysis.recommendations %}
+                <div class="host-info">
+                    <h3>AI Recommendations</h3>
+                    <ol>
+                        {% for rec in ai_analysis.recommendations %}
+                        <li>{{ rec }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            <!-- Compliance Analysis -->
+            {% if compliance_results %}
+            <div class="section">
+                <h2>Compliance Analysis</h2>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3>{{ compliance_results.compliance_score }}</h3>
+                        <p>Compliance Score</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>{{ compliance_results.status }}</h3>
+                        <p>Status</p>
+                    </div>
+                    <div class="summary-card critical">
+                        <h3>{{ compliance_results.critical_violations }}</h3>
+                        <p>Critical Violations</p>
+                    </div>
+                    <div class="summary-card high">
+                        <h3>{{ compliance_results.high_violations }}</h3>
+                        <p>High Violations</p>
+                    </div>
+                    <div class="summary-card medium">
+                        <h3>{{ compliance_results.medium_violations }}</h3>
+                        <p>Medium Violations</p>
+                    </div>
+                    <div class="summary-card low">
+                        <h3>{{ compliance_results.low_violations }}</h3>
+                        <p>Low Violations</p>
+                    </div>
+                </div>
+                
+                {% if compliance_results.recommendations %}
+                <div class="host-info">
+                    <h3>Compliance Recommendations</h3>
+                    <ol>
+                        {% for rec in compliance_results.recommendations %}
+                        <li>
+                            <strong>{{ rec.title }}</strong><br/>
+                            Priority: {{ rec.priority }} | Timeline: {{ rec.timeline }}
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            <!-- Mitigation Plan -->
+            {% if mitigation_plan %}
+            <div class="section">
+                <h2>Mitigation Plan</h2>
+                <div class="summary-grid">
+                    <div class="summary-card critical">
+                        <h3>{{ mitigation_plan.summary.critical_actions }}</h3>
+                        <p>Critical Actions</p>
+                    </div>
+                    <div class="summary-card high">
+                        <h3>{{ mitigation_plan.summary.high_actions }}</h3>
+                        <p>High Actions</p>
+                    </div>
+                    <div class="summary-card medium">
+                        <h3>{{ mitigation_plan.summary.medium_actions }}</h3>
+                        <p>Medium Actions</p>
+                    </div>
+                    <div class="summary-card low">
+                        <h3>{{ mitigation_plan.summary.low_actions }}</h3>
+                        <p>Low Actions</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>{{ mitigation_plan.summary.estimated_timeline }}</h3>
+                        <p>Estimated Timeline</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>{{ mitigation_plan.summary.overall_effort }}</h3>
+                        <p>Overall Effort</p>
+                    </div>
+                </div>
+                
+                {% if mitigation_plan.recommendations %}
+                <div class="host-info">
+                    <h3>Mitigation Recommendations</h3>
+                    <ol>
+                        {% for rec in mitigation_plan.recommendations %}
+                        <li>
+                            <strong>{{ rec.title }}</strong><br/>
+                            Priority: {{ rec.priority }} | Effort: {{ rec.effort }} | Timeline: {{ rec.timeline }}
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                {% endif %}
+                
+                {% if mitigation_plan.vulnerability_mitigations %}
+                <div class="host-info">
+                    <h3>Vulnerability-Specific Mitigation Details</h3>
+                    {% for vuln_mit in mitigation_plan.vulnerability_mitigations %}
+                    <div class="vulnerability-mitigation">
+                        <h4>{{ vuln_mit.cve_id }} ({{ vuln_mit.severity }})</h4>
+                        <p><strong>Description:</strong> {{ vuln_mit.description }}</p>
+                        <p><strong>Host:</strong> {{ vuln_mit.host }} | <strong>Port:</strong> {{ vuln_mit.port }} | <strong>Service:</strong> {{ vuln_mit.service }}</p>
+                        {% if vuln_mit.mitigation_steps %}
+                        <p><strong>Mitigation Steps:</strong></p>
+                        <ol>
+                            {% for step in vuln_mit.mitigation_steps %}
+                            <li>{{ step }}</li>
+                            {% endfor %}
+                        </ol>
+                        {% endif %}
+                        <p><strong>Priority:</strong> {{ vuln_mit.priority }} | <strong>Effort:</strong> {{ vuln_mit.effort }} | <strong>Timeline:</strong> {{ vuln_mit.timeline }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            <!-- Host Information -->
+            <div class="section">
+                <h2>Host Information</h2>
+                {% for host_ip, host_info in hosts.items() %}
+                <div class="host-info">
+                    <h3>{{ host_ip }}</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Status:</strong> {{ host_info.status }}
+                        </div>
+                        <div class="info-item">
+                            <strong>Hostname:</strong> {{ host_info.hostname or 'N/A' }}
+                        </div>
+                        <div class="info-item">
+                            <strong>OS:</strong> {{ host_info.os or 'N/A' }}
+                        </div>
+                        <div class="info-item">
+                            <strong>Open Ports:</strong> {{ host_info.ports|length }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Report generated by CapScan Vulnerability Scanner | {{ report_date }}</p>
+        </div>
+    </div>
+    
+    {% if charts.severity_chart %}
+    <script>
+        var severityData = {{ charts.severity_chart|safe }};
+        Plotly.newPlot('severityChart', severityData.data, severityData.layout);
+    </script>
+    {% endif %}
+</body>
+</html>

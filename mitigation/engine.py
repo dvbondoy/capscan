@@ -89,11 +89,17 @@ class MitigationEngine:
         severity_groups = self._group_vulnerabilities_by_severity(vulnerabilities)
         
         # Generate recommendations for each severity group
+        vulnerability_mitigations = []
         for severity, vulns in severity_groups.items():
             for vuln in vulns:
                 recommendation = self._generate_vulnerability_mitigation(vuln)
                 if recommendation:
                     mitigation_plan.append(recommendation)
+                
+                # Create vulnerability-specific mitigation details
+                vuln_mitigation = self._create_vulnerability_mitigation_detail(vuln, recommendation)
+                if vuln_mitigation:
+                    vulnerability_mitigations.append(vuln_mitigation)
         
         # Sort by priority and timeline
         mitigation_plan = self._prioritize_recommendations(mitigation_plan)
@@ -104,6 +110,7 @@ class MitigationEngine:
         return {
             'mitigation_plan': mitigation_plan,
             'summary': summary,
+            'vulnerability_mitigations': vulnerability_mitigations,
             'generated_time': datetime.now().isoformat()
         }
     
@@ -862,3 +869,50 @@ class MitigationEngine:
             ]
         
         return enhanced_resources
+    
+    def _create_vulnerability_mitigation_detail(self, vulnerability: Dict[str, Any], recommendation: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Create detailed vulnerability-specific mitigation information.
+        
+        Args:
+            vulnerability: Vulnerability data
+            recommendation: Generated mitigation recommendation
+            
+        Returns:
+            Dict: Detailed vulnerability mitigation information
+        """
+        if not vulnerability or not recommendation:
+            return None
+        
+        # Extract key vulnerability information
+        cve_id = vulnerability.get('cve_id', 'Unknown')
+        severity = vulnerability.get('severity', 'unknown')
+        description = vulnerability.get('description', 'No description available')
+        host = vulnerability.get('host', 'Unknown')
+        port = vulnerability.get('port', 'Unknown')
+        service = vulnerability.get('service_name', 'Unknown')
+        
+        # Extract mitigation steps from recommendation
+        mitigation_steps = []
+        if 'steps' in recommendation:
+            mitigation_steps = recommendation['steps'][:5]  # Limit to first 5 steps
+        elif 'description' in recommendation:
+            # If no specific steps, use the description as a single step
+            mitigation_steps = [recommendation['description']]
+        
+        # Create detailed mitigation information
+        vuln_mitigation = {
+            'cve_id': cve_id,
+            'severity': severity,
+            'description': description,
+            'host': host,
+            'port': port,
+            'service': service,
+            'mitigation_steps': mitigation_steps,
+            'priority': recommendation.get('priority', 'medium'),
+            'effort': recommendation.get('effort', 'medium'),
+            'timeline': recommendation.get('timeline', 'N/A'),
+            'title': recommendation.get('title', f'Mitigate {cve_id}')
+        }
+        
+        return vuln_mitigation
