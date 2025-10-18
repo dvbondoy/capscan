@@ -102,7 +102,7 @@ cd ~
 
 ### 6.2 Clone the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/dvbondoy/capscan.git
 cd capscan
 ```
 
