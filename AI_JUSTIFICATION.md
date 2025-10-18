@@ -6,7 +6,7 @@ CapScan augments `nmap`-based network scanning with AI to accelerate analysis, r
 ### Where AI Fits in CapScan
 - Interpreting `python-nmap` outputs and NSE/script data
 - Summarizing findings in the `ttkbootstrap` GUI (flatly theme)
-- Generating mitigation recommendations via `tgpt`
+- Generating mitigation recommendations
 - Prioritizing/triaging issues while preserving raw evidence in `sqlcipher3`
 
 ### Benefits
