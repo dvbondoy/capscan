@@ -35,8 +35,8 @@ class PhindAI:
         self.chat_client = PhindChat(model=model)
         self.available = True
         
-        # Test the connection
-        self._test_connection()
+        # Skip connection test on startup
+        # self._test_connection()
     
     def _test_connection(self) -> bool:
         """Test if Phind service is available."""

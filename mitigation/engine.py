@@ -60,12 +60,13 @@ class MitigationEngine:
             print(f"Warning: Could not initialize ExploitDB service: {e}")
             self.exploitdb_service = None
     
-    def generate_mitigation_plan(self, scan_results: Dict[str, Any]) -> Dict[str, Any]:
+    def generate_mitigation_plan(self, scan_results: Dict[str, Any], recommendation_type: str = "ai") -> Dict[str, Any]:
         """
         Generate comprehensive mitigation plan for scan results.
         
         Args:
             scan_results: Scan results from Scanner.scan_host()
+            recommendation_type: Type of recommendations to generate ("ai" or "template")
             
         Returns:
             Dict: Complete mitigation plan
@@ -92,7 +93,7 @@ class MitigationEngine:
         vulnerability_mitigations = []
         for severity, vulns in severity_groups.items():
             for vuln in vulns:
-                recommendation = self._generate_vulnerability_mitigation(vuln)
+                recommendation = self._generate_vulnerability_mitigation(vuln, recommendation_type)
                 if recommendation:
                     mitigation_plan.append(recommendation)
                 
@@ -111,6 +112,7 @@ class MitigationEngine:
             'mitigation_plan': mitigation_plan,
             'summary': summary,
             'vulnerability_mitigations': vulnerability_mitigations,
+            'ai_enhanced': self.ai_service is not None,
             'generated_time': datetime.now().isoformat()
         }
     
@@ -133,7 +135,7 @@ class MitigationEngine:
         
         return groups
     
-    def _generate_vulnerability_mitigation(self, vulnerability: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def _generate_vulnerability_mitigation(self, vulnerability: Dict[str, Any], recommendation_type: str = "ai") -> Optional[Dict[str, Any]]:
         """Generate mitigation recommendation for a specific vulnerability with enhanced context."""
         cve_id = vulnerability.get('cve_id', 'Unknown')
         severity = vulnerability.get('severity', 'unknown').lower()
@@ -149,8 +151,11 @@ class MitigationEngine:
         # Get ExploitDB information for this CVE
         exploit_info = self._get_exploit_information(cve_id)
         
-        # Generate recommendations with enhanced context
-        recommendations = self._generate_enhanced_recommendations(vulnerability, template, priority, exploit_info)
+        # Generate recommendations based on selected type
+        if recommendation_type == "ai":
+            recommendations = self._generate_ai_enhanced_recommendations(vulnerability, template, priority, exploit_info)
+        else:  # template
+            recommendations = self._generate_enhanced_recommendations(vulnerability, template, priority, exploit_info)
         
         if not recommendations:
             return None
@@ -292,6 +297,94 @@ class MitigationEngine:
                 'tools_needed': improvement.get('tools_needed', []),
                 'verification': improvement.get('verification', 'Full security assessment required')
             })
+        
+        return recommendations
+    
+    def _generate_ai_enhanced_recommendations(self, vulnerability: Dict[str, Any], 
+                                           template: Dict[str, Any], 
+                                           priority: MitigationPriority,
+                                           exploit_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Generate AI-enhanced recommendations with fallback to template-based approach."""
+        recommendations = []
+        
+        # Try AI service first if available
+        if self.ai_service and hasattr(self.ai_service, 'generate_mitigation_recommendations'):
+            try:
+                ai_result = self.ai_service.generate_mitigation_recommendations(vulnerability)
+                if ai_result and not ai_result.get('error'):
+                    # Process AI recommendations
+                    ai_recommendations = self._process_ai_recommendations(ai_result, vulnerability, priority, exploit_info)
+                    if ai_recommendations:
+                        return ai_recommendations
+            except Exception as e:
+                print(f"AI service error: {e}, falling back to template-based recommendations")
+        
+        # Fallback to template-based recommendations
+        return self._generate_enhanced_recommendations(vulnerability, template, priority, exploit_info)
+    
+    def _process_ai_recommendations(self, ai_result: Dict[str, Any], vulnerability: Dict[str, Any], 
+                                  priority: MitigationPriority, exploit_info: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Process AI-generated recommendations and convert to standard format."""
+        recommendations = []
+        
+        # Extract immediate actions
+        immediate_actions = ai_result.get('immediate_actions', [])
+        for action in immediate_actions:
+            rec = {
+                'timeline': MitigationTimeline.IMMEDIATE.value,
+                'action': action.get('action', ''),
+                'description': action.get('description', ''),
+                'estimated_time': action.get('estimated_time', '1-2 hours'),
+                'difficulty': action.get('difficulty', 'medium'),
+                'tools_needed': action.get('tools_needed', []),
+                'verification': action.get('verification', 'Manual verification required'),
+                'source': 'ai_generated',
+                'ai_context': 'Generated by AI analysis'
+            }
+            recommendations.append(rec)
+        
+        # Extract short-term fixes
+        short_term_fixes = ai_result.get('short_term_fixes', [])
+        for fix in short_term_fixes:
+            rec = {
+                'timeline': MitigationTimeline.SHORT_TERM.value,
+                'action': fix.get('action', ''),
+                'description': fix.get('description', ''),
+                'estimated_time': fix.get('timeline', '1-3 days'),
+                'difficulty': fix.get('effort', 'medium'),
+                'tools_needed': fix.get('dependencies', []),
+                'verification': 'Testing and validation required',
+                'source': 'ai_generated',
+                'ai_context': 'Generated by AI analysis'
+            }
+            recommendations.append(rec)
+        
+        # Extract long-term improvements
+        long_term_improvements = ai_result.get('long_term_improvements', [])
+        for improvement in long_term_improvements:
+            rec = {
+                'timeline': MitigationTimeline.LONG_TERM.value,
+                'action': improvement.get('action', ''),
+                'description': improvement.get('description', ''),
+                'estimated_time': improvement.get('timeline', '1-3 months'),
+                'difficulty': improvement.get('effort', 'high'),
+                'tools_needed': improvement.get('benefits', []),
+                'verification': 'Comprehensive testing required',
+                'source': 'ai_generated',
+                'ai_context': 'Generated by AI analysis'
+            }
+            recommendations.append(rec)
+        
+        # Enhance with exploit context
+        for rec in recommendations:
+            if exploit_info.get('has_verified_exploits'):
+                total_exploits = exploit_info.get('total_exploits', 0)
+                rec['exploit_context'] = f"Verified exploits available ({total_exploits} total)"
+                rec['urgency'] = 'high' if exploit_info.get('exploit_availability') == 'high' else 'medium'
+            else:
+                total_exploits = exploit_info.get('total_exploits', 0)
+                rec['exploit_context'] = f"No verified exploits found ({total_exploits} total)"
+                rec['urgency'] = 'low'
         
         return recommendations
     

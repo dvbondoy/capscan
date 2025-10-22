@@ -43,7 +43,7 @@ class CapScanGUI:
         self.compliance_analyzers = {
             'PH_DPA': ComplianceAnalyzer(ComplianceStandard.PH_DPA)
         }
-        self.mitigation_engine = MitigationEngine()
+        self.mitigation_engine = MitigationEngine(ai_service=self.ai_service)
         
         # Initialize report generator
         self.report_generator = ReportGenerator()
@@ -449,8 +449,8 @@ class CapScanGUI:
         self.vulns_tree.bind("<<TreeviewSelect>>", self.on_vuln_select)
         self.ports_entry.bind("<KeyRelease>", self.on_port_entry_change)
         
-        # Check AI service status after all tabs are created
-        self.check_ai_service_status()
+        # Skip AI service status check on startup
+        # self.check_ai_service_status()
         
         # Initialize database info display handled by update_db_status_ui()
     
@@ -583,6 +583,23 @@ class CapScanGUI:
         # Mitigation controls
         self.mitigation_controls_frame = ttk.LabelFrame(self.mitigation_frame, text="Mitigation Controls", padding="10")
         
+        # Mitigation type selection
+        self.mitigation_type_frame = ttk.Frame(self.mitigation_controls_frame)
+        self.mitigation_type_label = ttk.Label(self.mitigation_type_frame, text="Recommendation Type:")
+        self.mitigation_type_var = tk.StringVar(value="ai")
+        self.mitigation_type_ai_radio = ttk.Radiobutton(
+            self.mitigation_type_frame,
+            text="AI-Generated",
+            variable=self.mitigation_type_var,
+            value="ai"
+        )
+        self.mitigation_type_template_radio = ttk.Radiobutton(
+            self.mitigation_type_frame,
+            text="Template-Based",
+            variable=self.mitigation_type_var,
+            value="template"
+        )
+        
         self.mitigation_generate_btn = ttk.Button(
             self.mitigation_controls_frame, 
             text="Generate Mitigation Plan", 
@@ -652,6 +669,14 @@ class CapScanGUI:
         
         # Layout Mitigation tab
         self.mitigation_controls_frame.pack(fill=X, pady=(0, 10))
+        
+        # Mitigation type selection layout
+        self.mitigation_type_frame.pack(fill=X, pady=(0, 10))
+        self.mitigation_type_label.pack(side=LEFT, padx=(0, 10))
+        self.mitigation_type_ai_radio.pack(side=LEFT, padx=(0, 15))
+        self.mitigation_type_template_radio.pack(side=LEFT, padx=(0, 15))
+        
+        # Button layout
         self.mitigation_generate_btn.pack(side=LEFT, padx=(0, 10))
         self.mitigation_export_pdf_btn.pack(side=LEFT, padx=(0, 5))
         self.mitigation_export_html_btn.pack(side=LEFT, padx=(0, 5))
@@ -2236,11 +2261,14 @@ Status: Connected
             self.mitigation_generate_btn.config(state=DISABLED, text="Generating...")
             self.mitigation_tree.delete(*self.mitigation_tree.get_children())
             self.mitigation_details_text.delete(1.0, tk.END)
-            self.mitigation_details_text.insert(1.0, "Generating mitigation plan... Please wait.\n")
+            # Get selected recommendation type
+            recommendation_type = self.mitigation_type_var.get()
+            type_text = "AI-generated" if recommendation_type == "ai" else "template-based"
+            self.mitigation_details_text.insert(1.0, f"Generating {type_text} mitigation plan... Please wait.\n")
             self.root.update()
             
             # Generate mitigation plan
-            plan = self.mitigation_engine.generate_mitigation_plan(self.scanner.scan_results)
+            plan = self.mitigation_engine.generate_mitigation_plan(self.scanner.scan_results, recommendation_type)
             self.mitigation_plan = plan
             
             # Display results
@@ -2272,6 +2300,7 @@ Status: Connected
         
         # Display enhanced summary
         summary = plan.get('summary', {})
+        ai_status = "✅ AI-Enhanced" if plan.get('ai_enhanced', False) else "❌ Template-Based"
         summary_text = f"Enhanced Mitigation Plan Summary\n"
         summary_text += "=" * 35 + "\n\n"
         summary_text += f"Total Recommendations: {summary.get('total_recommendations', 0)}\n"
@@ -2280,7 +2309,8 @@ Status: Connected
         summary_text += f"Medium Actions: {summary.get('medium_actions', 0)}\n"
         summary_text += f"Low Actions: {summary.get('low_actions', 0)}\n"
         summary_text += f"Estimated Timeline: {summary.get('estimated_timeline', 'N/A')}\n"
-        summary_text += f"Overall Effort: {summary.get('overall_effort', 'N/A')}\n\n"
+        summary_text += f"Overall Effort: {summary.get('overall_effort', 'N/A')}\n"
+        summary_text += f"AI Enhancement: {ai_status}\n\n"
         
         # Add vulnerability context summary
         vuln_context = self._get_vulnerability_context_summary(plan['mitigation_plan'])
@@ -2315,9 +2345,14 @@ Status: Connected
                 elif urgency == 'medium':
                     timeline += " [MEDIUM]"
                 
+                # Add AI indicator
+                ai_indicator = ""
+                if recommendation.get('source') == 'ai_generated':
+                    ai_indicator = " 🤖"
+                
                 self.mitigation_tree.insert("", "end", values=(
                     rec.get('priority', 'N/A'),
-                    title,
+                    title + ai_indicator,
                     timeline,
                     rec.get('estimated_effort', 'N/A'),
                     'Pending'
@@ -2384,6 +2419,15 @@ Status: Connected
                     details_text += f"Exploit Availability: {exploit_info.get('exploit_availability', 'N/A')}\n"
                     details_text += f"Has Verified Exploits: {'Yes' if exploit_info.get('has_verified_exploits') else 'No'}\n\n"
                 
+                # AI Enhancement information
+                ai_enhanced = self.mitigation_plan.get('ai_enhanced', False)
+                if ai_enhanced:
+                    details_text += "AI Enhancement:\n"
+                    details_text += "-" * 16 + "\n"
+                    details_text += "Status: 🤖 AI-Enhanced Recommendations\n"
+                    details_text += "Source: PhindAI with ExploitDB Integration\n"
+                    details_text += "Features: Dynamic analysis, context-aware recommendations\n\n"
+                
                 # Recommendations
                 details_text += "Mitigation Recommendations:\n"
                 details_text += "-" * 28 + "\n"
@@ -2402,6 +2446,12 @@ Status: Connected
                         details_text += f"   Urgency: {rec_detail.get('urgency').upper()}\n"
                     if rec_detail.get('implementation_notes'):
                         details_text += f"   Implementation Notes: {rec_detail.get('implementation_notes')}\n"
+                    
+                    # Add AI context
+                    if rec_detail.get('source') == 'ai_generated':
+                        details_text += f"   🤖 AI-Generated Recommendation\n"
+                    if rec_detail.get('ai_context'):
+                        details_text += f"   AI Context: {rec_detail.get('ai_context')}\n"
                     
                     # Add network/local considerations
                     if rec_detail.get('network_considerations'):
@@ -2517,7 +2567,9 @@ Status: Connected
                             'resources': rec.get('resources', {}),
                             'estimated_effort': rec.get('estimated_effort', ''),
                             'status': 'pending',
-                            'due_date': recommendation.get('timeline', '')
+                            'assigned_to': None,
+                            'due_date': recommendation.get('timeline', ''),
+                            'completed_at': None
                         })
                 
                 if recommendations:

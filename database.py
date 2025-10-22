@@ -618,8 +618,8 @@ class Database:
                     INSERT INTO mitigation_recommendations 
                     (scan_id, vulnerability_id, recommendation_type, priority, 
                      title, description, steps, resources, estimated_effort, 
-                     status, due_date)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     status, assigned_to, due_date, completed_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     scan_id,
                     rec.get('vulnerability_id', ''),
@@ -631,7 +631,9 @@ class Database:
                     json.dumps(rec.get('resources', {})),
                     rec.get('estimated_effort', 'medium'),
                     rec.get('status', 'pending'),
-                    rec.get('due_date', '')
+                    rec.get('assigned_to', None),
+                    rec.get('due_date', None),
+                    rec.get('completed_at', None)
                 ))
                 
                 recommendation_ids.append(cursor.lastrowid)
