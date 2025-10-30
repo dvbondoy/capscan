@@ -62,7 +62,8 @@ class CapScanGUI:
         self.create_widgets()
         self.setup_layout()
         self.update_db_status_ui()
-        
+
+    # This method is used to create all the GUI widgets
     def create_widgets(self):
         """Create all GUI widgets"""
         
@@ -450,10 +451,11 @@ class CapScanGUI:
         self.ports_entry.bind("<KeyRelease>", self.on_port_entry_change)
         
         # Skip AI service status check on startup
-        # self.check_ai_service_status()
+        self.check_ai_service_status()
         
         # Initialize database info display handled by update_db_status_ui()
     
+    # This method is used to create the AI Analysis tab components
     def create_ai_analysis_tab(self):
         """Create AI Analysis tab components"""
         # AI Analysis controls
@@ -578,6 +580,7 @@ class CapScanGUI:
         self.compliance_results_text.pack(side=LEFT, fill=BOTH, expand=True)
         self.compliance_results_scrollbar.pack(side=RIGHT, fill=Y)
     
+    # This method is used to create the Mitigation Recommendations tab components
     def create_mitigation_tab(self):
         """Create Mitigation Recommendations tab components"""
         # Mitigation controls
@@ -692,6 +695,7 @@ class CapScanGUI:
         # Bind mitigation tree selection
         self.mitigation_tree.bind("<<TreeviewSelect>>", self.on_mitigation_select)
     
+    # This method is used to create the SSH Scan tab components
     def create_ssh_scan_tab(self):
         """Create SSH Scan tab components"""
         # SSH scan summary
@@ -760,6 +764,7 @@ class CapScanGUI:
         # Bind SSH vulnerability tree selection
         self.ssh_vulns_tree.bind("<<TreeviewSelect>>", self.on_ssh_vuln_select)
         
+    # This method is used to setup the layout of all widgets
     def setup_layout(self):
         """Setup the layout of all widgets"""
         
@@ -853,7 +858,8 @@ class CapScanGUI:
         self.recent_scans_frame.pack(fill=BOTH, expand=True)
         self.recent_scans_tree.pack(side=LEFT, fill=BOTH, expand=True)
         self.recent_scans_scrollbar.pack(side=RIGHT, fill=Y)
-        
+
+    # This method is used to handle the port preset dropdown selection
     def on_port_preset_change(self, event):
         """Handle port preset dropdown selection"""
         preset = self.port_preset_var.get()
@@ -871,6 +877,7 @@ class CapScanGUI:
             # Don't change the current port entry, just keep it as is
             pass
     
+    # This method is used to handle the manual changes to the port entry field
     def on_port_entry_change(self, event):
         """Handle manual changes to port entry field"""
         current_ports = self.ports_entry.get().strip()
@@ -885,6 +892,7 @@ class CapScanGUI:
         else:
             self.port_preset_var.set("Custom")
     
+    # This method is used to toggle the visibility of the advanced options
     def toggle_advanced_options(self):
         """Toggle visibility of advanced options"""
         if self.advanced_options_frame.winfo_viewable():
@@ -907,7 +915,8 @@ class CapScanGUI:
             # Show SSH options (already enabled by default)
             self.ssh_options_frame.grid()
             self.setup_ssh_options_layout()
-        
+
+    # This method is used to toggle the scan state (start/stop)
     def toggle_scan(self):
         """Toggle scan state (start/stop)"""
         if self.is_scanning:
@@ -915,6 +924,7 @@ class CapScanGUI:
         else:
             self.start_scan()
     
+    # This method is used to start the vulnerability scan in a separate thread
     def start_scan(self):
         """Start vulnerability scan in a separate thread"""
         if self.is_scanning:
@@ -948,6 +958,7 @@ class CapScanGUI:
         self.scan_thread.daemon = True
         self.scan_thread.start()
         
+    # This method is used to run the actual scan
     def run_scan(self, target, ports):
         """Run the actual scan"""
         try:
@@ -978,7 +989,8 @@ class CapScanGUI:
         except Exception as e:
             error_msg = str(e)
             self.root.after(0, lambda: self.scan_error(error_msg))
-            
+
+    # This method is used to handle the scan completion
     def scan_complete(self):
         """Handle scan completion"""
         self.is_scanning = False
@@ -1008,6 +1020,7 @@ class CapScanGUI:
             self.compliance_analyze_btn.config(state=NORMAL)
             self.mitigation_generate_btn.config(state=NORMAL)
         
+    # This method is used to handle the scan error
     def scan_error(self, error_msg):
         """Handle scan error"""
         self.is_scanning = False
@@ -1015,7 +1028,8 @@ class CapScanGUI:
         self.progress_bar.stop()
         self.status_label.config(text=f"Scan failed: {error_msg}")
         self.show_error(f"Scan failed: {error_msg}")
-        
+
+    # This method is used to stop the current scan
     def stop_scan(self):
         """Stop the current scan"""
         if self.is_scanning:
@@ -1024,6 +1038,7 @@ class CapScanGUI:
             self.progress_bar.stop()
             self.status_label.config(text="Scan stopped by user")
             
+    # This method is used to clear the results display
     def clear_results(self):
         """Clear all result displays"""
         self.summary_text.delete(1.0, tk.END)
@@ -1038,6 +1053,27 @@ class CapScanGUI:
         """Update summary display"""
         summary = self.scanner.get_scan_summary()
         
+        # Compute unique CVE counts for network scan (used when SSH summary is not present)
+        network_vulns = self.scanner.get_vulnerabilities() if hasattr(self.scanner, 'get_vulnerabilities') else []
+        unique_cve_to_vuln = {}
+        for vuln in network_vulns:
+            cve_id = vuln.get('cve_id')
+            if cve_id and cve_id != 'N/A' and cve_id not in unique_cve_to_vuln:
+                unique_cve_to_vuln[cve_id] = vuln
+        unique_network_total = len(unique_cve_to_vuln)
+        # Recompute severity breakdown based on unique CVEs
+        unique_severity_counts = {'high': 0, 'medium': 0, 'low': 0, 'unknown': 0}
+        for vuln in unique_cve_to_vuln.values():
+            score = vuln.get('score')
+            if score is None:
+                unique_severity_counts['unknown'] += 1
+            elif score >= 7.0:
+                unique_severity_counts['high'] += 1
+            elif score >= 4.0:
+                unique_severity_counts['medium'] += 1
+            else:
+                unique_severity_counts['low'] += 1
+
         # Get SSH scan summary if available
         ssh_summary = {}
         if hasattr(self, 'ssh_scanner') and self.ssh_scanner:
@@ -1045,20 +1081,20 @@ class CapScanGUI:
                 ssh_summary = self.ssh_scanner.get_scan_summary()
             except:
                 ssh_summary = {}
-        
+        # This method is used to generate the summary text for the summary tab
         summary_text = f"""
 VULNERABILITY SCAN SUMMARY
 {'='*50}
 Target: {summary.get('target', 'N/A')}
 Scan Time: {summary.get('scan_time', 'N/A')}
 Hosts Scanned: {summary.get('hosts_scanned', 0)}
-Total Vulnerabilities: {summary.get('total_vulnerabilities', 0)}
+Total Unique CVEs: {unique_network_total}
 
 Severity Breakdown:
-  High: {summary.get('severity_breakdown', {}).get('high', 0)}
-  Medium: {summary.get('severity_breakdown', {}).get('medium', 0)}
-  Low: {summary.get('severity_breakdown', {}).get('low', 0)}
-  Unknown: {summary.get('severity_breakdown', {}).get('unknown', 0)}
+  High: {unique_severity_counts.get('high', 0)}
+  Medium: {unique_severity_counts.get('medium', 0)}
+  Low: {unique_severity_counts.get('low', 0)}
+  Unknown: {unique_severity_counts.get('unknown', 0)}
 
 XML Output: {summary.get('xml_output_path', 'N/A')}
 """
@@ -1102,8 +1138,12 @@ Status: Enabled but no SSH scan results available
 Note: SSH scan requires valid credentials and SSH port 22 to be open
 """
         
+        # Clear existing content before inserting new summary
+        self.summary_text.delete(1.0, tk.END)
         self.summary_text.insert(1.0, summary_text)
     
+    # This method is used to generate the brief scan comparison summary for the summary tab
+    # The brief scan comparison summary is a summary of the scan comparison between the network scan and the SSH scan
     def _generate_brief_scan_comparison(self):
         """Generate brief scan comparison summary for the summary tab."""
         try:
@@ -1120,15 +1160,37 @@ Note: SSH scan requires valid credentials and SSH port 22 to be open
                 if cve_id and cve_id != 'N/A':
                     network_cves.add(cve_id)
             
+            ssh_with_cve = 0
+            ssh_without_cve = 0
+            
             for vuln in ssh_vulns:
                 cve_id = vuln.get('cve_id')
                 if cve_id and cve_id != 'N/A':
                     ssh_cves.add(cve_id)
+                    ssh_with_cve += 1
+                else:
+                    ssh_without_cve += 1
             
             # Calculate overlaps and unique vulnerabilities
             common_cves = network_cves.intersection(ssh_cves)
             network_only_cves = network_cves - ssh_cves
             ssh_only_cves = ssh_cves - network_cves
+            
+            # Debug info
+            print(f"\n{'='*80}")
+            print(f"SCAN COMPARISON DEBUG")
+            print(f"{'='*80}")
+            print(f"Network: {len(network_vulns)} vulnerabilities → {len(network_cves)} unique CVEs")
+            print(f"SSH: {len(ssh_vulns)} vulnerabilities → {len(ssh_cves)} unique CVEs")
+            print(f"\nCommon CVEs: {len(common_cves)}")
+            print(f"Network-only CVEs: {len(network_only_cves)}")
+            print(f"SSH-only CVEs: {len(ssh_only_cves)}")
+            print(f"{'='*80}\n")
+            
+            # Handle SSH-only count
+            ssh_total = len(ssh_vulns)
+            ssh_comparison_count = len(ssh_cves)
+            ssh_only_display = len(ssh_only_cves)
             
             return f"""
 
@@ -1136,10 +1198,11 @@ SCAN COMPARISON SUMMARY
 {'-'*30}
 Common Vulnerabilities: {len(common_cves)}
 Network-Only: {len(network_only_cves)}
-SSH-Only: {len(ssh_only_cves)}
+SSH-Only: {ssh_only_display}
 Total Unique: {len(network_cves) + len(ssh_cves) - len(common_cves)}
 
-Note: See Statistics tab for detailed comparison analysis
+Note: Network scan found {len(network_cves)} unique CVEs, SSH scan found {len(ssh_cves)} unique CVEs
+See Statistics tab for detailed comparison analysis
 """
             
         except Exception as e:
@@ -1360,6 +1423,8 @@ VULNERABILITY DETAILS
         if hasattr(self, 'ssh_scan_results') and self.ssh_scan_results and self.ssh_scan_results.get('vulnerabilities'):
             stats_text += self._generate_scan_comparison()
         
+        # Clear existing content before inserting new statistics
+        self.stats_text.delete(1.0, tk.END)
         self.stats_text.insert(1.0, stats_text)
         
     def on_vuln_select(self, event):
@@ -1399,11 +1464,36 @@ Additional Information:
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             
-            # Save vulnerabilities
-            vulnerabilities = self.scanner.get_vulnerabilities()
-            vuln_file = f"output/vulnerabilities_{timestamp}.json"
-            with open(vuln_file, 'w') as f:
-                json.dump(vulnerabilities, f, indent=2, default=str)
+            # Save network-only vulnerabilities
+            network_vulnerabilities = self.scanner.get_vulnerabilities()
+            network_vuln_file = f"output/vulnerabilities_network_{timestamp}.json"
+            with open(network_vuln_file, 'w') as f:
+                json.dump(network_vulnerabilities, f, indent=2, default=str)
+
+            # Save SSH-only vulnerabilities if available
+            ssh_vulnerabilities = []
+            ssh_vuln_file = None
+            if hasattr(self, 'ssh_scan_results') and self.ssh_scan_results:
+                ssh_vulnerabilities = self.ssh_scan_results.get('vulnerabilities', []) or []
+                if ssh_vulnerabilities:
+                    ssh_vuln_file = f"output/vulnerabilities_ssh_{timestamp}.json"
+                    with open(ssh_vuln_file, 'w') as f:
+                        json.dump(ssh_vulnerabilities, f, indent=2, default=str)
+
+            # Save combined unique-by-CVE vulnerabilities
+            combined_by_cve = {}
+            for vuln in network_vulnerabilities:
+                cve_id = vuln.get('cve_id')
+                if cve_id and cve_id != 'N/A' and cve_id not in combined_by_cve:
+                    combined_by_cve[cve_id] = vuln
+            for vuln in ssh_vulnerabilities:
+                cve_id = vuln.get('cve_id')
+                if cve_id and cve_id != 'N/A' and cve_id not in combined_by_cve:
+                    combined_by_cve[cve_id] = vuln
+            combined_vulnerabilities = list(combined_by_cve.values())
+            combined_vuln_file = f"output/vulnerabilities_combined_{timestamp}.json"
+            with open(combined_vuln_file, 'w') as f:
+                json.dump(combined_vulnerabilities, f, indent=2, default=str)
                 
             # Save summary
             summary = self.scanner.get_scan_summary()
@@ -1414,7 +1504,18 @@ Additional Information:
             # Save XML
             xml_file = self.scanner.save_as_xml(f"output/vuln_scan_{timestamp}.xml")
             
-            self.show_info(f"Results saved:\n- {vuln_file}\n- {summary_file}\n- {xml_file}")
+            # Build saved files message
+            saved_files = [
+                f"- {network_vuln_file}",
+            ]
+            if ssh_vuln_file:
+                saved_files.append(f"- {ssh_vuln_file}")
+            saved_files.extend([
+                f"- {combined_vuln_file}",
+                f"- {summary_file}",
+                f"- {xml_file}",
+            ])
+            self.show_info("Results saved:\n" + "\n".join(saved_files))
             
         except Exception as e:
             self.show_error(f"Error saving results: {str(e)}")
@@ -2800,13 +2901,10 @@ Note: SSH scan will only run if the target has port 22 open from the network sca
         print(f"DEBUG: SSH scan vulnerabilities count: {len(self.ssh_scan_results.get('vulnerabilities', []))}")
         print(f"DEBUG: SSH scan hosts count: {len(self.ssh_scan_results.get('hosts', {}))}")
         
-        # Add SSH vulnerabilities to main scanner results
+        # Store SSH vulnerabilities separately - DO NOT merge into network scan results
+        # This prevents artificial overlap between network and SSH scan vulnerabilities
         ssh_vulns = self.ssh_scan_results.get('vulnerabilities', [])
-        if ssh_vulns and hasattr(self.scanner, 'vulnerabilities'):
-            print(f"DEBUG: Adding {len(ssh_vulns)} SSH vulnerabilities to main scanner")
-            self.scanner.vulnerabilities.extend(ssh_vulns)
-        else:
-            print(f"DEBUG: No SSH vulnerabilities to add. ssh_vulns: {len(ssh_vulns)}, hasattr: {hasattr(self.scanner, 'vulnerabilities')}")
+        print(f"DEBUG: SSH scan found {len(ssh_vulns)} vulnerabilities (stored separately, not merged)")
         
         # Update main summary
         self.update_summary()

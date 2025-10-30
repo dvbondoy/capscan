@@ -36,7 +36,11 @@ class PhindAI:
         self.available = True
         
         # Skip connection test on startup
-        # self._test_connection()
+        try:
+            self._test_connection()
+        except Exception as e:
+            logger.error(f"Error testing PhindAI connection: {e}")
+            self.available = False
     
     def _test_connection(self) -> bool:
         """Test if Phind service is available."""

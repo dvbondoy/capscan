@@ -5,7 +5,7 @@ import os
 import json
 from typing import Dict, List, Optional, Tuple
 
-
+# This class is used to scan a host for vulnerabilities using nmap with vulners NSE script
 class Scanner:
     """
     A vulnerability scanner class that uses nmap with vulners NSE script
@@ -19,6 +19,7 @@ class Scanner:
         self.scan_results = {}
         self.xml_output_path = None
         
+    # This method is used to scan a host for vulnerabilities using nmap with vulners NSE script
     def scan_host(self, target: str, ports: str = "1-65535", 
                   vulners_args: str = "--script-args vulners.maxreports=10") -> Dict:
         """
@@ -112,6 +113,7 @@ class Scanner:
             print(f"Error during scan: {str(e)}")
             return {'error': str(e)}
     
+    # This method is used to parse the vulners script output to extract vulnerability information with enhanced context
     def _parse_vulners_output(self, script_output: str, host_ip: str = None, port: str = None, service_info: Dict = None) -> List[Dict]:
         """
         Parse vulners script output to extract vulnerability information with enhanced context.
@@ -169,6 +171,7 @@ class Scanner:
                 
         return vulnerabilities
     
+    # This method is used to extract the CVSS score from the vulnerability line
     def _extract_score(self, line: str) -> Optional[float]:
         """Extract CVSS score from vulnerability line."""
         import re
@@ -188,6 +191,10 @@ class Scanner:
                     continue
         return None
     
+    # This method is used to score the vulnerability based on keywords in the description
+    # The keywords are based on the severity of the vulnerability
+    # The higher the severity, the higher the score
+    # The score is a float between 1.0 and 10.0
     def _score_by_keywords(self, description: str) -> float:
         """Score vulnerability based on keywords in description."""
         if not description:
@@ -255,11 +262,17 @@ class Scanner:
         
         return 1.0  # Default low score for unknown vulnerabilities
     
+    # This method is used to score the vulnerability based on the CVE year
+    # The newer the CVE, the higher the score
+    # The score is a float between 1.0 and 10.0
     def _score_by_cve_year(self, cve_id: str) -> float:
         """Score based on CVE year (newer = potentially more relevant)."""
         if not cve_id or not cve_id.startswith('CVE-'):
             return 1.0
         
+        # This method is used to score the vulnerability based on the CVE year
+        # The newer the CVE, the higher the score
+        # The score is a float between 1.0 and 10.0
         try:
             year = int(cve_id.split('-')[1])
             current_year = datetime.now().year
@@ -275,6 +288,7 @@ class Scanner:
         except (ValueError, IndexError):
             return 1.0
     
+    # This method is used to enhance the vulnerabilities with scores using keyword analysis and CVE year    
     def enhance_vulnerabilities_with_scores(self):
         """Enhance vulnerabilities with scores using keyword analysis and CVE year."""
         enhanced_count = 0
@@ -305,6 +319,9 @@ class Scanner:
         print(f"Enhanced {enhanced_count} vulnerabilities with keyword-based scoring")
         return enhanced_count
     
+    # This method is used to convert the score to a severity level
+    # The severity level is a string
+    # The severity level is used to determine the severity of the vulnerability
     def _score_to_severity(self, score: float) -> str:
         """Convert numeric score to severity level."""
         if score is None or score == 0:
@@ -318,6 +335,7 @@ class Scanner:
         else:
             return 'low'
     
+    # This method is used to get the statistics about the scoring system
     def get_scoring_statistics(self) -> Dict:
         """Get statistics about the scoring system."""
         if not self.vulnerabilities:
@@ -326,12 +344,12 @@ class Scanner:
         total_vulns = len(self.vulnerabilities)
         scored_vulns = len([v for v in self.vulnerabilities if v.get('score') is not None])
         
-        # Count by score ranges
+        # Count by score ranges of the vulnerabilities  
         high_count = len([v for v in self.vulnerabilities if v.get('score', 0) >= 7.0])
         medium_count = len([v for v in self.vulnerabilities if 4.0 <= v.get('score', 0) < 7.0])
         low_count = len([v for v in self.vulnerabilities if 1.0 <= v.get('score', 0) < 4.0])
         
-        # Count by source
+        # Count by source of scoring
         keyword_scored = len([v for v in self.vulnerabilities if v.get('score_source') == 'keyword_analysis'])
         
         return {
@@ -345,6 +363,7 @@ class Scanner:
             'scoring_coverage': (scored_vulns / total_vulns * 100) if total_vulns > 0 else 0
         }
     
+    # This method is used to save the scan results as an XML file
     def save_as_xml(self, output_path: str = None) -> str:
         """
         Save scan results as XML file.
@@ -421,6 +440,7 @@ class Scanner:
         print(f"Scan results saved to: {output_path}")
         return output_path
     
+    # This method is used to get all the discovered vulnerabilities
     def get_vulnerabilities(self) -> List[Dict]:
         """Get all discovered vulnerabilities."""
         return self.vulnerabilities
@@ -455,6 +475,7 @@ class Scanner:
             'xml_output_path': self.xml_output_path
         }
     
+    # This method is used to print the summary of the scan results
     def print_summary(self):
         """Print a formatted summary of scan results."""
         summary = self.get_scan_summary()

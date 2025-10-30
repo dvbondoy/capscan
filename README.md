@@ -5,17 +5,24 @@ CapScan is a comprehensive vulnerability scanner built with Python that uses nma
 ## Features
 
 ### 🔍 **Vulnerability Scanning**
-- **Nmap Integration**: Uses python-nmap for robust network scanning
+- **Nmap Integration**: Uses python-nmap for robust network scanning (vulners NSE)
 - **Multiple Scan Types**: Quick scans, common ports, and comprehensive port scans
 - **Custom Port Ranges**: Specify custom port ranges for targeted scanning
 - **Vulnerability Detection**: Identifies potential security issues and misconfigurations
-- **Scoring System**: Keyword-based scoring for vulnerability prioritization
+- **Scoring System**: Keyword- and CVE year-based scoring for prioritization
+
+### 🤖 **AI-Assisted Analysis**
+- **Risk Assessment**: AI summarizes risk, impact, and exploitability
+- **Mitigation Guidance**: Actionable immediate/short-term/long-term recommendations
+- **Compliance Checks**: OWASP, NIST, PCI_DSS, ISO27001, PH_DPA summaries
+- **Pluggable Backend**: Uses PhindAI wrapper by default; mock fallback offline
 
 ### 💾 **Database Integration**
 - **SQLCipher3 Support**: Encrypted database storage for secure data retention
 - **Comprehensive Schema**: Stores scan results, host information, port details, and vulnerabilities
 - **Password Protection**: Secure database access with password authentication
 - **Data Persistence**: Maintain historical scan data and trends
+ - **AI Artifacts**: Persists AI analyses and mitigation plans for each scan
 
 ### 🖥️ **User Interfaces**
 - **Command Line Interface**: Full CLI support with argument parsing
@@ -24,10 +31,11 @@ CapScan is a comprehensive vulnerability scanner built with Python that uses nma
 - **Real-time Progress**: Live progress tracking during scans
 
 ### 📊 **Results Management**
-- **Multiple Export Formats**: JSON and XML output support
+- **Multiple Export Formats**: JSON, XML, PDF, and HTML reports
 - **Database Storage**: Automatic saving to encrypted database
 - **File Export**: Manual export of scan results to files
 - **Summary Reports**: Comprehensive scan summaries and statistics
+- **Professional Reports**: Branded PDF/HTML with AI, compliance, mitigation sections
 
 ## Installation
 
@@ -92,6 +100,10 @@ python main.py 192.168.1.1 --db-password "your_password"
 - `--db-password`: Provide database password via CLI
 - `--interactive`: Run in interactive mode
 
+Notes:
+- Default behavior launches the GUI if no flags are provided.
+- AI analysis, compliance, and mitigation generation are available via the Python API. See example below.
+
 ### Graphical User Interface
 
 #### Launch GUI
@@ -106,6 +118,7 @@ python gui.py
 - **Database Integration**: Connect/disconnect from database with password protection
 - **Real-time Monitoring**: Live progress tracking and status updates
 - **Results Management**: View, save, and export scan results
+ - **Report Export**: Export PDF/HTML reports when dependencies are installed
 
 ## Database Schema
 
@@ -116,6 +129,8 @@ The application uses SQLCipher3 for encrypted data storage with the following sc
 - **host_info**: Target host information and status
 - **port_info**: Port details and service information
 - **vulnerabilities**: Vulnerability findings and severity scores
+ - **ai_analysis**: Risk/compliance analyses linked to scans
+ - **mitigation_recommendations**: Action plans with priority and status
 
 ### Security
 - All data is encrypted using SQLCipher3
@@ -133,7 +148,7 @@ The application uses SQLCipher3 for encrypted data storage with the following sc
 ### Scan Configuration
 - **Default Ports**: 22, 80, 443, 8080
 - **Max Reports**: 10 per port
-- **Scoring**: Keyword-based vulnerability scoring enabled by default
+- **Scoring**: Keyword + CVE-year-based scoring enabled by default
 
 ## File Structure
 
@@ -143,10 +158,13 @@ capscan/
 ├── gui.py               # GUI application
 ├── engine.py            # Scanning engine
 ├── database.py          # Database operations
+├── ai_service.py        # AI analysis, compliance checks, mitigation
+├── phind_ai.py          # PhindAI wrapper backend
 ├── requirements.txt     # Python dependencies
 ├── README.md           # This file
-├── DATABASE_README.md  # Database documentation
-├── GUI_DATABASE_GUIDE.md # GUI usage guide
+├── reports/             # PDF/HTML report exporters
+├── compliance/          # Templates/framework helpers
+├── mitigation/          # Mitigation workflows/templates
 └── output/             # Scan results directory
 ```
 
@@ -156,6 +174,9 @@ capscan/
 - **sqlcipher3**: Encrypted database support
 - **ttkbootstrap**: Modern GUI framework
 - **python-nmap**: Python nmap interface
+ - **reportlab**: PDF export
+ - **jinja2**: HTML export
+ - **requests, openai, pydantic**: AI backend helpers
 
 ## Security Considerations
 
@@ -186,6 +207,32 @@ python main.py --db-info
 python main.py --interactive
 ```
 
+### Programmatic usage: AI analysis and reporting
+```python
+from engine import Scanner
+from database import Database
+from ai_service import AIService
+from reports.report_generator import ReportGenerator
+
+scanner = Scanner()
+results = scanner.scan_host("192.168.1.1", ports="22,80,443")
+
+# Optional AI analyses
+ai = AIService()
+ai_analysis = ai.analyze_vulnerabilities(results)
+compliance = ai.check_compliance(results, standard="OWASP")
+
+# Save to encrypted DB
+with Database(password="your_password") as db:
+    scan_id = db.save_scan_results(results)
+    db.save_ai_analysis(scan_id, analysis_type="compliance", standard="OWASP", analysis_data=compliance)
+
+# Export professional reports (requires reportlab/jinja2)
+reporter = ReportGenerator()
+paths = reporter.export_both_formats(results)
+print(paths)
+```
+
 ## Troubleshooting
 
 ### Common Issues
@@ -193,6 +240,8 @@ python main.py --interactive
 2. **Database errors**: Check password and file permissions
 3. **Permission denied**: Run with appropriate privileges for network scanning
 4. **GUI not launching**: Check ttkbootstrap installation
+5. **PDF export not available**: Install reportlab (`pip install reportlab`)
+6. **HTML export not available**: Install jinja2 (`pip install jinja2`)
 
 ### Getting Help
 - Check the documentation files in the project

@@ -26,6 +26,8 @@ class ComplianceAnalyzer:
         self.standard = standard
         self.framework = ComplianceFramework(standard)
     
+    # This method is used to analyze the scan results for compliance violations
+    # The scan results are the results of the vulnerability scan
     def analyze_scan_results(self, scan_results: Dict[str, Any]) -> Dict[str, Any]:
         """
         Analyze scan results for compliance violations.
