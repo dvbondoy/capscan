@@ -1,7 +1,7 @@
 # CapScan - Vulnerability Scanner
 
 CapScan is a comprehensive vulnerability scanner built with Python that uses nmap as its scanning engine. It provides both command-line interface (CLI) and graphical user interface (GUI) for conducting security assessments and vulnerability scans.
-
+![CapScan](main.png)
 ## Features
 
 ### 🔍 **Vulnerability Scanning**
@@ -47,7 +47,7 @@ CapScan is a comprehensive vulnerability scanner built with Python that uses nma
 ### Setup
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/dvbondoy/capscan.git
 cd capscan
 ```
 
